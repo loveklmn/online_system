@@ -1,6 +1,6 @@
 <template>
   <div>
-    main page
+    friend-circle page
   </div>
 </template>
 
