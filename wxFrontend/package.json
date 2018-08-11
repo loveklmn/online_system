@@ -9,8 +9,9 @@
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src",
-    "precommit": "lint-staged"
-  },
+    "precommit": "lint-staged",
+    "commitmsg": "sh ../commit-msg.sh ${GIT_PARAMS}"
+ },
   "lint-staged": {
     "*.{js,vue}": [
       "eslint --fix",
