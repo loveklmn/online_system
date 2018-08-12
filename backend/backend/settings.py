@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'vonapp',
+        'NAME': 'vron',
         'PASSWORD': 'vagrant',
         'USER': 'root',
         'HOST': '127.0.0.1',
