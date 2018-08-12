@@ -11,7 +11,7 @@ export default {
   // 这个字段走 app.json
   config: {
     // 页面前带有 ^ 符号的，会被编译成首页，其他页面可以选填，我们会自动把 webpack entry 里面的入口页面加进去
-    pages: ['^pages/login-in/main'],
+    pages: ['^pages/login/main'],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
@@ -22,7 +22,7 @@ export default {
       'list': [
 
         {
-          pagePath: 'pages/friend-circle/main',
+          pagePath: 'pages/friendCircle/main',
           iconPath: '/static/images/friend-circle-default.png',
           selectedIconPath: '/static/images/friend-circle-active.png',
           text: '小伙伴'
@@ -34,7 +34,7 @@ export default {
           text: '小英语'
         },
         {
-          pagePath: 'pages/about-me/main',
+          pagePath: 'pages/aboutMe/main',
           iconPath: '/static/images/about-me-default.png',
           selectedIconPath: '/static/images/about-me-active.png',
           text: '关于我'
