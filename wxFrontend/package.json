@@ -9,9 +9,9 @@
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src",
-    "precommit": "lint-staged",
+    "precommit": "lint-staged && cd ../backend && pylint --disable=R,C --load-plugins pylint_django backend/",
     "commitmsg": "sh ../commit-msg.sh ${GIT_PARAMS}"
- },
+  },
   "lint-staged": {
     "*.{js,vue}": [
       "eslint --fix",
