@@ -1,5 +1,10 @@
-# from django.shortcuts import render
-
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+from django.http import JsonResponse
+from django.contrib.auth.models import User
+from django.contrib import auth
+from vron.serializers import BookSerializer
+from vron.models import Student, Book, Progress
 # Create your views here.
 
 @csrf_exempt
@@ -30,11 +35,11 @@ def book_list(request):
     """
     if not request.user.is_authenticated:
         return JsonResponse({'msg': 'Please login first.'})
-
+    if not Student.objects.filter(user_id=request.user.id):
+        return JsonResponse({'msg': 'This user have not related to a student.'})
+    student = Student.objects.get(user_id=request.user.id)
     if request.method == 'GET':
-        if not Student.objects.filter(user_id=request.user.id):
-            return JsonResponse({'msg': 'This user have not related to a student.'})
-        student = Student.objects.get(user_id=request.user.id)
+
         books = Book.objects.filter(level=student.level)
         if not books.exists():
             return JsonResponse({'msg': 'Cannot find book for this level'})
@@ -61,7 +66,7 @@ def book_list(request):
             return JsonResponse(bookinfos, safe=False)
     elif request.method == 'POST':
         data = JSONParser().parse(request)
-        data['level'] = level
+        data['level'] = student.level
         serializer = BookSerializer(data=data)
         if serializer.is_valid():
             serializer.save()

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from vron.models import *
+from vron.models import Book, Progress
 
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
