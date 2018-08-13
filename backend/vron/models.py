@@ -32,7 +32,7 @@ class Progress(models.Model):
 
 class Page(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    numer = models.IntegerField()
+    number = models.IntegerField()
     picture = models.CharField(max_length=255)
 
 
@@ -65,6 +65,7 @@ class Moment(models.Model):
     homework = models.ForeignKey(Homework, on_delete=models.CASCADE)
     created_time = models.DateTimeField(default=datetime.now)
     vote_count = models.IntegerField(default=0)
+    level = models.IntegerField()
 
 
 class Like(models.Model):
