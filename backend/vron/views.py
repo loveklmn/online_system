@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib import auth
 from vron.serializers import BookSerializer
-from vron.models import Student, Book, Progress, Word, Page, Sentence
+from vron.models import Student, Book, Progress, Word, Page, Sentence, Moment
 # Create your views here.
 
 def login_require(func):
@@ -147,3 +147,23 @@ def book_ebook(request, book_id):
     else:
         return JsonResponse({'msg': 'Please use GET method'})
 
+@csrf_exempt
+@login_require
+def community_group(request, level):
+    if request.method == 'GET':
+        community_info = []
+        moments = Moment.objects.filter(level=level)
+        if moments:
+            for moment in moments:
+                community_message = {}
+                homework = moment.homework
+                community_message['author'] = homework.author.user.username
+                community_message['book'] = homework.book.title
+                community_message['created_time'] = moment.created_time
+                community_message['content'] = homework.content
+                community_message['vote_count'] = moment.vote_count
+                community_info.append(community_message)
+
+        return JsonResponse(community_info, safe=False)
+    else:
+        return JsonResponse({'msg': 'Please use GET method.'})
