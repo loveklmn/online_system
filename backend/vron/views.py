@@ -147,6 +147,7 @@ def book_ebook(request, book_id):
     else:
         return JsonResponse({'msg': 'Please use GET method'})
 
+<<<<<<< HEAD
 @csrf_exempt
 @login_require
 def community_group(request, level):
@@ -167,3 +168,5 @@ def community_group(request, level):
         return JsonResponse(community_info, safe=False)
     else:
         return JsonResponse({'msg': 'Please use GET method.'})
+=======
+>>>>>>> Add backend api:ebook. Ref #21
