@@ -21,6 +21,8 @@ def login(request):
         if user is not None and user.is_active:
             auth.login(request, user)
             userobj = User.objects.get_by_natural_key(username)
+            if not Student.objects.filter(user=userobj):
+                return JsonResponse({'msg': 'your account have not connect to a student'})
             student = Student.objects.get(user=userobj)
             return JsonResponse({'userid': userobj.id, 'level': student.level})
         else:
