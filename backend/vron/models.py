@@ -28,6 +28,7 @@ class Progress(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     punched = models.BooleanField(default=False)
     current_page = models.IntegerField()
+    latest_read_time = models.DateTimeField(default=datetime.now())
 
 
 class Page(models.Model):
