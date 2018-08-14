@@ -5,10 +5,10 @@
     <div class="weui-grid__label"> {{name}} </div>
     <div class="weui-grid__label"> bookid: {{id}} </div>
 
-<i-button bind:click="handleClick" shape="circle" type="info">亲子阅读指导</i-button>
-<i-button bind:click="handleClick" shape="circle" type="success">E-book</i-button>
-<i-button bind:click="handleClick" shape="circle" type="warning">课后练习</i-button>
-<i-button bind:click="handleClick" shape="circle" type="error">阅读拓展</i-button>
+<i-button @click="navToReadGuide(id)" shape="circle" type="info">亲子阅读指导</i-button>
+<i-button @click="navToEBook(id)" shape="circle" type="success">E-book</i-button>
+<i-button @click="navToPractice(id)" shape="circle" type="warning">课后练习</i-button>
+<i-button @click="navToFurtherRead(id)" shape="circle" type="error">阅读拓展</i-button>
 
   </div>
 </template>
@@ -18,7 +18,24 @@
 export default {
   components: {
   },
-
+  methods: {
+    navToReadGuide (num) {
+      let url = '/pages/readingGuide/main?id=' + num
+      wx.navigateTo({url: url})
+    },
+    navToEBook (num) {
+      let url = '/pages/eBook/main?id=' + num
+      wx.navigateTo({url: url})
+    },
+    navToPractice (num) {
+      let url = '/pages/practice/main?id=' + num
+      wx.navigateTo({url: url})
+    },
+    navToFurtherRead (num) {
+      let url = '/pages/furtherReading/main?id=' + num
+      wx.navigateTo({url: url})
+    }
+  },
   data () {
     return {
       id: null,
