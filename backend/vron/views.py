@@ -4,14 +4,24 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib import auth
 from vron.serializers import BookSerializer
-from vron.models import Student, Book, Progress
+from vron.models import Student, Book, Progress, Word
 # Create your views here.
+
+def login_require(func):
+    def wrapper(*args, **kw):
+        request = args[0]
+        if request.user.is_authenticated:
+            return func(*args, **kw)
+        else:
+            return JsonResponse({'msg': 'Please login first.'})
+    return wrapper
 
 @csrf_exempt
 def login(request):
     """
     login function
     """
+
     #if request.user.is_authenticated:
      #   return JsonResponse({'msg': 'you have been logged in.'})
     if request.method == 'POST':
@@ -31,12 +41,11 @@ def login(request):
         return JsonResponse({'msg': 'please use POST method to login'})
 
 @csrf_exempt
+@login_require
 def book_list(request):
     """
     List all books of one level, or create a new book of this level
     """
-    if not request.user.is_authenticated:
-        return JsonResponse({'msg': 'Please login first.'})
     if not Student.objects.filter(user_id=request.user.id):
         return JsonResponse({'msg': 'This user have not related to a student.'})
     student = Student.objects.get(user_id=request.user.id)
@@ -75,3 +84,32 @@ def book_list(request):
             return JsonResponse(serializer.data, status=201)
         else:
             return JsonResponse(serializer.errors, status=400)
+
+@csrf_exempt
+@login_require
+def book_guidance(request, book_id):
+    '''
+    List guidance of a book, or add a guidance of a book.
+    '''
+    if request.method == 'GET':
+        book_data = Book.objects.filter(id=book_id)
+        if book_data:
+            book = book_data[0]
+            words = Word.objects.filter(guidance=book)
+            parental_info = {}
+            parental_info['guidance'] = book.guidance
+            parental_info['words'] = []
+            if words:
+                for word in words:
+                    word_info = {}
+                    word_info['word'] = word.word
+                    word_info['audio'] = word.audio
+                    word_info['meaning'] = word.meaning
+                    parental_info['words'].append(word_info)
+            return JsonResponse(parental_info)
+
+        else:
+            return JsonResponse({'msg': 'Book not found'}, status=404)
+
+    else:
+        return JsonResponse({'msg': 'Please use GET method'})
