@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib import auth
 from vron.serializers import BookSerializer
-from vron.models import Student, Book, Progress, Word
+from vron.models import Student, Book, Progress, Word, Page, Sentence
 # Create your views here.
 
 def login_require(func):
@@ -113,3 +113,37 @@ def book_guidance(request, book_id):
 
     else:
         return JsonResponse({'msg': 'Please use GET method'})
+
+@csrf_exempt
+@login_require
+def book_ebook(request, book_id):
+    if request.method == 'GET':
+        book_data = Book.objects.filter(id=book_id)
+        if not book_data:
+            return JsonResponse({'msg': 'Book not found'})
+
+        pages = Page.objects.filter(book_id=book_id).order_by('number')
+        ebook_infos = []
+        if pages:
+            for page in pages:
+                page_info = {}
+                page_info['number'] = page.number
+                page_info['picture'] = page.picture
+                page_info['sentences'] = []
+                sentences = Sentence.objects.filter(page=page)
+                if sentences:
+                    for sentence in sentences:
+                        sentence_info = {}
+                        sentence_info['content'] = sentence.content
+                        sentence_info['audio'] = sentence.audio
+                        sentence_info['translated'] = sentence.translated
+                        sentence_info['x1'] = sentence.x1
+                        sentence_info['y1'] = sentence.y1
+                        sentence_info['x2'] = sentence.x2
+                        sentence_info['y2'] = sentence.y2
+                        page_info['sentences'].append(sentence_info)
+                ebook_infos.append(page_info)
+        return JsonResponse(ebook_infos, safe=False)
+    else:
+        return JsonResponse({'msg': 'Please use GET method'})
+
