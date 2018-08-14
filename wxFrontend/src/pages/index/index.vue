@@ -22,7 +22,7 @@
                     <div class="weui-grid__label">{{item.name}}</div>
                       <i-progress v-if="item.progress === 100" :percent="item.progress" id="success"></i-progress>
                       <i-progress v-else :percent="item.progress" ></i-progress>
-                </div> 
+                </div>
             </block>
         </div>
     </div>
@@ -39,7 +39,7 @@
                       <i-progress v-else :percent="item.progress" ></i-progress>
                 </div>
             </block>
-               
+
         </div>
     </div>
 </div>
@@ -178,6 +178,10 @@ export default {
         return 'weui-navbar__slider_1'
       }
     }
+  },
+  onShow () {
+    console.log('主界面onshow')
+    console.log(this.$store.state.level)
   },
   methods: {
     tabClick (e) {
