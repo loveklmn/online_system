@@ -4,14 +4,24 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib import auth
 from vron.serializers import BookSerializer
-from vron.models import Student, Book, Progress
+from vron.models import Student, Book, Progress, Word, Page, Sentence, Moment
 # Create your views here.
+
+def login_require(func):
+    def wrapper(*args, **kw):
+        request = args[0]
+        if request.user.is_authenticated:
+            return func(*args, **kw)
+        else:
+            return JsonResponse({'msg': 'Please login first.'})
+    return wrapper
 
 @csrf_exempt
 def login(request):
     """
     login function
     """
+
     #if request.user.is_authenticated:
      #   return JsonResponse({'msg': 'you have been logged in.'})
     if request.method == 'POST':
@@ -31,12 +41,11 @@ def login(request):
         return JsonResponse({'msg': 'please use POST method to login'})
 
 @csrf_exempt
+@login_require
 def book_list(request):
     """
     List all books of one level, or create a new book of this level
     """
-    if not request.user.is_authenticated:
-        return JsonResponse({'msg': 'Please login first.'})
     if not Student.objects.filter(user_id=request.user.id):
         return JsonResponse({'msg': 'This user have not related to a student.'})
     student = Student.objects.get(user_id=request.user.id)
@@ -75,3 +84,86 @@ def book_list(request):
             return JsonResponse(serializer.data, status=201)
         else:
             return JsonResponse(serializer.errors, status=400)
+
+@csrf_exempt
+@login_require
+def book_guidance(request, book_id):
+    '''
+    List guidance of a book, or add a guidance of a book.
+    '''
+    if request.method == 'GET':
+        book_data = Book.objects.filter(id=book_id)
+        if book_data:
+            book = book_data[0]
+            words = Word.objects.filter(guidance=book)
+            parental_info = {}
+            parental_info['guidance'] = book.guidance
+            parental_info['words'] = []
+            if words:
+                for word in words:
+                    word_info = {}
+                    word_info['word'] = word.word
+                    word_info['audio'] = word.audio
+                    word_info['meaning'] = word.meaning
+                    parental_info['words'].append(word_info)
+            return JsonResponse(parental_info)
+
+        else:
+            return JsonResponse({'msg': 'Book not found'}, status=404)
+
+    else:
+        return JsonResponse({'msg': 'Please use GET method'})
+
+@csrf_exempt
+@login_require
+def book_ebook(request, book_id):
+    if request.method == 'GET':
+        book_data = Book.objects.filter(id=book_id)
+        if not book_data:
+            return JsonResponse({'msg': 'Book not found'})
+
+        pages = Page.objects.filter(book_id=book_id).order_by('number')
+        ebook_infos = []
+        if pages:
+            for page in pages:
+                page_info = {}
+                page_info['number'] = page.number
+                page_info['picture'] = page.picture
+                page_info['sentences'] = []
+                sentences = Sentence.objects.filter(page=page)
+                if sentences:
+                    for sentence in sentences:
+                        sentence_info = {}
+                        sentence_info['content'] = sentence.content
+                        sentence_info['audio'] = sentence.audio
+                        sentence_info['translated'] = sentence.translated
+                        sentence_info['x1'] = sentence.x1
+                        sentence_info['y1'] = sentence.y1
+                        sentence_info['x2'] = sentence.x2
+                        sentence_info['y2'] = sentence.y2
+                        page_info['sentences'].append(sentence_info)
+                ebook_infos.append(page_info)
+        return JsonResponse(ebook_infos, safe=False)
+    else:
+        return JsonResponse({'msg': 'Please use GET method'})
+
+@csrf_exempt
+@login_require
+def community_group(request, level):
+    if request.method == 'GET':
+        community_info = []
+        moments = Moment.objects.filter(level=level)
+        if moments:
+            for moment in moments:
+                community_message = {}
+                homework = moment.homework
+                community_message['author'] = homework.author.user.username
+                community_message['book'] = homework.book.title
+                community_message['created_time'] = moment.created_time
+                community_message['content'] = homework.content
+                community_message['vote_count'] = moment.vote_count
+                community_info.append(community_message)
+
+        return JsonResponse(community_info, safe=False)
+    else:
+        return JsonResponse({'msg': 'Please use GET method.'})
