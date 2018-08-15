@@ -6,6 +6,8 @@ from vron.models import Student, Book, Progress, Word, Page, Sentence, Moment
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view
 from rest_framework.views import exception_handler
+import os
+from backend import settings
 # Create your views here.
 
 def vron_exception_handler(exc, context):
@@ -150,3 +152,22 @@ def community_group(request, level):
         return JsonResponse(community_info, safe=False)
     else:
         return JsonResponse({'msg': 'Please use GET method.'})
+
+@csrf_exempt
+#@api_view(['POST'])
+def upload_file(request):
+    #assert False
+    file = request.FILES.get('file', None)
+    if not file:
+        return JsonResponse({'msg': 'No file upload'})
+
+    path = os.path.join(settings.BASE_DIR, 'static', 'upload', file.name)
+    filepath = open(path, 'wb+')
+    for chunk in file.chunks():
+        filepath.write(chunk)
+    filepath.close()
+    response = {
+        'msg': 'Upload success!',
+        'savepath': os.path.join('static', 'upload', file.name),
+    }
+    return JsonResponse(response)
