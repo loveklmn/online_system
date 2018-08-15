@@ -20,7 +20,7 @@
                 <div @click="navToFunction(item.id, item.name, item.src)" class="weui-grid" >
                     <image class="weui-grid__icon" :src="item.src" />
                     <div class="weui-grid__label">{{item.name}}</div>
-                      <i-progress v-if="item.progress === 100" :percent="item.progress" id="success"></i-progress>
+                      <i-progress v-if="item.progress === 100" :percent="item.progress" status="success"></i-progress>
                       <i-progress v-else :percent="item.progress" ></i-progress>
                 </div>
             </block>
@@ -32,10 +32,10 @@
                 <div class="page__bd">
         <div class="weui-grids">
             <block v-for="(item,index) in extensiveReading" :key="index">
-                <div @click="navToFunction(item.id, item.name, item.src)" class="weui-grid" hover-class="weui-grid">
+                <div @click="navToFunction(item.id, item.name, item.src)" class="weui-grid" >
                     <image class="weui-grid__icon" :src="item.src" />
                     <div class="weui-grid__label">{{item.name}}</div>
-                      <i-progress v-if="item.progress === 100" :percent="item.progress" id="success"></i-progress>
+                      <i-progress v-if="item.progress === 100" :percent="item.progress" status="success"></i-progress>
                       <i-progress v-else :percent="item.progress" ></i-progress>
                 </div>
             </block>
@@ -180,8 +180,8 @@ export default {
     }
   },
   onShow () {
-    console.log('主界面onshow')
-    console.log(this.$store.state.level)
+    // console.log('主界面onshow')
+    // console.log(this.$store.state.level)
   },
   methods: {
     tabClick (e) {
