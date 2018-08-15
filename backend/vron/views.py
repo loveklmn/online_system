@@ -1,47 +1,30 @@
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.http import JsonResponse
-from django.contrib.auth.models import User
-from django.contrib import auth
 from vron.serializers import BookSerializer
 from vron.models import Student, Book, Progress, Word, Page, Sentence, Moment
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view
+from rest_framework.views import exception_handler
 # Create your views here.
 
-def login_require(func):
-    def wrapper(*args, **kw):
-        request = args[0]
-        if request.user.is_authenticated:
-            return func(*args, **kw)
-        else:
-            return JsonResponse({'msg': 'Please login first.'})
-    return wrapper
+def vron_exception_handler(exc, context):
+    response = exception_handler(exc, context)
+
+    if response is not None:
+        if response.data.get('detail'):
+            response.data['msg'] = response.data['detail']
+
+    return response
+
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    sender = sender
+    kwargs = kwargs
+    if created:
+        Token.objects.create(user=instance)
 
 @csrf_exempt
-def login(request):
-    """
-    login function
-    """
-
-    #if request.user.is_authenticated:
-     #   return JsonResponse({'msg': 'you have been logged in.'})
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user =  auth.authenticate(username=username, password=password)
-        if user is not None and user.is_active:
-            auth.login(request, user)
-            userobj = User.objects.get_by_natural_key(username)
-            if not Student.objects.filter(user=userobj):
-                return JsonResponse({'msg': 'your account have not connect to a student'})
-            student = Student.objects.get(user=userobj)
-            return JsonResponse({'userid': userobj.id, 'level': student.level})
-        else:
-            return JsonResponse({'msg': 'username or password error.'})
-    else:
-        return JsonResponse({'msg': 'please use POST method to login'})
-
-@csrf_exempt
-@login_require
+@api_view(['GET','POST'])
 def book_list(request):
     """
     List all books of one level, or create a new book of this level
@@ -86,7 +69,7 @@ def book_list(request):
             return JsonResponse(serializer.errors, status=400)
 
 @csrf_exempt
-@login_require
+@api_view(['GET','POST'])
 def book_guidance(request, book_id):
     '''
     List guidance of a book, or add a guidance of a book.
@@ -115,7 +98,7 @@ def book_guidance(request, book_id):
         return JsonResponse({'msg': 'Please use GET method'})
 
 @csrf_exempt
-@login_require
+@api_view(['GET','POST'])
 def book_ebook(request, book_id):
     if request.method == 'GET':
         book_data = Book.objects.filter(id=book_id)
@@ -148,7 +131,7 @@ def book_ebook(request, book_id):
         return JsonResponse({'msg': 'Please use GET method'})
 
 @csrf_exempt
-@login_require
+@api_view(['GET','POST'])
 def community_group(request, level):
     if request.method == 'GET':
         community_info = []

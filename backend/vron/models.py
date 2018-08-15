@@ -1,6 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+from rest_framework.authtoken.models import Token
 from datetime import datetime
+
+@receiver(post_save, sender=User)
+def create_token(sender, instance=None, created=False, **kwargs):
+    sender = sender
+    kwargs = kwargs
+    if created:
+        Token.objects.create(user=instance)
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
