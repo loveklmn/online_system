@@ -5,15 +5,11 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    user_id: null,
-    level: null
+    token: ''
   },
   mutations: {
-    setID (state, id) {
-      state.user_id = id
-    },
-    setLevel (state, level) {
-      state.level = level
+    setToken (state, token) {
+      state.token = token
     }
   }
 })
