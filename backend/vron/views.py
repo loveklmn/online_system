@@ -5,7 +5,17 @@ from vron.serializers import BookSerializer
 from vron.models import Student, Book, Progress, Word, Page, Sentence, Moment
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view
+from rest_framework.views import exception_handler
 # Create your views here.
+
+def vron_exception_handler(exc, context):
+    response = exception_handler(exc, context)
+
+    if response is not None:
+        if response.data.get('detail'):
+            response.data['msg'] = response.data['detail']
+
+    return response
 
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     sender = sender
