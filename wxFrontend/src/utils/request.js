@@ -1,3 +1,5 @@
+import store from '@/store/index'
+
 class Request {
   constructor (parms) {
     this.withBaseURL = parms.withBaseURL
@@ -15,12 +17,16 @@ class Request {
   }
   request (method, url, data) {
     const vm = this
+    let theHeader = this.header
+    if (store.state.token) {
+      theHeader.Authorization = 'Token ' + store.state.token
+    }
     return new Promise((resolve, reject) => {
       wx.request({
         url: vm.withBaseURL ? vm.baseURL + url : url,
         data,
         method,
-        header: vm.header,
+        header: theHeader,
         success (res) {
           resolve(res)
         },
