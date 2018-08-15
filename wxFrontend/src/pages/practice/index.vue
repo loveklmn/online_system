@@ -17,7 +17,10 @@ export default {
   components: {
   },
   methods: {
-
+    navToGame1: function () {
+      let url = '/pages/matchingGame/main'
+      wx.navigateTo({url})
+    }
   },
   data () {
     return {
