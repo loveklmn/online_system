@@ -26,7 +26,7 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
         Token.objects.create(user=instance)
 
 @csrf_exempt
-@api_view(['GET','POST'])
+@api_view(['GET'])
 def book_list(request):
     """
     List all books of one level, or create a new book of this level
@@ -38,7 +38,7 @@ def book_list(request):
 
         books = Book.objects.filter(level=student.level)
         if not books.exists():
-            return JsonResponse({'msg': 'Cannot find book for this level'})
+            return JsonResponse({'msg': 'Cannot find book for this level'}, status=404)
         else:
             bookinfos = []
             for book in books:
@@ -61,17 +61,10 @@ def book_list(request):
             bookinfos = sorted(bookinfos, key=lambda x:x['progress']['latest_read_time'], reverse=True)
             return JsonResponse(bookinfos, safe=False)
     elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        data['level'] = student.level
-        serializer = BookSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        else:
-            return JsonResponse(serializer.errors, status=400)
+        return JsonResponse({'msg': 'Please use GET method'}, status=405)
 
 @csrf_exempt
-@api_view(['GET','POST'])
+@api_view(['GET'])
 def book_guidance(request, book_id):
     '''
     List guidance of a book, or add a guidance of a book.
@@ -97,15 +90,15 @@ def book_guidance(request, book_id):
             return JsonResponse({'msg': 'Book not found'}, status=404)
 
     else:
-        return JsonResponse({'msg': 'Please use GET method'})
+        return JsonResponse({'msg': 'Please use GET method'}, status=405)
 
 @csrf_exempt
-@api_view(['GET','POST'])
+@api_view(['GET'])
 def book_ebook(request, book_id):
     if request.method == 'GET':
         book_data = Book.objects.filter(id=book_id)
         if not book_data:
-            return JsonResponse({'msg': 'Book not found'})
+            return JsonResponse({'msg': 'Book not found'}, status=404)
 
         pages = Page.objects.filter(book_id=book_id).order_by('number')
         ebook_infos = []
@@ -130,10 +123,10 @@ def book_ebook(request, book_id):
                 ebook_infos.append(page_info)
         return JsonResponse(ebook_infos, safe=False)
     else:
-        return JsonResponse({'msg': 'Please use GET method'})
+        return JsonResponse({'msg': 'Please use GET method'}, status=405)
 
 @csrf_exempt
-@api_view(['GET','POST'])
+@api_view(['GET'])
 def community_group(request, level):
     if request.method == 'GET':
         community_info = []
@@ -151,15 +144,14 @@ def community_group(request, level):
 
         return JsonResponse(community_info, safe=False)
     else:
-        return JsonResponse({'msg': 'Please use GET method.'})
+        return JsonResponse({'msg': 'Please use GET method.'}, status=405)
 
 @csrf_exempt
-#@api_view(['POST'])
+@api_view(['POST'])
 def upload_file(request):
-    #assert False
     file = request.FILES.get('file', None)
     if not file:
-        return JsonResponse({'msg': 'No file upload'})
+        return JsonResponse({'msg': 'No file upload'}, status=400)
 
     path = os.path.join(settings.BASE_DIR, 'static', 'upload', file.name)
     filepath = open(path, 'wb+')
@@ -170,4 +162,4 @@ def upload_file(request):
         'msg': 'Upload success!',
         'savepath': os.path.join('static', 'upload', file.name),
     }
-    return JsonResponse(response)
+    return JsonResponse(response, status=201)
