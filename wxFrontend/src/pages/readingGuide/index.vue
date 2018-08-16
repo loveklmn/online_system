@@ -2,27 +2,13 @@
   <div>
     <!-- readingGuide page -->
     <div class="weui-grid__label"> bookid: {{id}} </div>
-
-    <i-panel  title="本课重点知识">
-      <i-cell-group>
-       <block v-for="(item,index) in vitalKnowledge" :key="index">
-          <i-cell>{{item.content}}</i-cell>
-        </block>
-        </i-cell-group>
-      </i-panel>
-      
-      <i-panel  title="今日导读">
-        <i-cell-group>
-         <block v-for="(item,index) in introReading" :key="index">
-          <i-cell>{{item.content}}</i-cell>
-         </block>
-         </i-cell-group>
-      </i-panel>
-
-       <i-panel  title="词汇表">
+    <div class="display_box">
+      <wxParse :content="content" />
+    </div>
+      <i-panel  title="词汇表">
          <i-cell-group>
           <block v-for="(item,index) in vocabulary" :key="index">
-              <i-cell :title="item.word" :label="item.meaning"  @click="play(item.word)"></i-cell>
+            <i-cell :title="item.word" :label="item.meaning"  @click="play(item.word)"></i-cell>
          </block>
          </i-cell-group>
       </i-panel>
@@ -30,30 +16,15 @@
 </template>
 
 <script>
-
+import wxParse from 'mpvue-wxparse'
 export default {
+  components: {
+    wxParse
+  },
   data () {
     return {
       id: null,
-      vitalKnowledge: [
-        {
-          content: 'Cat'
-        },
-        {
-          content: 'Dog'
-        },
-        {
-          content: 'Moon'
-        }
-      ],
-      introReading: [
-        {
-          content: 'Cat的用法'
-        },
-        {
-          content: 'Dog的语境'
-        }
-      ],
+      content: '<div><h1>Draw a cat.</h1><p>homework: Cat is cute.Draw a cat like this.</p></div><img class="weui-article__img" src="https://i.loli.net/2018/08/14/5b727adea773a.png"/>',
       vocabulary: [
         {
           word: 'cat',
@@ -92,6 +63,12 @@ export default {
 </script>
 
 <style scoped>
+@import url("~mpvue-wxparse/src/wxParse.css");
+
+.display_box{
+  padding:40rpx;
+}
+
 .weui-grid__icon {
   display: block;
   width: 170rpx;
