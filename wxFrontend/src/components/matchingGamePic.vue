@@ -1,8 +1,9 @@
 <template>
-  <div class="pic_block">
+  <div class="pic_block" >
     <img
-      class="pic"
+      :class="getclass"
       :src="src"
+      v-on:click="select"
       />
   </div>
 </template>
@@ -11,11 +12,23 @@
 export default {
   data: function () {
     return {
-      selected: false
     }
   },
-  props: ['src'],
+  computed: {
+    getstyle: function () {
+      return `background-image:url(${this.src});`
+    },
+    getclass: function () {
+      return this.selected ? 'pic_selected' : 'pic'
+    }
+  },
+  props: ['id', 'src', 'value', 'inmatch', 'selected'],
   methods: {
+    select: function (event) {
+      if (!this.inmatch) {
+        this.$emit('isselect', this.id)
+      }
+    }
   }
 }
 </script>
@@ -25,6 +38,12 @@ export default {
   display: block;
   width: 200rpx;
   height: 200rpx;
+  margin: auto;
+  padding: auto;
+}
+.pic_selected {
+  width: 180rpx;
+  height: 180rpx;
   margin: auto;
   padding: auto;
 }
