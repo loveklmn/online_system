@@ -12,9 +12,11 @@
       </i-panel>
       
       <i-panel  title="今日导读">
+        <i-cell-group>
          <block v-for="(item,index) in introReading" :key="index">
           <i-cell>{{item.content}}</i-cell>
          </block>
+         </i-cell-group>
       </i-panel>
 
        <i-panel  title="词汇表">
