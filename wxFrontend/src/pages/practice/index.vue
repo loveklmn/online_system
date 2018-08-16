@@ -1,6 +1,6 @@
 <template>
 <div>
- 
+
     <div class="weui-grid__label"> bookid: {{id}} </div>
 
 <i-button @click="navToGame1(id)" shape="circle" type="info">连线游戏</i-button>
@@ -14,22 +14,20 @@
 <script>
 
 export default {
-  components: {
-  },
   methods: {
     navToGame1: function () {
       let url = '/pages/matchingGame/main'
-      wx.navigateTo({url})
+      wx.navigateTo({url: url})
+    },
+    navToGame3: function () {
+      let url = '/pages/jigsawPuzzles/main'
+      wx.navigateTo({url: url})
     }
   },
   data () {
     return {
       id: null
     }
-  },
-
-  created () {
-
   },
   onLoad (options) {
     this.id = options.id
