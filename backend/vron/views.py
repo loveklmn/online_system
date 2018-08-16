@@ -1,14 +1,11 @@
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import JSONParser
-from django.http import JsonResponse
-from vron.serializers import BookSerializer
 from vron.models import Student, Book, Progress, Word, Page, Sentence, Moment
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view
-from rest_framework.views import exception_handler
+from rest_framework.views import exception_handler, APIView
+from rest_framework.response import Response
 import os
 from backend import settings
 # Create your views here.
+
 
 def vron_exception_handler(exc, context):
     response = exception_handler(exc, context)
@@ -19,33 +16,35 @@ def vron_exception_handler(exc, context):
 
     return response
 
+
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     sender = sender
     kwargs = kwargs
     if created:
         Token.objects.create(user=instance)
 
-@csrf_exempt
-@api_view(['GET','POST'])
-def book_list(request):
-    """
-    List all books of one level, or create a new book of this level
-    """
-    if not Student.objects.filter(user_id=request.user.id):
-        return JsonResponse({'msg': 'This user have not related to a student.'})
-    student = Student.objects.get(user_id=request.user.id)
-    if request.method == 'GET':
+
+class BookList(APIView):
+    def get(self, request):
+        """
+        List all books of one level, or create a new book of this level
+        """
+        if not Student.objects.filter(user_id=request.user.id):
+            return Response({'msg': 'This user have not related to a student.'})
+        student = Student.objects.get(user_id=request.user.id)
 
         books = Book.objects.filter(level=student.level)
         if not books.exists():
-            return JsonResponse({'msg': 'Cannot find book for this level'})
+            return Response({'msg': 'Cannot find book for this level'}, status=404)
         else:
             bookinfos = []
             for book in books:
                 progress = {}
                 if not Progress.objects.filter(user_id=request.user.id, book=book):
-                    Progress.objects.create(user_id=request.user.id, book=book, current_page=0)
-                progress = Progress.objects.get(user_id=request.user.id, book=book)
+                    Progress.objects.create(
+                        user_id=request.user.id, book=book, current_page=0)
+                progress = Progress.objects.get(
+                    user_id=request.user.id, book=book)
                 bookinfo = {}
                 bookinfo['id'] = book.id
                 bookinfo['cover'] = book.cover
@@ -58,25 +57,17 @@ def book_list(request):
                 }
                 bookinfo['type'] = book.read_type
                 bookinfos.append(bookinfo)
-            bookinfos = sorted(bookinfos, key=lambda x:x['progress']['latest_read_time'], reverse=True)
-            return JsonResponse(bookinfos, safe=False)
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        data['level'] = student.level
-        serializer = BookSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        else:
-            return JsonResponse(serializer.errors, status=400)
+            bookinfos = sorted(
+                bookinfos, key=lambda x: x['progress']['latest_read_time'], reverse=True)
+            return Response(bookinfos)
 
-@csrf_exempt
-@api_view(['GET','POST'])
-def book_guidance(request, book_id):
-    '''
-    List guidance of a book, or add a guidance of a book.
-    '''
-    if request.method == 'GET':
+
+class BookGuidance(APIView):
+
+    def get(self, request, book_id):
+        '''
+        List guidance of a book.
+        '''
         book_data = Book.objects.filter(id=book_id)
         if book_data:
             book = book_data[0]
@@ -91,21 +82,17 @@ def book_guidance(request, book_id):
                     word_info['audio'] = word.audio
                     word_info['meaning'] = word.meaning
                     parental_info['words'].append(word_info)
-            return JsonResponse(parental_info)
+            return Response(parental_info)
 
         else:
-            return JsonResponse({'msg': 'Book not found'}, status=404)
+            return Response({'msg': 'Book not found'}, status=404)
 
-    else:
-        return JsonResponse({'msg': 'Please use GET method'})
+class BookEbook(APIView):
 
-@csrf_exempt
-@api_view(['GET','POST'])
-def book_ebook(request, book_id):
-    if request.method == 'GET':
+    def get(self, request, book_id):
         book_data = Book.objects.filter(id=book_id)
         if not book_data:
-            return JsonResponse({'msg': 'Book not found'})
+            return Response({'msg': 'Book not found'}, status=404)
 
         pages = Page.objects.filter(book_id=book_id).order_by('number')
         ebook_infos = []
@@ -128,14 +115,10 @@ def book_ebook(request, book_id):
                         sentence_info['y2'] = sentence.y2
                         page_info['sentences'].append(sentence_info)
                 ebook_infos.append(page_info)
-        return JsonResponse(ebook_infos, safe=False)
-    else:
-        return JsonResponse({'msg': 'Please use GET method'})
+        return Response(ebook_infos)
 
-@csrf_exempt
-@api_view(['GET','POST'])
-def community_group(request, level):
-    if request.method == 'GET':
+class CommunityGroup(APIView):
+    def get(self, request, level):
         community_info = []
         moments = Moment.objects.filter(level=level)
         if moments:
@@ -149,25 +132,21 @@ def community_group(request, level):
                 community_message['vote_count'] = moment.vote_count
                 community_info.append(community_message)
 
-        return JsonResponse(community_info, safe=False)
-    else:
-        return JsonResponse({'msg': 'Please use GET method.'})
+        return Response(community_info)
 
-@csrf_exempt
-#@api_view(['POST'])
-def upload_file(request):
-    #assert False
-    file = request.FILES.get('file', None)
-    if not file:
-        return JsonResponse({'msg': 'No file upload'})
+class UploadFile(APIView):
+    def post(self, request):
+        file = request.FILES.get('file', None)
+        if not file:
+            return Response({'msg': 'No file upload'}, status=400)
 
-    path = os.path.join(settings.BASE_DIR, 'static', 'upload', file.name)
-    filepath = open(path, 'wb+')
-    for chunk in file.chunks():
-        filepath.write(chunk)
-    filepath.close()
-    response = {
-        'msg': 'Upload success!',
-        'savepath': os.path.join('static', 'upload', file.name),
-    }
-    return JsonResponse(response)
+        path = os.path.join(settings.BASE_DIR, 'static', 'upload', file.name)
+        filepath = open(path, 'wb+')
+        for chunk in file.chunks():
+            filepath.write(chunk)
+        filepath.close()
+        response = {
+            'msg': 'Upload success!',
+            'savepath': os.path.join('static', 'upload', file.name),
+        }
+        return Response(response, status=201)

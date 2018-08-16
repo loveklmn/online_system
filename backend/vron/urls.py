@@ -5,11 +5,11 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    url(r'^books/$', views.book_list),
-    url(r'^books/(\d+)/guidance/$', views.book_guidance, name='guidance'),
-    url(r'^books/(\d+)/ebook/$', views.book_ebook, name='ebook'),
-    url(r'^community/(\d+)/$', views.community_group, name='community_group'),
-    url(r'^upload/$', views.upload_file, name='upload'),
+    url(r'^books/$', views.BookList.as_view()),
+    url(r'^books/(\d+)/guidance/$', views.BookGuidance.as_view(), name='guidance'),
+    url(r'^books/(\d+)/ebook/$', views.BookEbook.as_view(), name='ebook'),
+    url(r'^community/(\d+)/$', views.CommunityGroup.as_view(), name='community_group'),
+    url(r'^upload/$', views.UploadFile.as_view(), name='upload'),
     #auth
     url(r'^get-token/$', token_views.obtain_auth_token),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
