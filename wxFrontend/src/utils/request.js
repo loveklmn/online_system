@@ -31,12 +31,8 @@ class Request {
           resolve(res)
         },
         fail () {
-          reject(new Error({
-            msg: '请求失败',
-            url: vm.withBaseURL ? vm.baseURL + url : url,
-            method,
-            data
-          }))
+          console.log('request failed')
+          reject(new Error('request faild'))
         }
       })
     })
@@ -44,7 +40,7 @@ class Request {
 }
 
 export default new Request({
-  baseURL: 'http://192.168.55.33:8000/vron',
+  baseURL: 'http://101.200.62.189:8000/vron',
   withBaseURL: true,
   header: {
     'content-type': 'application/x-www-form-urlencoded'

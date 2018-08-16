@@ -1,6 +1,5 @@
 <template>
-  <div>
-     <div class="page">
+  <div class="page">
     <div class="page__bd">
       <div class="weui-tab">
         <div class="weui-navbar">
@@ -14,35 +13,33 @@
         <div class="weui-tab__panel">
           <div class="weui-tab__content" :hidden="activeIndex != 0">
             <div class="page">
-    <div class="page__bd">
-        <div class="weui-grids">
-            <block v-for="(item,index) in intensiveReading" :key="index">
-                <div @click="navToFunction(item.id, item.name, item.src)" class="weui-grid" >
-                    <image class="weui-grid__icon" :src="item.src" />
-                    <div class="weui-grid__label">{{item.name}}</div>
-                      <i-progress v-if="item.progress === 100" :percent="item.progress" status="success"></i-progress>
-                      <i-progress v-else :percent="item.progress" ></i-progress>
+              <div class="page__bd">
+                <div class="weui-grids">
+                  <block v-for="book in intensiveReading" :key="book.id">
+                    <div @click="navToFunction(book)" class="weui-grid">
+                      <image class="weui-grid__icon" :src="book.cover" />
+                      <div class="weui-grid__label">{{book.title}}</div>
+                      <i-progress v-if="book.percent === 100" :percent="book.percent" status="success"></i-progress>
+                      <i-progress v-else :percent="book.percent"></i-progress>
+                    </div>
+                  </block>
                 </div>
-            </block>
-        </div>
-    </div>
-</div>
+              </div>
+            </div>
           </div>
           <div class="weui-tab__content" :hidden="activeIndex != 1">
-                <div class="page__bd">
-        <div class="weui-grids">
-            <block v-for="(item,index) in extensiveReading" :key="index">
-                <div @click="navToFunction(item.id, item.name, item.src)" class="weui-grid" >
-                    <image class="weui-grid__icon" :src="item.src" />
-                    <div class="weui-grid__label">{{item.name}}</div>
-                      <i-progress v-if="item.progress === 100" :percent="item.progress" status="success"></i-progress>
-                      <i-progress v-else :percent="item.progress" ></i-progress>
-                </div>
-            </block>
-
-        </div>
-    </div>
-</div>
+            <div class="page__bd">
+              <div class="weui-grids">
+                <block v-for="book in extensiveReading" :key="book.id">
+                  <div @click="navToFunction(book)" class="weui-grid">
+                    <image class="weui-grid__icon" :src="book.cover" />
+                    <div class="weui-grid__label">{{book.title}}</div>
+                    <i-progress v-if="book.percent === 100" :percent="book.percent" status="success"></i-progress>
+                    <i-progress v-else :percent="book.percent"></i-progress>
+                  </div>
+                </block>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -51,122 +48,16 @@
 </template>
 
 <script>
+import request from '@/utils/request'
+
 export default {
   data () {
     return {
       tabs: ['精读', '泛读'],
       activeIndex: 0,
       fontSize: 30,
-      intensiveReading: [
-        {
-          src: 'https://i.loli.net/2018/08/13/5b71744eab1ab.png',
-          name: 'bookname',
-          progress: 100,
-          id: 1
-        },
-        {
-          src: 'https://i.loli.net/2018/08/13/5b7177b4afa4b.png',
-          name: 'bookname',
-          progress: 78,
-          id: 2
-        },
-        {
-          src: 'https://i.loli.net/2018/08/13/5b71784a3d48d.png',
-          name: 'bookname',
-          progress: 64,
-          id: 3
-        },
-
-        {
-          src: 'https://i.loli.net/2018/08/13/5b717865905bd.png',
-          name: 'bookname',
-          progress: 44,
-          id: 4
-        },
-        {
-          src: 'https://i.loli.net/2018/08/13/5b71787f67b1c.png',
-          name: 'bookname',
-          progress: 0,
-          id: 5
-        },
-        {
-          src: 'https://i.loli.net/2018/08/13/5b7178957ebcd.png',
-          name: 'bookname',
-          progress: 20,
-          id: 6
-        },
-
-        {
-          src: 'https://i.loli.net/2018/08/13/5b71744eab1ab.png',
-          name: 'bookname',
-          progress: 100,
-          id: 7
-        },
-        {
-          src: 'https://i.loli.net/2018/08/13/5b7177b4afa4b.png',
-          name: 'bookname',
-          progress: 78,
-          id: 8
-        },
-        {
-          src: 'https://i.loli.net/2018/08/13/5b71784a3d48d.png',
-          name: 'bookname',
-          progress: 64,
-          id: 9
-        },
-
-        {
-          src: 'https://i.loli.net/2018/08/13/5b717865905bd.png',
-          name: 'bookname',
-          progress: 44,
-          id: 10
-        },
-        {
-          src: 'https://i.loli.net/2018/08/13/5b71787f67b1c.png',
-          name: 'bookname',
-          progress: 0,
-          id: 11
-        },
-        {
-          src: 'https://i.loli.net/2018/08/13/5b7178957ebcd.png',
-          name: 'bookname',
-          progress: 20,
-          id: 12
-        }
-      ],
-      extensiveReading: [
-        {
-          src: 'https://i.loli.net/2018/08/13/5b71744eab1ab.png',
-          name: 'bookname',
-          progress: 100,
-          id: 13
-        },
-        {
-          src: 'https://i.loli.net/2018/08/13/5b7177b4afa4b.png',
-          name: 'bookname',
-          progress: 78,
-          id: 14
-        },
-        {
-          src: 'https://i.loli.net/2018/08/13/5b71784a3d48d.png',
-          name: 'bookname',
-          progress: 64,
-          id: 15
-        },
-
-        {
-          src: 'https://i.loli.net/2018/08/13/5b717865905bd.png',
-          name: 'bookname',
-          progress: 44,
-          id: 16
-        },
-        {
-          src: 'https://i.loli.net/2018/08/13/5b71787f67b1c.png',
-          name: 'bookname',
-          progress: 0,
-          id: 17
-        }
-      ]
+      intensiveReading: [],
+      extensiveReading: []
     }
   },
   computed: {
@@ -180,16 +71,36 @@ export default {
     }
   },
   onShow () {
-    // console.log('主界面onshow')
-    // console.log(this.$store.state.level)
+    request
+      .get('/books')
+      .then(res => {
+        if (res.data.length > 0) {
+          console.log(res)
+          res.data.forEach((book) => {
+            book.percent = this.progress(book)
+          })
+          this.intensiveReading = res.data.filter(book => book.type === 'IR')
+          this.extensiveReading = res.data.filter(book => book.type === 'ER')
+        } else {
+          console.log('当前等级没有书目')
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
   },
   methods: {
     tabClick (e) {
       this.activeIndex = e.currentTarget.id
     },
-    navToFunction (num, str, src) {
-      let url = '/pages/functionPage/main?id=' + num + '&name=' + str + '&src=' + src
-      wx.navigateTo({url})
+    navToFunction (book) {
+      let url =
+        '/pages/functionPage/main?id=' + book.id + '&title=' + book.title + '&cover=' + book.cover + '&page=' + book.progress.current_page
+      wx.navigateTo({ url })
+    },
+    progress (book) {
+      var progress = Math.floor(100 * book.progress.current_page / book.pages_num)
+      return progress
     }
   }
 }
@@ -217,8 +128,7 @@ page,
   top: 0;
   width: 100%;
   border-bottom: 1rpx solid #ccc;
-    background-color: #fafafa;
-
+  background-color: #fafafa;
 }
 
 .weui-navbar__item {
@@ -230,7 +140,6 @@ page,
   padding: 13px 0;
   text-align: center;
   font-size: 0;
-
 }
 
 .weui-navbar__item.weui-bar__item_on {
@@ -239,7 +148,7 @@ page,
 
 .weui-navbar__slider {
   position: absolute;
-  content: ' ';
+  content: " ";
   left: 0;
   bottom: 0;
   width: 6em;
@@ -280,9 +189,6 @@ page,
   box-sizing: border-box;
   /* border-right: 1rpx solid #d9d9d9; */
   /* border-bottom: 1rpx solid #d9d9d9; */
-}
-
-.weui-grid {
 }
 
 .weui-grid__icon {
@@ -357,11 +263,11 @@ page,
 
 .weui-loadmore__tips_in-line {
   position: relative;
-  top: -.9em;
+  top: -0.9em;
   padding: 2px 0.55em;
   background-color: #fff;
   color: #999;
-    display: inline-block;
+  display: inline-block;
   vertical-align: middle;
 }
 
@@ -376,5 +282,4 @@ page,
   border-top: 1px solid #e5e5e5;
   margin-top: 2.4em;
 }
-
 </style>
