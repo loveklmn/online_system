@@ -1,6 +1,9 @@
 <template>
-  <div>
-    <div class="page__bd">
+  <div class="weui-article">
+    <div>
+      <wxParse :content="article" />
+    </div>
+    <!-- <div class="page__bd">
         <div class="weui-article">
             <div class="weui-article__h1">阅读拓展</div>
             <div class="weui-article__section">
@@ -19,7 +22,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="weui-uploader">
               <div class="weui-uploader__hd">
                 <div class="weui-uploader__title">图片上传</div>
@@ -50,12 +53,18 @@
 </template>
 
 <script>
+import wxParse from 'mpvue-wxparse'
+
 export default {
+  components: {
+    wxParse
+  },
   data () {
     return {
       files: [],
       id: null,
-      full: null
+      full: null,
+      article: '<div><h1>Draw a cat.</h1><p>homework: Cat is cute.Draw a cat like this.</p></div><img class="weui-article__img" src="https://i.loli.net/2018/08/14/5b727adea773a.png"/>'
     }
   },
   onLoad (options) {
@@ -110,6 +119,7 @@ export default {
 </script>
 
 <style scoped>
+@import url("~mpvue-wxparse/src/wxParse.css");
 page {
     background-color: #F8F8F8;
     font-size: 16px;
