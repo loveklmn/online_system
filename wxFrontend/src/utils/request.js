@@ -15,6 +15,28 @@ class Request {
   put (url, data) {
     return this.request('PUT', url, data)
   }
+  upload (file) {
+    const vm = this
+    let theHeader = this.header
+    if (store.state.token) {
+      theHeader.Authorization = 'Token ' + store.state.token
+    }
+    return new Promise((resolve, reject) => {
+      wx.uploadFile({
+        url: vm.baseURL + 'upload/',
+        filePath: file,
+        header: theHeader,
+        name: 'file',
+        success (res) {
+          let data = JSON.parse(res.data)
+          resolve(data.savepath)
+        },
+        fail () {
+          reject(new Error('upload error'))
+        }
+      })
+    })
+  }
   request (method, url, data) {
     const vm = this
     let theHeader = this.header
@@ -40,7 +62,7 @@ class Request {
 }
 
 export default new Request({
-  baseURL: 'http://101.200.62.189:8000/vron',
+  baseURL: 'http://101.200.62.189:8000/vron/',
   withBaseURL: true,
   header: {
     'content-type': 'application/x-www-form-urlencoded'

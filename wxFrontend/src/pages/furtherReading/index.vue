@@ -3,57 +3,38 @@
     <div>
       <wxParse :content="article" />
     </div>
-    <!-- <div class="page__bd">
-        <div class="weui-article">
-            <div class="weui-article__h1">阅读拓展</div>
-            <div class="weui-article__section">
-                <div class="weui-article__title">文本作业描述</div>
-                <div class="weui-article__section">
-                    <div class="weui-article__p">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                        consequat.
-                    </div>
-                    <div class="weui-article__p">
-                        <image class="weui-article__img" src="https://i.loli.net/2018/08/14/5b727adea773a.png" mode="aspectFit" style="height: 180px" />
-                        <image class="weui-article__img" src="https://i.loli.net/2018/08/14/5b727adea773a.png" mode="aspectFit" style="height: 180px" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
     <div class="weui-uploader">
-              <div class="weui-uploader__hd">
-                <div class="weui-uploader__title">图片上传</div>
-                <div class="weui-uploader__info">{{files.length}}/9</div>
-              </div>
-              <div class="weui-uploader__bd" >
-                <div class="weui-uploader__files" id="uploaderFiles">
-                  <div v-for="(item ,index) in files" :key="index">
-                    <div class="weui-uploader__file">
-                      <image class="weui-uploader__img" :src="item" mode="aspectFill" @click="predivImage" :id="item" />
-                      <div class="delete-icon" @click="deleteImg" :id="item"></div>
-                    </div>
-                  </div>  
-                </div>
-                <div class="weui-uploader__input-box">
-                  <div class="weui-uploader__input" @click="chooseImage"></div>
-                </div>
-              </div>
+      <div class="weui-uploader__hd">
+        <div class="weui-uploader__title">图片上传</div>
+        <div class="weui-uploader__info">{{files.length}}/9</div>
+      </div>
+      <div class="weui-uploader__bd">
+        <div class="weui-uploader__files" id="uploaderFiles">
+          <div v-for="(item ,index) in files" :key="index">
+            <div class="weui-uploader__file">
+              <image class="weui-uploader__img" :src="item" mode="aspectFill" @click="predivImage" :id="item" />
+              <div class="delete-icon" @click="deleteImg" :id="item"></div>
             </div>
-            <div class="submit-button" >
-            <i-alert type="error" v-if="full === true">
-    已经不能再上传了哦
-    <view slot="desc">您最多上传9张图片</view>
-</i-alert>
-    <i-button type="success" @click="1" long="true">提交</i-button>
+          </div>
+        </div>
+        <div class="weui-uploader__input-box">
+          <div class="weui-uploader__input" @click="chooseImage"></div>
+        </div>
+      </div>
+    </div>
+    <div class="submit-button">
+      <i-alert type="error" v-if="full === true">
+        已经不能再上传了哦
+        <view slot="desc">您最多上传9张图片</view>
+      </i-alert>
+      <i-button type="success" @click="submit" long="true">提交</i-button>
     </div>
   </div>
 </template>
 
 <script>
 import wxParse from 'mpvue-wxparse'
+import request from '@/utils/request'
 
 export default {
   components: {
@@ -113,6 +94,11 @@ export default {
         }
       }
       this.files.remove(e.currentTarget.id)
+    },
+    submit () {
+      request.upload(this.files[0]).then((path) => {
+        console.log(path)
+      })
     }
   }
 }
