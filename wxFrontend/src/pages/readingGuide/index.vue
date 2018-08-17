@@ -1,21 +1,21 @@
 <template>
   <div>
-    <!-- readingGuide page -->
-    <div class="weui-grid__label"> bookid: {{id}} </div>
-    <div class="display_box">
-      <wxParse :content="content" />
-    </div>
-      <i-panel  title="词汇表">
-         <i-cell-group>
-          <block v-for="(item,index) in vocabulary" :key="index">
-            <i-cell :title="item.word" :label="item.meaning"  @click="play(item.word)"></i-cell>
-         </block>
-         </i-cell-group>
-      </i-panel>
+  <!-- readingGuide page -->
+  <div class="display_box">
+    <wxParse :content="guidance" />
+  </div>
+  <i-panel title="词汇表">
+    <i-cell-group>
+      <block v-for="(item,index) in vocabulary" :key="index">
+        <i-cell :title="item.word" :label="item.meaning" @click="play(item.word)"></i-cell>
+      </block>
+    </i-cell-group>
+  </i-panel>
   </div>
 </template>
 
 <script>
+import request from '@/utils/request'
 import wxParse from 'mpvue-wxparse'
 export default {
   components: {
@@ -24,26 +24,28 @@ export default {
   data () {
     return {
       id: null,
-      content: '<div><h1>Draw a cat.</h1><p>homework: Cat is cute.Draw a cat like this.</p></div><img class="weui-article__img" src="https://i.loli.net/2018/08/14/5b727adea773a.png"/>',
-      vocabulary: [
-        {
-          word: 'cat',
-          meaning: '猫猫'
-        },
-        {
-          word: 'dog',
-          meaning: '狗狗'
-        },
-        {
-          word: 'flower',
-          meaning: '花花'
-        },
-        {
-          word: 'grass',
-          meaning: '草草'
-        }
-      ]
+      guidance: '',
+      vocabulary: []
     }
+  },
+  onShow () {
+    let url = 'books/' + this.id + '/guidance/'
+    request
+      .get(url)
+      .then(res => {
+        console.log(res)
+        if (res.statusCode === 200) {
+          console.log(res.data)
+          this.vocabulary = res.data.words
+          this.guidance = res.data.guidance
+        } else {
+          console.log(res)
+          console.log('empty')
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
   },
   onLoad (options) {
     this.id = options.id
