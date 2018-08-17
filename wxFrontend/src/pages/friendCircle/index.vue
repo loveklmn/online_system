@@ -1,13 +1,18 @@
 <template>
   <div>
-    friend-circle page
+    <moment> </moment>
+    <moment> </moment>
   </div>
 </template>
 
 <script>
+import moment from '@/components/moment'
 export default {
   data () {
     return {}
+  },
+  components: {
+    moment
   },
 
   methods: {},
