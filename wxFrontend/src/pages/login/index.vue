@@ -33,7 +33,7 @@ export default {
     },
     login () {
       console.log('requests start')
-      request.post('/get-token/', {
+      request.post('get-token/', {
         username: this.username,
         password: this.password
       }).then((res) => {

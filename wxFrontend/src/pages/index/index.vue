@@ -72,7 +72,7 @@ export default {
   },
   onShow () {
     request
-      .get('/books')
+      .get('books/')
       .then(res => {
         if (res.data.length > 0) {
           console.log(res)
