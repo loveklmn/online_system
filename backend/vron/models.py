@@ -61,7 +61,7 @@ class Sentence(models.Model):
 class Word(models.Model):
     guidance = models.ForeignKey(Book, on_delete=models.CASCADE)
     word = models.CharField(max_length=100)
-    audio = models.CharField(max_length=255)
+    #audio = models.CharField(max_length=255)
     meaning = models.CharField(max_length=255)
 
 
