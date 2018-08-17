@@ -2,8 +2,10 @@ from vron.models import Student, Book, Progress, Word, Page, Sentence, Moment
 from rest_framework.authtoken.models import Token
 from rest_framework.views import exception_handler, APIView
 from rest_framework.response import Response
+from django.core.exceptions import ObjectDoesNotExist
 import os
 from backend import settings
+from datetime import datetime
 # Create your views here.
 
 
@@ -86,6 +88,28 @@ class BookGuidance(APIView):
 
         else:
             return Response({'msg': 'Book not found'}, status=404)
+
+class BookProgress(APIView):
+
+    def post(self, request, book_id):
+        try:
+            book = Book.objects.get(id=book_id)
+        except ObjectDoesNotExist:
+            return Response({'msg': 'Book not found.'}, status=404)
+
+        try:
+            student = Student.objects.get(user=request.user)
+        except ObjectDoesNotExist:
+            return Response({'msg': 'This user have not related to a student.'}, status=403)
+
+        try:
+            progress = Progress.objects.get(user=student, book=book)
+            progress.current_page = request.POST.get('current_page', progress.current_page)
+            progress.latest_read_time = datetime.now()
+            progress.save()
+        except ObjectDoesNotExist:
+            Progress.objects.create(user=student, book=book, current_page=request.POST.get('current_page',0))
+        return Response(status=201)
 
 class BookEbook(APIView):
 
