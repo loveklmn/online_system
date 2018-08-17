@@ -3,7 +3,6 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import exception_handler, APIView
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
-from django.core.exceptions import ObjectDoesNotExist
 import os
 from backend import settings
 from datetime import datetime
