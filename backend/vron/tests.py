@@ -1,44 +1,89 @@
 from django.test import TestCase
 from django.test import Client
-#from .models import Student
-#from django.contrib.auth.models import User
-import json
-from urllib.parse import urlencode
 
-class LoginTestCase(TestCase):
+from rest_framework.test import force_authenticate
+from rest_framework.test import APIRequestFactory, APIClient
+#from .models import Student
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
+
+from .views import BookList
+from .models import Book, Student, Word, Homework, Moment
+
+class TokenTestCase(TestCase):
 
     client = Client()
-    url = '/vron/login/'
     type = 'application/x-www-form-urlencoded'
 
     def setUp(self):
-        pass
-        #user1 = User.objects.create_user(username = 'zhangsan', password = '][po][po')
-        #student1 = Student.objects.create(user = user1, level = 2, score = 0)
-        #user2 = User.objects.create_user(username = 'lisi', password = '][po][po')
-
-    def post_tool(self, In, output):
-
-        data = urlencode(In)
-        response = self.client.post(self.url, data = data, content_type = self.type)
-        self.assertEqual(json.loads(response.content),output)
+        User.objects.create_user(username='admin', password='admin')
 
     def test(self):
-        response = self.client.get(self.url)
-        self.assertEqual(json.loads(response.content), {'msg': 'please use POST method to login'})
+        data1 = {'username': 'admin','password': 'admin'}
+        data2 = {'username': 'admin','password': 'asdasd'}
+        response = self.client.post('/vron/get-token/', data=data1)
+        self.assertContains(response, 'token')
+        response = self.client.post('/vron/get-token/', data=data2)
+        self.assertNotContains(response, 'token', status_code=400)
+        response = self.client.get('/vron/get-token/', data=data1)
+        self.assertNotContains(response, 'token', status_code=405)
 
-        In = {'username':'zhangsan', 'password':'][po][po'}
-        output = {'userid': 1, 'level': 2}
-        self.post_tool(In,output)
+class BookTestCase(TestCase):
 
-        In = {'username':'zhangsan', 'password':''}
-        output = {'msg': 'username or password error.'}
-        self.post_tool(In,output)
+    factory = APIRequestFactory()
+    test_client = APIClient()
 
-        In = {'username':'', 'password':'asdf'}
-        output = {'msg': 'username or password error.'}
-        self.post_tool(In,output)
+    def setUp(self):
 
-        In = {'username':'lisi', 'password':'][po][po'}
-        output = {'msg': 'your account have not connect to a student'}
-        self.post_tool(In,output)
+        self.user = User.objects.create_user(username='admin', password='admin')
+        self.token = 'Token ' + Token.objects.get(user=self.user).key
+        self.test_client.force_authenticate(user=self.user)
+        stu = Student.objects.create(
+            user=self.user, level=1, avatar="", score=0)
+
+        for _ in range(10):
+            book = Book.objects.create(cover='cover', level=1, title='title1',
+                                pages_num=30, assignment='assign',
+                                guidance='guide', read_type='IR')
+            Word.objects.create(guidance=book, word='www', meaning='MMM')
+            homework = Homework.objects.create(author=stu, book=book,
+                                content='ssd')
+            Moment.objects.create(homework=homework, level=1)
+    def test_book_list(self):
+        view = BookList.as_view()
+
+        request = self.factory.get('/vron/books/')
+        response = view(request)
+        self.assertContains(response, 'msg', status_code=401)
+
+        request = self.factory.post('/vron/books/')
+        force_authenticate(request, self.user)
+        response = view(request)
+        self.assertContains(response, 'msg', status_code=405)
+
+        request = self.factory.get('/vron/books/')
+        force_authenticate(request, self.user)
+        response = view(request)
+        self.assertIn('id', response.data[0])
+        self.assertIn('cover', response.data[0])
+        self.assertIn('title', response.data[0])
+        self.assertIn('pages_num', response.data[0])
+        self.assertIn('progress', response.data[0])
+        self.assertIn('type', response.data[0])
+        self.assertNotIn('msg', response.data[0])
+
+    def test_book_guidance(self):
+        self.test_client.force_authenticate(user=self.user)
+        response = self.test_client.get('/vron/books/1/guidance/')
+        self.assertIn('guidance', response.data)
+        self.assertIn('words', response.data)
+        self.assertIn('word', response.data['words'][0])
+        self.assertIn('meaning', response.data['words'][0])
+        self.assertNotIn('msg', response.data)
+
+    def test_community(self):
+        client = APIClient()
+        client.force_authenticate(user=self.user)
+        response = client.get('/vron/community/1/')
+        self.assertIn('author', response.data[0])
+        self.assertIn('attactments', response.data[0])
