@@ -36,7 +36,7 @@ export default [
         name: 'home',
         meta: {
           hideInMenu: true,
-          title: '首页',
+          title: '弗恩英语后台管理系统',
           notCache: true
         },
         component: () => import('@/view/single-page/home')
@@ -47,8 +47,8 @@ export default [
     path: '',
     name: 'doc',
     meta: {
-      title: '文档',
-      href: 'https://lison16.github.io/iview-admin-doc/#/',
+      title: '弗恩英语官网',
+      href: 'https://hf.vronedu.com/',
       icon: 'ios-book'
     }
   },
@@ -62,80 +62,53 @@ export default [
         name: 'join_page',
         meta: {
           icon: '_qq',
-          title: 'QQ群'
+          title: '管理员交流群'
         },
         component: () => import('@/view/join-page.vue')
       }
     ]
   },
   {
-    path: '/components',
-    name: 'components',
+    path: '/mange_user_page',
+    name: 'manageUser',
     meta: {
       icon: 'logo-buffer',
-      title: '组件'
+      title: '用户权限管理'
     },
     component: Main,
     children: [
       {
-        path: 'count_to_page',
-        name: 'count_to_page',
+        path: 'create_user_page',
+        name: 'createUser',
         meta: {
           icon: 'md-trending-up',
-          title: '数字渐变'
+          title: '新建账户'
         },
         component: () => import('@/view/components/count-to/count-to.vue')
       },
       {
-        path: 'tables_page',
-        name: 'tables_page',
+        path: 'modify_user_page',
+        name: 'modifyUser',
         meta: {
-          icon: 'md-grid',
-          title: '多功能表格'
+          icon: 'md-pause',
+          title: '修改账户权限'
         },
         component: () => import('@/view/components/tables/tables.vue')
       },
       {
-        path: 'split_pane_page',
-        name: 'split_pane_page',
-        meta: {
-          icon: 'md-pause',
-          title: '分割窗口'
-        },
-        component: () => import('@/view/components/split-pane/split-pane.vue')
-      },
-      {
-        path: 'markdown_page',
-        name: 'markdown_page',
+        path: 'modify_password_page',
+        name: 'modifyPassword',
         meta: {
           icon: 'logo-markdown',
-          title: 'Markdown编辑器'
+          title: '修改账户密码'
         },
         component: () => import('@/view/components/markdown/markdown.vue')
-      },
-      {
-        path: 'editor_page',
-        name: 'editor_page',
-        meta: {
-          icon: 'ios-create',
-          title: '富文本编辑器'
-        },
-        component: () => import('@/view/components/editor/editor.vue')
-      },
-      {
-        path: 'icons_page',
-        name: 'icons_page',
-        meta: {
-          icon: '_bear',
-          title: '自定义图标'
-        },
-        component: () => import('@/view/components/icons/icons.vue')
       }
     ]
   },
   {
-    path: '/update',
-    name: 'update',
+    path: '/book_manage',
+    name: 'book_manage',
     meta: {
       icon: 'md-cloud-upload',
       title: '数据上传'
@@ -143,122 +116,99 @@ export default [
     component: Main,
     children: [
       {
-        path: 'update_table_page',
-        name: 'update_table_page',
+        path: 'import_books',
+        name: 'import_books',
         meta: {
           icon: 'ios-document',
-          title: '上传Csv'
+          title: '创建新书'
         },
-        component: () => import('@/view/update/update-table.vue')
+        component: () => import('@/view/importBook/uploadFile.vue')
       },
       {
-        path: 'update_paste_page',
-        name: 'update_paste_page',
+        path: 'parent_child_instruct',
+        name: 'parent_child_instruct',
         meta: {
           icon: 'md-clipboard',
-          title: '粘贴表格数据'
+          title: '亲子阅读指导导入'
+        },
+        component: () => import('@/view/update/update-paste.vue')
+      },
+      {
+        path: 'ebook-import',
+        name: 'ebook_import',
+        meta: {
+          icon: 'md-clipboard',
+          title: 'E_book 导入'
+        },
+        component: () => import('@/view/update/update-paste.vue')
+      },
+      {
+        path: 'exercise_import',
+        name: 'exercise_import',
+        meta: {
+          icon: 'md-clipboard',
+          title: '阅读拓展导入'
+        },
+        component: () => import('@/view/update/update-paste.vue')
+      },
+      {
+        path: 'game_import',
+        name: 'game_import',
+        meta: {
+          icon: 'md-clipboard',
+          title: '游戏素材导入'
         },
         component: () => import('@/view/update/update-paste.vue')
       }
     ]
   },
   {
-    path: '/excel',
-    name: 'excel',
+    path: 'data_static',
+    name: 'data_static',
     meta: {
-      icon: 'ios-stats',
-      title: 'EXCEL导入导出'
+      icon: 'md-clipboard',
+      title: '学生数据统计'
     },
     component: Main,
     children: [
       {
-        path: 'upload-excel',
-        name: 'upload-excel',
+        path: 'progress',
+        name: 'progress',
         meta: {
           icon: 'md-add',
-          title: '导入EXCEL'
+          title: '学习进度统计'
+        },
+        component: () => import('@/view/excel/upload-excel.vue')
+      }
+    ]
+  },
+  {
+    path: 'message_manage',
+    name: 'message_manage',
+    meta: {
+      icon: 'md-clipboard',
+      title: '社群消息管理'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'send_new_message',
+        name: 'send_new_message',
+        meta: {
+          icon: 'md-add',
+          title: '发布新消息'
         },
         component: () => import('@/view/excel/upload-excel.vue')
       },
       {
-        path: 'export-excel',
-        name: 'export-excel',
+        path: 'check_message',
+        name: 'check_message',
         meta: {
           icon: 'md-download',
-          title: '导出EXCEL'
+          title: '审核历史消息'
         },
         component: () => import('@/view/excel/export-excel.vue')
       }
-    ]
-  },
-  {
-    path: '/directive',
-    name: 'directive',
-    meta: {
-      hide: true
-    },
-    component: Main,
-    children: [
-      {
-        path: 'directive_page',
-        name: 'directive_page',
-        meta: {
-          icon: 'ios-navigate',
-          title: '指令'
-        },
-        component: () => import('@/view/directive/directive.vue')
-      }
-    ]
-  },
-  {
-    path: '/multilevel',
-    name: 'multilevel',
-    meta: {
-      icon: 'md-menu',
-      title: '多级菜单'
-    },
-    component: Main,
-    children: [
-      {
-        path: 'level_2_1',
-        name: 'level_2_1',
-        meta: {
-          icon: 'md-funnel',
-          title: '二级-1'
-        },
-        component: () => import('@/view/multilevel/level-2-1.vue')
-      },
-      {
-        path: 'level_2_2',
-        name: 'level_2_2',
-        meta: {
-          access: ['super_admin'],
-          icon: 'md-funnel',
-          showAlways: true,
-          title: '二级-2'
-        },
-        component: parentView,
-        children: [
-          {
-            path: 'level_2_2_1',
-            name: 'level_2_2_1',
-            meta: {
-              icon: 'md-funnel',
-              title: '三级'
-            },
-            component: () => import('@/view/multilevel/level-2-2/level-3-1.vue')
-          }
-        ]
-      },
-      {
-        path: 'level_2_3',
-        name: 'level_2_3',
-        meta: {
-          icon: 'md-funnel',
-          title: '二级-3'
-        },
-        component: () => import('@/view/multilevel/level-2-3.vue')
-      },
     ]
   },
   {
