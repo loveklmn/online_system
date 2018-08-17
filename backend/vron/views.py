@@ -1,6 +1,7 @@
-from vron.models import Student, Book, Progress, Word, Page, Sentence, Moment
+from vron.models import Student, Book, Progress, Word, Page, Sentence, Moment, Like, Comment
 from rest_framework.authtoken.models import Token
 from rest_framework.views import exception_handler, APIView
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 from django.core.exceptions import ObjectDoesNotExist
 import os
@@ -8,6 +9,7 @@ from backend import settings
 from datetime import datetime
 # Create your views here.
 
+STUDENTNOTEXIST = {'msg': 'This user have not related to a student.'}
 
 def vron_exception_handler(exc, context):
     response = exception_handler(exc, context)
@@ -145,15 +147,39 @@ class CommunityGroup(APIView):
     def get(self, request, level):
         community_info = []
         moments = Moment.objects.filter(level=level)
+        try:
+            student = Student.objects.get(user=request.user)
+        except ObjectDoesNotExist:
+            return Response(STUDENTNOTEXIST, status=403)
         if moments:
             for moment in moments:
                 community_message = {}
                 homework = moment.homework
-                community_message['author'] = homework.author.user.username
-                community_message['book'] = homework.book.title
+
+                community_message['author'] = {}
+                community_message['author']['username'] = homework.author.user.username
+                community_message['author']['avatar'] = student.avatar
+
+                community_message['action'] = {}
+                community_message['action']['liked'] = False
+                like = Like.objects.filter(actor=student, target=moment)
+                if like and like[0].liked==True:
+                    community_message['action']['liked'] = True
+
+                community_message['book'] = {}
+                community_message['book']['title'] = homework.book.title
+                community_message['book']['cover'] = homework.book.cover
+
                 community_message['created_time'] = moment.created_time
+
                 community_message['content'] = homework.content
+
+                community_message['attactments'] = {}
+                community_message['attactments']['image'] = homework.images.split()
+                community_message['attactments']['video'] = homework.videos.split()
+
                 community_message['vote_count'] = moment.vote_count
+                community_message['comment_count'] = len(Comment.objects.filter(target=moment))
                 community_info.append(community_message)
 
         return Response(community_info)
