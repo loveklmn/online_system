@@ -72,6 +72,7 @@ class Homework(models.Model):
     content = models.TextField()
     images = models.CharField(max_length=1000, default="")
     videos = models.CharField(max_length=1000, default="")
+    audios = models.CharField(max_length=1000, default="")
 
 class Moment(models.Model):
     homework = models.ForeignKey(Homework, on_delete=models.CASCADE)

@@ -1,4 +1,4 @@
-from vron.models import Student, Book, Progress, Word, Page, Sentence, Moment, Like, Comment
+from vron.models import Student, Book, Progress, Word, Page, Sentence, Moment, Like, Comment, Homework
 from rest_framework.authtoken.models import Token
 from rest_framework.views import exception_handler, APIView
 from django.core.exceptions import ObjectDoesNotExist
@@ -9,6 +9,7 @@ from datetime import datetime
 # Create your views here.
 
 STUDENTNOTEXIST = {'msg': 'This user have not related to a student.'}
+BOOKNOTFOUND = {'msg': 'Book not found'}
 
 def vron_exception_handler(exc, context):
     response = exception_handler(exc, context)
@@ -90,6 +91,40 @@ class BookGuidance(APIView):
         else:
             return Response({'msg': 'Book not found'}, status=404)
 
+class BookHomework(APIView):
+
+    def get(self, request, book_id):
+        '''
+        GET User homework
+        '''
+        try:
+            student = Student.objects.get(user=request.user)
+        except ObjectDoesNotExist:
+            return Response(STUDENTNOTEXIST, status=403)
+
+        try:
+            book = Book.objects.get(id=book_id)
+        except ObjectDoesNotExist:
+            return Response(BOOKNOTFOUND, status=404)
+
+        homework_info = {}
+        homework_info['assignment'] = book.assignment
+        homework_info['homework'] = {}
+
+        try:
+            homework = Homework.objects.get(book_id=book_id, author=student)
+            homework_info['homework']['content'] = homework.content
+            homework_info['homework']['attachments'] = {}
+            homework_info['homework']['attachments']['image'] = homework.images.split()
+            homework_info['homework']['attachments']['video'] = homework.videos.split()
+            homework_info['homework']['attachments']['audio'] = homework.audios.split()
+        except ObjectDoesNotExist:
+            pass
+
+        return Response(homework_info)
+
+
+
 class BookProgress(APIView):
 
     def post(self, request, book_id):
@@ -101,7 +136,7 @@ class BookProgress(APIView):
         try:
             student = Student.objects.get(user=request.user)
         except ObjectDoesNotExist:
-            return Response({'msg': 'This user have not related to a student.'}, status=403)
+            return Response(STUDENTNOTEXIST, status=403)
 
         try:
             progress = Progress.objects.get(user=student, book=book)
