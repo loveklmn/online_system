@@ -26,7 +26,7 @@ class SentenceSerializer(serializers.ModelSerializer):
 class WordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Word
-        fields = ('guidance', 'word', 'audio', 'meaning')
+        fields = ('guidance', 'word', 'meaning')
 
 class HomeworkSerializer(serializers.ModelSerializer):
     class Meta:

@@ -79,7 +79,7 @@ class BookGuidance(APIView):
                 for word in words:
                     word_info = {}
                     word_info['word'] = word.word
-                    word_info['audio'] = word.audio
+                    #word_info['audio'] = word.audio
                     word_info['meaning'] = word.meaning
                     parental_info['words'].append(word_info)
             return Response(parental_info)
