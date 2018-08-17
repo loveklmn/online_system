@@ -68,11 +68,11 @@ export default {
 
 
 <style>
-input{
+input {
   padding: 20rpx
 }
 
-page{
+page {
   height: 100%;
 }
 
@@ -85,11 +85,11 @@ page{
   background-color: #f2f2f2
 } 
 
-.login-icon{
+.login-icon {
   flex: none;
 }
 
-.login-img{
+.login-img {
   width: 750rpx;
 }
 
