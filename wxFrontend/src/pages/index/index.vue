@@ -16,7 +16,7 @@
               <div class="page__bd">
                 <div class="weui-grids">
                   <block v-for="book in intensiveReading" :key="book.id">
-                    <div @click="navToFunction(book)" class="weui-grid">
+                    <div @click="navToNavigator(book)" class="weui-grid">
                       <image class="weui-grid__icon" :src="book.cover" />
                       <div class="weui-grid__label">{{book.title}}</div>
                       <i-progress v-if="book.percent === 100" :percent="book.percent" status="success"></i-progress>
@@ -31,7 +31,7 @@
             <div class="page__bd">
               <div class="weui-grids">
                 <block v-for="book in extensiveReading" :key="book.id">
-                  <div @click="navToFunction(book)" class="weui-grid">
+                  <div @click="navToNavigator(book)" class="weui-grid">
                     <image class="weui-grid__icon" :src="book.cover" />
                     <div class="weui-grid__label">{{book.title}}</div>
                     <i-progress v-if="book.percent === 100" :percent="book.percent" status="success"></i-progress>
@@ -93,9 +93,9 @@ export default {
     tabClick (e) {
       this.activeIndex = e.currentTarget.id
     },
-    navToFunction (book) {
+    navToNavigator (book) {
       let url =
-        '/pages/functionPage/main?id=' + book.id + '&title=' + book.title + '&cover=' + book.cover + '&page=' + book.progress.current_page
+        '/pages/navigator/main?id=' + book.id + '&title=' + book.title + '&cover=' + book.cover + '&page=' + book.progress.current_page
       wx.navigateTo({ url })
     },
     progress (book) {
