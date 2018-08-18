@@ -124,10 +124,10 @@ export default {
       this.file = null
     },
     handleUploadPicture () {
-      
+
     },
     handleUploadContent () {
-      
+
     },
     handleRemove () {
       this.$Message.info('上传的文件已删除！')
@@ -242,7 +242,7 @@ export default {
   .upload-content {
     padding: 10px 0
   }
-  
+
   .upload-avatar {
     color: #3399ff
   }
