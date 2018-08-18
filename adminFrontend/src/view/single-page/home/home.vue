@@ -2,7 +2,7 @@
   <div class="single-home">
     <Card class="navCard">
       <Row :gutter="20" class="first-row">
-        <i-col span="6" v-for="(infor, i) in inforCardData" :key="`infor-${i}`" style="height: 120px;">
+        <i-col span="6" v-for="(infor, i) in inforCardData" :key="`infor-${i}`" class="quick-tip-card">
           <infor-card shadow :color="infor.color" :icon="infor.icon" :icon-size="36">
             <count-to :end="infor.count" count-class="count-style"/>
             <p>{{ infor.title }}</p>
@@ -10,13 +10,12 @@
         </i-col>
       </Row>
     </Card>
-    <Card class="contentCard">
+    <Card class="content-card">
       <Row v-for="i in (customIconList.length / 3)" :key="`custom-icon-row-${i}`">
         <i-col span="8" v-for="item in customIconList.slice((i - 1) * 3, i * 3)" :key="`custom-icon-${item.title}`">
           <Card class="icon-card" >
             <icons :size="30" :type="item.icon" :color="`#ff9900`"/>
-            <br>
-            <img :src= item.imgPath  />
+            <img :src= item.imgPath class="block-img"/>
             <p class="icon-code">&lt;{{ item.title }}&gt;</p>
           </Card>
         </i-col>
@@ -71,6 +70,7 @@ export default {
 .count-style{
   font-size: 50px;
 }
+
 .icon-card{
   margin: 20px 20px 20px;
   text-align: center;
@@ -78,14 +78,27 @@ export default {
   border-radius: 20%;
   background-color:rgba(247, 169, 169, 0.3);
 }
+
 .single-home {
   background-color: white;
 }
+
 .navCard {
   background-color: rgba(246, 248, 133, 0.5);
 }
-.contentCard {
+
+.content-card {
   background-color: rgba(238, 231, 236, 0.5);
+}
+
+.block-img {
+  display: block;
+  margin-left: auto;
+  margin-right:auto;
+}
+
+.quick-tip-card {
+  height: 120px;
 }
 
 </style>
