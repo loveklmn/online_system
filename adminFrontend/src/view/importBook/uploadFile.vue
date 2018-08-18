@@ -242,7 +242,11 @@ export default {
   .upload-content {
     padding: 10px 0
   }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> Separate adding assignment and guidance from adding a new book. Ref #41
   .upload-avatar {
     color: #3399ff
   }
