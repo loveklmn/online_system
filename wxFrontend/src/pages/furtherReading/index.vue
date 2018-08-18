@@ -1,7 +1,7 @@
 <template>
   <div class="weui-article">
     <div>
-      <wxParse :content="article" />
+      <wxParse :content="assignment" />
     </div>
     <div class="weui-uploader">
       <div class="weui-uploader__hd">
@@ -45,11 +45,18 @@ export default {
       files: [],
       id: null,
       full: null,
-      article: '<div><h1>Draw a cat.</h1><p>homework: Cat is cute.Draw a cat like this.</p></div><img class="weui-article__img" src="https://i.loli.net/2018/08/14/5b727adea773a.png"/>'
+      assignment: null,
+      homework: null
     }
   },
   onLoad (options) {
     this.id = options.id
+  },
+  onShow () {
+    let url = 'books/' + this.id + '/homework/'
+    request.get(url).then((res) => {
+      this.assignment = res.data.assignment
+    })
   },
   methods: {
     chooseImage (e) {
