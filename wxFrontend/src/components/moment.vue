@@ -41,6 +41,7 @@
         <span class="tag-style">{{x.comment_count}}</span>
       </div>  
     </div>
+    <view class='line'> </view>
   </div>
 </template>
  
@@ -99,17 +100,19 @@ a {
 }
 
 .content .list-footer {
-    width: 68%;
-    margin-top: 35rpx;
+    width: 32%;
+    margin-bottom: 35rpx;
     color: #cdcdcd;
     display: flex;
     flex-flow: row;
+    float: right;
 }
 
 .content .list-footer .footer-tag {
-    width: 100%;
+    width: 49.8%;
     height: 65rpx;
     color: inherit;
+    margin-left: 10rpx;
 }
 
 .content .list-footer .footer-tag .tag-style {
@@ -117,6 +120,7 @@ a {
     margin-top: 5rpx;
     font-size: 35rpx;
     color: black;
+    float: right;
 }
 
 .avatar {
@@ -151,6 +155,7 @@ a {
     margin: 5rpx;
     flex: 1;
     font-size: 30rpx;
+    float: right;
 }
 
 .content .list-content {
@@ -227,7 +232,15 @@ a {
 }
 
 .footer-icon {
+    margin-top: 10rpx;
     height: 40rpx;
     width: 40rpx;
+}
+.line {
+  margin: 0 auto;
+  margin-top: 70rpx;
+  width: 95%;
+  height: 2rpx;
+  background-color: #888888;
 }
 </style>
