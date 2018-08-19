@@ -3,8 +3,9 @@
     <div>
       <wxParse :content="assignment" />
     </div>
-    <div class="weui-uploader__title">编辑作业</div>
-    <textarea v-model.lazy="homework.content" placeholder="请输入作业内容" />
+    <div v-if="!submitted"  class="weui-uploader__title">编辑作业</div>
+    <div v-else class="weui-uploader__title">已提交作业</div>
+    <textarea v-model.lazy="homework.content" :disabled="submitted" placeholder="请输入作业内容" />
     <div class="weui-uploader">
       <div class="weui-uploader__hd">
         <div class="weui-uploader__title">图片上传</div>
@@ -15,16 +16,16 @@
           <div v-for="item in previewImages" :key="item">
             <div class="weui-uploader__file">
               <image class="weui-uploader__img" :src="item" mode="aspectFill" @click="predivImage" :id="item" />
-              <div class="delete-icon" @click="deleteImg" :id="item"></div>
+              <div class="delete-icon" v-if="!submitted" @click="deleteImg" :id="item"></div>
             </div>
           </div>
         </div>
-        <div class="weui-uploader__input-box">
+        <div v-if="!submitted" class="weui-uploader__input-box">
           <div class="weui-uploader__input" @click="chooseImage"></div>
         </div>
       </div>
     </div>
-    <div class="submit-button">
+    <div class="submit-button" v-if="!submitted">
       <i-alert type="error" v-if="full === true">
         已经不能再上传了哦
         <view slot="desc">您最多上传9张图片</view>
@@ -67,6 +68,7 @@ export default {
         this.assignment = res.data.assignment || '<h1>本书无阅读拓展</h1>'
         if (res.data.homework && res.data.homework.content !== undefined) {
           this.homework = res.data.homework
+          this.previewImages = this.homework.attachments.image.map(url => request.baseURL + url)
           this.submitted = true
         }
       } else {
