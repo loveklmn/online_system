@@ -10,7 +10,8 @@
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src",
     "precommit": "lint-staged && cd ../adminFrontend && npm run lint && cd ../backend && pylint --disable=R,C --load-plugins pylint_django backend vron",
-    "commitmsg": "sh ../commit-msg.sh ${GIT_PARAMS}"
+    "commitmsg": "sh ../commit-msg.sh ${GIT_PARAMS}",
+    "test": "jest"
   },
   "lint-staged": {
     "*.{js,vue}": [
@@ -21,9 +22,11 @@
   "dependencies": {
     "mpvue": "^1.0.11",
     "mpvue-wxparse": "^0.6.5",
+    "vue": "^2.4.4",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
+    "@vue/test-utils": "^1.0.0-beta.13",
     "babel-core": "^6.22.1",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.1",
@@ -54,6 +57,7 @@
     "html-webpack-plugin": "^3.2.0",
     "http-proxy-middleware": "^0.18.0",
     "husky": "^0.14.3",
+    "jest": "^21.2.1",
     "lint-staged": "^7.2.0",
     "mpvue-loader": "1.0.11",
     "mpvue-template-compiler": "^1.0.11",
@@ -71,7 +75,9 @@
     "shelljs": "^0.8.1",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "url-loader": "^1.0.1",
+    "vue-jest": "^2.6.0",
     "vue-style-loader": "^4.1.0",
+    "vue-template-compiler": "^2.4.4",
     "webpack": "^3.11.0",
     "webpack-bundle-analyzer": "^2.2.1",
     "webpack-dev-middleware-hard-disk": "^1.12.0",
@@ -86,5 +92,19 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
+      ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
+    },
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    }
+  }
 }

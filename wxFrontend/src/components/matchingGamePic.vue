@@ -15,9 +15,6 @@ export default {
     }
   },
   computed: {
-    getstyle: function () {
-      return `background-image:url(${this.src});`
-    },
     getclass: function () {
       return this.selected ? 'pic_selected' : 'pic'
     }
