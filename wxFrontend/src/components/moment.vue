@@ -30,6 +30,17 @@
         </ul>
       </div>
     </div>
+
+    <div class="list-footer">
+      <div class="footer-tag">
+        <img class="footer-icon" :src="getSrc"></img>
+        <span class="tag-style">{{x.vote_count}}</span>
+      </div>  
+      <div class="footer-tag">
+        <img class="footer-icon" src="/static/images/friendCircle/comment.png"></img>
+        <span class="tag-style">{{x.comment_count}}</span>
+      </div>  
+    </div>
   </div>
 </template>
  
@@ -41,6 +52,12 @@ export default {
   },
   props: ['x'],
   computed: {
+    getSrc () {
+      let path = '/static/images/friendCircle/'
+      let pic = this.x.action.liked ? 'heart-active.png' : 'heart-default.png'
+      console.log(path + pic)
+      return path + pic
+    },
     imgClass () {
       let size = this.x.attachments.image.length
       let clazz = ''
@@ -96,7 +113,10 @@ a {
 }
 
 .content .list-footer .footer-tag .tag-style {
-    font-size: 12rpx;
+    margin-left: 5rpx;
+    margin-top: 5rpx;
+    font-size: 35rpx;
+    color: black;
 }
 
 .avatar {
@@ -204,5 +224,10 @@ a {
 .content .list-content .content-re-content .re-content-text {
     font-size: 65rpx;
     line-height: 50rpx;
+}
+
+.footer-icon {
+    height: 40rpx;
+    width: 40rpx;
 }
 </style>
