@@ -3,14 +3,16 @@
     <div>
       <wxParse :content="assignment" />
     </div>
+    <div class="weui-uploader__title">编辑作业</div>
+    <textarea v-model.lazy="homework.content" placeholder="请输入作业内容" />
     <div class="weui-uploader">
       <div class="weui-uploader__hd">
         <div class="weui-uploader__title">图片上传</div>
-        <div class="weui-uploader__info">{{files.length}}/9</div>
+        <div class="weui-uploader__info">{{homework.attachments.image.length}}/9</div>
       </div>
       <div class="weui-uploader__bd">
         <div class="weui-uploader__files" id="uploaderFiles">
-          <div v-for="(item ,index) in files" :key="index">
+          <div v-for="item in previewImages" :key="item">
             <div class="weui-uploader__file">
               <image class="weui-uploader__img" :src="item" mode="aspectFill" @click="predivImage" :id="item" />
               <div class="delete-icon" @click="deleteImg" :id="item"></div>
@@ -42,39 +44,62 @@ export default {
   },
   data () {
     return {
-      files: [],
+      previewImages: [],
       id: null,
       full: null,
       assignment: null,
-      homework: null
+      homework: {
+        content: '',
+        attachments: {
+          audio: [],
+          video: [],
+          image: []
+        }
+      },
+      submitted: false
     }
   },
   onLoad (options) {
     this.id = options.id
-  },
-  onShow () {
     let url = 'books/' + this.id + '/homework/'
     request.get(url).then((res) => {
-      this.assignment = res.data.assignment
+      if (res.statusCode === 200) {
+        this.assignment = res.data.assignment || '<h1>本书无阅读拓展</h1>'
+        if (res.data.homework && res.data.homework.content !== undefined) {
+          this.homework = res.data.homework
+          this.submitted = true
+        }
+      } else {
+        console.log('请求错误')
+      }
+    }).catch((err) => {
+      console.log(err)
     })
+  },
+  onShow () {
   },
   methods: {
     chooseImage (e) {
-      let _this = this
-      if (_this.files.length === 9) {
+      let vm = this
+      if (vm.homework.attachments.image.length === 9) {
         this.full = true
         return
       }
       wx.chooseImage({
-        count: 1, // 默认9
-        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        count: 9,
+        sizeType: ['original', 'compressed'],
+        sourceType: ['album', 'camera'],
         success: function (res) {
-          // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-          _this.files = _this.files.concat(res.tempFilePaths)
+          for (let i = 0; i < res.tempFilePaths.length; i++) {
+            let currentFile = res.tempFilePaths[i]
+            request.upload(currentFile).then((url) => {
+              console.log(url)
+              vm.homework.attachments.image.push(url)
+              vm.previewImages.push(request.baseURL + url)
+            })
+          }
         },
         fail: function () {
-          // console.log('fail')
         },
         complete: function () {
         }
@@ -84,27 +109,21 @@ export default {
       console.log(e)
       wx.previewImage({
         current: e.currentTarget.id, // 当前显示图片的http链接
-        urls: this.files // 需要预览的图片http链接列表
+        urls: this.previewImages // 需要预览的图片http链接列表
       })
     },
     deleteImg (e) {
-      Array.prototype.indexOf = function(val) { // eslint-disable-line
-        for (let i = 0; i < this.length; i++) {
-          if (this[i] === val) return i
-        }
-        return -1
-      }
-      Array.prototype.remove = function (val) { // eslint-disable-line
-        let index = this.indexOf(val)
-        if (index > -1) {
-          this.splice(index, 1)
-        }
-      }
-      this.files.remove(e.currentTarget.id)
+      let url = e.currentTarget.id
+      let index = this.previewImages.indexOf(url)
+      this.previewImages.splice(index, 1)
+      this.homework.attachments.image.splice(index, 1)
     },
     submit () {
-      request.upload(this.files[0]).then((path) => {
-        console.log(path)
+      console.log(this.homework)
+      let url = 'books/' + this.id + '/homework/'
+      request.post(url, this.homework).then((res) => {
+        console.log(res)
+        this.submitted = true
       })
     }
   }
@@ -117,6 +136,10 @@ page {
     background-color: #F8F8F8;
     font-size: 16px;
     font-family: -apple-system-font, Helvetica Neue, Helvetica, sans-serif;
+}
+
+.homework_text {
+  height: 30px;
 }
 
 .submit-button{
