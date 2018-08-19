@@ -1,28 +1,34 @@
 <template>
   <div class="weui-article">
     <div>
-      <wxParse :content="article" />
+      <wxParse :content="assignment" />
+    </div>
+    <div v-if="!submitted"  class="weui-uploader__title">编辑作业</div>
+    <div v-else class="weui-uploader__title">已提交作业</div>
+    <textarea v-if="!submitted" v-model.lazy="homework.content" :disabled="submitted" placeholder="请输入作业内容" />
+    <div class="submitted_homework">
+      <text v-if="submitted">{{homework.content}}</text>
     </div>
     <div class="weui-uploader">
-      <div class="weui-uploader__hd">
+      <div class="weui-uploader__hd" v-if="!submitted">
         <div class="weui-uploader__title">图片上传</div>
-        <div class="weui-uploader__info">{{files.length}}/9</div>
+        <div class="weui-uploader__info">{{homework.attachments.image.length}}/9</div>
       </div>
       <div class="weui-uploader__bd">
         <div class="weui-uploader__files" id="uploaderFiles">
-          <div v-for="(item ,index) in files" :key="index">
+          <div v-for="item in previewImages" :key="item">
             <div class="weui-uploader__file">
               <image class="weui-uploader__img" :src="item" mode="aspectFill" @click="predivImage" :id="item" />
-              <div class="delete-icon" @click="deleteImg" :id="item"></div>
+              <div class="delete-icon" v-if="!submitted" @click="deleteImg" :id="item"></div>
             </div>
           </div>
         </div>
-        <div class="weui-uploader__input-box">
+        <div v-if="!submitted" class="weui-uploader__input-box">
           <div class="weui-uploader__input" @click="chooseImage"></div>
         </div>
       </div>
     </div>
-    <div class="submit-button">
+    <div class="submit-button" v-if="!submitted">
       <i-alert type="error" v-if="full === true">
         已经不能再上传了哦
         <view slot="desc">您最多上传9张图片</view>
@@ -42,32 +48,74 @@ export default {
   },
   data () {
     return {
-      files: [],
+      previewImages: [],
       id: null,
       full: null,
-      article: '<div><h1>Draw a cat.</h1><p>homework: Cat is cute.Draw a cat like this.</p></div><img class="weui-article__img" src="https://i.loli.net/2018/08/14/5b727adea773a.png"/>'
+      assignment: null,
+      homework: {
+        content: '',
+        attachments: {
+          audio: [],
+          video: [],
+          image: []
+        }
+      },
+      submitted: false
     }
   },
+
   onLoad (options) {
     this.id = options.id
+    let url = 'books/' + this.id + '/homework/'
+    request.get(url).then((res) => {
+      if (res.statusCode === 200) {
+        this.assignment = res.data.assignment
+        if (res.data.homework && res.data.homework.content !== undefined) {
+          this.homework = res.data.homework
+          this.previewImages = this.homework.attachments.image.map(url => request.baseURL + url)
+          this.submitted = true
+          console.log('get homework: ' + res.data.homework.content)
+        } else {
+          this.previewImages = []
+          this.homework = {
+            content: '',
+            attachments: {
+              audio: [],
+              video: [],
+              image: []
+            }
+          }
+          this.submitted = false
+        }
+      } else {
+        console.log('请求错误')
+      }
+    }).catch((err) => {
+      console.log(err)
+    })
   },
   methods: {
     chooseImage (e) {
-      let _this = this
-      if (_this.files.length === 9) {
+      let vm = this
+      if (vm.homework.attachments.image.length === 9) {
         this.full = true
         return
       }
       wx.chooseImage({
-        count: 1, // 默认9
-        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        count: 9,
+        sizeType: ['original', 'compressed'],
+        sourceType: ['album', 'camera'],
         success: function (res) {
-          // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-          _this.files = _this.files.concat(res.tempFilePaths)
+          for (let i = 0; i < res.tempFilePaths.length; i++) {
+            let currentFile = res.tempFilePaths[i]
+            request.upload(currentFile).then((url) => {
+              console.log(url)
+              vm.homework.attachments.image.push(url)
+              vm.previewImages.push(request.baseURL + url)
+            })
+          }
         },
         fail: function () {
-          // console.log('fail')
         },
         complete: function () {
         }
@@ -77,27 +125,24 @@ export default {
       console.log(e)
       wx.previewImage({
         current: e.currentTarget.id, // 当前显示图片的http链接
-        urls: this.files // 需要预览的图片http链接列表
+        urls: this.previewImages // 需要预览的图片http链接列表
       })
     },
     deleteImg (e) {
-      Array.prototype.indexOf = function(val) { // eslint-disable-line
-        for (let i = 0; i < this.length; i++) {
-          if (this[i] === val) return i
-        }
-        return -1
-      }
-      Array.prototype.remove = function (val) { // eslint-disable-line
-        let index = this.indexOf(val)
-        if (index > -1) {
-          this.splice(index, 1)
-        }
-      }
-      this.files.remove(e.currentTarget.id)
+      let url = e.currentTarget.id
+      let index = this.previewImages.indexOf(url)
+      this.previewImages.splice(index, 1)
+      this.homework.attachments.image.splice(index, 1)
     },
     submit () {
-      request.upload(this.files[0]).then((path) => {
-        console.log(path)
+      console.log(this.homework)
+      let url = 'books/' + this.id + '/homework/'
+      request.post(url, {
+        content: this.homework.content,
+        attachments: JSON.stringify(this.homework.attachments)
+      }).then((res) => {
+        console.log(res)
+        this.submitted = true
       })
     }
   }
@@ -110,6 +155,10 @@ page {
     background-color: #F8F8F8;
     font-size: 16px;
     font-family: -apple-system-font, Helvetica Neue, Helvetica, sans-serif;
+}
+
+.homework_text {
+  height: 30px;
 }
 
 .submit-button{
@@ -148,7 +197,6 @@ page {
     font-size: 14px;
 }
 
-
 .weui-article {
   padding: 20px 15px;
   font-size: 15px;
@@ -170,6 +218,10 @@ page {
   margin-bottom: 0.34em;
 }
 
+.submitted_homework {
+  padding: 20rpx 0;
+}
+
 .weui-article__h3 {
   font-weight: 400;
   font-size: 15px;
@@ -179,8 +231,6 @@ page {
 .weui-article__p {
   margin: 0 0 0.8em;
 }
-
-
 
 .weui-uploader__hd {
   display: -webkit-box;
@@ -296,9 +346,11 @@ page {
 .weui-uploader__file {
   position: relative;
 }
+
 .weui-uploader__bd {
   overflow: visible;
 }
+
 .delete-icon {
   display: block;
   position: absolute;
@@ -310,6 +362,7 @@ page {
   border-radius: 40rpx;
   z-index: 5;
 }
+
 .delete-icon::before {
   display: block;
   content: '';

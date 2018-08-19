@@ -7,7 +7,6 @@ App.mpType = 'app'
 Vue.prototype.$store = store
 const app = new Vue(App)
 app.$mount()
-
 export default {
   // 这个字段走 app.json
   config: {
@@ -21,7 +20,6 @@ export default {
     },
     tabBar: {
       'list': [
-
         {
           pagePath: 'pages/friendCircle/main',
           iconPath: '/static/images/friend-circle-default.png',
