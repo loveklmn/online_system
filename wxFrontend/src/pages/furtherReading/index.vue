@@ -5,9 +5,12 @@
     </div>
     <div v-if="!submitted"  class="weui-uploader__title">编辑作业</div>
     <div v-else class="weui-uploader__title">已提交作业</div>
-    <textarea v-model.lazy="homework.content" :disabled="submitted" placeholder="请输入作业内容" />
+    <textarea v-if="!submitted" v-model.lazy="homework.content" :disabled="submitted" placeholder="请输入作业内容" />
+    <div class="submitted_homework">
+      <text v-if="submitted">{{homework.content}}</text>
+    </div>
     <div class="weui-uploader">
-      <div class="weui-uploader__hd">
+      <div class="weui-uploader__hd" v-if="!submitted">
         <div class="weui-uploader__title">图片上传</div>
         <div class="weui-uploader__info">{{homework.attachments.image.length}}/9</div>
       </div>
@@ -60,16 +63,29 @@ export default {
       submitted: false
     }
   },
+
   onLoad (options) {
     this.id = options.id
     let url = 'books/' + this.id + '/homework/'
     request.get(url).then((res) => {
       if (res.statusCode === 200) {
-        this.assignment = res.data.assignment || '<h1>本书无阅读拓展</h1>'
+        this.assignment = res.data.assignment
         if (res.data.homework && res.data.homework.content !== undefined) {
           this.homework = res.data.homework
           this.previewImages = this.homework.attachments.image.map(url => request.baseURL + url)
           this.submitted = true
+          console.log('get homework: ' + res.data.homework.content)
+        } else {
+          this.previewImages = []
+          this.homework = {
+            content: '',
+            attachments: {
+              audio: [],
+              video: [],
+              image: []
+            }
+          }
+          this.submitted = false
         }
       } else {
         console.log('请求错误')
@@ -77,8 +93,6 @@ export default {
     }).catch((err) => {
       console.log(err)
     })
-  },
-  onShow () {
   },
   methods: {
     chooseImage (e) {
@@ -123,7 +137,10 @@ export default {
     submit () {
       console.log(this.homework)
       let url = 'books/' + this.id + '/homework/'
-      request.post(url, this.homework).then((res) => {
+      request.post(url, {
+        content: this.homework.content,
+        attachments: JSON.stringify(this.homework.attachments)
+      }).then((res) => {
         console.log(res)
         this.submitted = true
       })
@@ -180,7 +197,6 @@ page {
     font-size: 14px;
 }
 
-
 .weui-article {
   padding: 20px 15px;
   font-size: 15px;
@@ -202,6 +218,10 @@ page {
   margin-bottom: 0.34em;
 }
 
+.submitted_homework {
+  padding: 20rpx 0;
+}
+
 .weui-article__h3 {
   font-weight: 400;
   font-size: 15px;
@@ -211,8 +231,6 @@ page {
 .weui-article__p {
   margin: 0 0 0.8em;
 }
-
-
 
 .weui-uploader__hd {
   display: -webkit-box;
@@ -328,9 +346,11 @@ page {
 .weui-uploader__file {
   position: relative;
 }
+
 .weui-uploader__bd {
   overflow: visible;
 }
+
 .delete-icon {
   display: block;
   position: absolute;
@@ -342,6 +362,7 @@ page {
   border-radius: 40rpx;
   z-index: 5;
 }
+
 .delete-icon::before {
   display: block;
   content: '';
