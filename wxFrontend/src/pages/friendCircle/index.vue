@@ -25,7 +25,6 @@ export default {
       let url = 'community/'
       request.get(url)
         .then((res) => {
-          console.log(res.data)
           this.theData = res.data
         }).catch((err) => {
           console.log(err)
@@ -33,6 +32,9 @@ export default {
     }
   },
   onLoad () {
+    this.getData()
+  },
+  onPullDownRefresh () {
     this.getData()
   }
 }
