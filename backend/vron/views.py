@@ -1,4 +1,4 @@
-from vron.models import Student, Book, Progress, Word, Page, Sentence, Moment, Like, Comment, Homework
+from vron.models import Notice, IsNoticeReaded, Student, Book, Progress, Word, Page, Sentence, Moment, Like, Comment, Homework
 from rest_framework.authtoken.models import Token
 from rest_framework.views import exception_handler, APIView
 from django.core.exceptions import ObjectDoesNotExist
@@ -220,7 +220,7 @@ class CommunityGroup(APIView):
                 homework = moment.homework
 
                 community_message['author'] = {}
-                community_message['author']['username'] = homework.author.user.username
+                community_message['author']['username'] = homework.author.nickname
                 community_message['author']['avatar'] = student.avatar
 
                 community_message['action'] = {}
@@ -264,6 +264,7 @@ class UploadFile(APIView):
         }
         return Response(response, status=201)
 
+
 class UserInfo(APIView):
     def get(self, request):
         student_query = Student.objects.filter(user=request.user)
@@ -296,3 +297,37 @@ class UserInfo(APIView):
         return Response(status=201)
 
 
+class NoticeInfo(APIView):
+    def get(self, request):
+        stu_query = Student.objects.filter(user=request.user)
+        if not stu_query.exists():
+            return Response(STUDENTNOTEXIST, status=403)
+
+        student = stu_query[0]
+        notice_infos = []
+        notices = Notice.objects.all()
+        if notices.exists():
+            for notice in notices:
+                notice_info = {}
+                notice_info['id'] = notice.id
+                notice_info['content'] = notice.content
+                notice_info['have_read'] = IsNoticeReaded.objects.filter(notice=notice, student=student).exists()
+                notice_info['created_time'] = notice.created_time
+                notice_infos.append(notice_info)
+
+        return Response(notice_infos)
+
+class MarkNotice(APIView):
+    def post(self, request):
+        stu_query = Student.objects.filter(user=request.user)
+        if not stu_query.exists():
+            return Response(STUDENTNOTEXIST, status=403)
+
+        notice_id = request.POST.get('id')
+        notice_query = Notice.objects.filter(id=notice_id)
+        if not notice_query.exists():
+            return Response({'msg': 'Notice not found'}, status=404)
+        notice = notice_query[0]
+        student = stu_query[0]
+        IsNoticeReaded.objects.get_or_create(notice=notice, student=student)
+        return Response(status=201)

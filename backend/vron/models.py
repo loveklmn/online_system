@@ -96,3 +96,8 @@ class Comment(models.Model):
 class Notice(models.Model):
     content = models.TextField()
     created_time = models.DateTimeField(default=timezone.now)
+
+
+class IsNoticeReaded(models.Model):
+    notice = models.ForeignKey(Notice, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
