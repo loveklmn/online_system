@@ -1,67 +1,45 @@
 <template>
-  <div class="contain">
-      <div class="translate-warp" v-if="isTranslate&&translate!==''">{{translate}}</div>
-    <swiper class="cont" circular="true" skip-hidden-item-layout="true" @change="changePage">
-    <swiper-item v-for="page in pages" :key="page.number">
-      <div class="item" v-for="(sen,index1) in page.sentences" :key="index1">
-        <image @click="clickme" class="slide-image" :src="page.picture"/>
-        <label @blur="deactivate(sen)" @click="activate(sen)" :class="sen.class" :style="sen.style"></label>
+  <div class="container">
+    <div class="main">
+      <div class="box">
+        <div class="translate-warp" v-if="isTranslate&&translate!==''">{{translate}}</div>
+        <swiper class="cont" circular="true" skip-hidden-item-layout="true" @change="changePage">
+          <swiper-item v-for="page in pages" :key="page.number">
+            <div class="item" v-for="(sen,index1) in page.sentences" :key="index1">
+              <image @click="clickme" class="slide-image" :src="page.picture" />
+              <label @click="activate(sen)" :class="sen.class" :style="sen.style"></label>
+            </div>
+          </swiper-item>
+        </swiper>
+        <div class="footer">
+          <div class="item min" style="margin-right: 126rpx;">
+            <image @click="refresh" class="btn-min" :src="refreshIconSrc" />
+            <div class="text">刷新</div>
+          </div>
+          <div class="item" style="margin-right: 126rpx;">
+            <image @click="record" class="play-btn" :src="playIconSrc" />
+            <div class="text">录音</div>
+          </div>
+          <div class="item min">
+            <image @click="setTranslate" class="btn-min" :src="translateIcon" />
+            <div class="text">翻译</div>
+          </div>
+        </div>
       </div>
-    </swiper-item>
-    </swiper>
-    <div class="footer">
-    <div class="item min" style="margin-right: 126rpx;">
-      <image @click="tapFollow" class="btn-min" src="../../static/images/book_opt_0a.png" />
-      <div class="text">词句跟读</div>
-    </div>
-    <div class="item" style="margin-right: 126rpx;">
-      <image @click="autoPlay" class="play-btn" src="../../static/images/book_opt_1a.png" />
-      <div class="text">连续听读</div>
-    </div>
-    <div class="item min">
-       <image @click="tapSpeaking" class="btn-min" src="../../static/images/book_opt_2a.png" />
-      <div class="text">口语评测</div>
-    </div>
     </div>
   </div>
-</template>
+  </template>
 <script>
 export default {
-  methods: {
-    countBox: function () {
-      this.pages.forEach(
-        function (page) {
-          page.sentences.forEach(
-            function (sen) {
-              sen.class = ''
-              sen.style = `position:absolute; top:${sen.x1}rpx; left:${sen.y1}rpx; width:${sen.x2}rpx;height:${sen.y2}rpx`
-            })
-        })
-    },
-    activate (sen) {
-      let vm = this
-      wx.playBackgroundAudio({dataUrl: 'https://sp0.baidu.com/-rM1hT4a2gU2pMbgoY3K/gettts?lan=uk&text=' + sen.content + '&spd=2&source=alading'})
-      this.pages.forEach(
-        function (page) {
-          page.sentences.forEach(
-            function (sen) {
-              sen.class = ''
-            })
-          sen.class = 'active'
-          vm.translate = sen.translated
-        })
-    },
-    changePage (e) {
-      this.translate = ''
-      this.current = e.target.current
-    }
-  },
   data () {
     return {
       id: null,
       current: 0,
       isTranslate: true,
       translate: '',
+      voice: '',
+      recordState: false,
+      playState: false,
       pages: [
         {
           number: 0,
@@ -69,17 +47,17 @@ export default {
           sentences: [
             {
               content: 'It is dark',
-              audio: 'https://sp0.baidu.com/-rM1hT4a2gU2pMbgoY3K/gettts?lan=uk&text=' + this.content + '&spd=2&source=alading',
+              audio: '',
               translated: '天黑了',
-              x1: 100,
-              y1: 100,
-              x2: 200,
-              y2: 200,
+              x1: 188,
+              y1: 114,
+              x2: 230,
+              y2: 210,
               class: ''
             },
             {
               content: 'It is dark in the park',
-              audio: 'https://sp0.baidu.com/-rM1hT4a2gU2pMbgoY3K/gettts?lan=uk&text=' + this.content + '&spd=2&source=alading',
+              audio: '',
               translated: '公园里天黑了',
               x1: 600,
               y1: 500,
@@ -95,12 +73,12 @@ export default {
           sentences: [
             {
               content: 'I do something',
-              audio: 'https://sp0.baidu.com/-rM1hT4a2gU2pMbgoY3K/gettts?lan=uk&text=' + this.content + '&spd=2&source=alading',
+              audio: '',
               translated: '公园里天黑了',
               x1: 300,
-              y1: 250,
-              x2: 220,
-              y2: 210,
+              y1: 260,
+              x2: 350,
+              y2: 332,
               class: ''
             }
           ]
@@ -111,6 +89,94 @@ export default {
   onLoad (options) {
     this.id = options.id
     this.countBox()
+  },
+  computed: {
+    playIconSrc: function () {
+      if (this.playState === true) {
+        return '../../static/images/play_play.png'
+      }
+      if (this.recordState === true) {
+        return '../../static/images/play_recording.png'
+      }
+      return '../../static/images/play_toberecord.png'
+    },
+    refreshIconSrc: function () {
+      if (this.playState === true) {
+        return '../../static/images/refresh_active.png'
+      } else {
+        return '../../static/images/refresh_default.png'
+      }
+    },
+    translateIcon: function () {
+      if (this.isTranslate === true) {
+        return '../../static/images/translate_active.png'
+      } else {
+        return '../../static/images/translate_default.png'
+      }
+    }
+  },
+  methods: {
+    countBox: function () {
+      this.pages.forEach(
+        function (page) {
+          page.sentences.forEach(
+            function (sen) {
+              sen.class = ''
+              sen.style = `position:absolute; top:${sen.x1}rpx; left:${sen.y1}rpx; width:${sen.x2 - sen.x1}rpx;height:${sen.y2 - sen.y1}rpx`
+            })
+        })
+    },
+    setTranslate () {
+      this.isTranslate = !this.isTranslate
+    },
+    activate (sen) {
+      let vm = this
+      let url = 'https://sp0.baidu.com/-rM1hT4a2gU2pMbgoY3K/gettts?lan=uk&text=' + sen.content.replace(/ /g, '%20') + '&spd=2&source=alading'
+      wx.playBackgroundAudio({dataUrl: url})
+      this.pages.forEach(
+        function (page) {
+          page.sentences.forEach(
+            function (sen) {
+              sen.class = ''
+            })
+          sen.class = 'active'
+          vm.translate = sen.translated
+        })
+    },
+    changePage (e) {
+      this.translate = ''
+      this.current = e.target.current
+      this.refresh()
+    },
+    record () {
+      let vm = this
+      if (this.playState === true) {
+        console.log('play')
+        wx.playVoice({
+          filePath: this.voice
+        })
+      } else if (this.recordState === false) {
+        this.recordState = true
+        console.log('record start')
+        wx.startRecord({
+          success: function (e) {
+            console.log(e)
+            vm.voice = e.tempFilePath
+          },
+          fail: function (e) {
+            console.log('录音失败')
+          }
+        })
+      } else {
+        this.recordState = false
+        wx.stopRecord()
+        this.playState = true
+      }
+    },
+    refresh () {
+      this.recordState = false
+      this.playState = false
+    }
   }
 }
 </script>
@@ -143,7 +209,7 @@ swiper-item label {
 }
 
 swiper-item label.active {
-    border: 2px solid #f23442;
+    border: 2px solid #5187e8;
 }
 
 .item {
@@ -152,7 +218,7 @@ swiper-item label.active {
 }
 .cont {
 width: 93%;
-height: 950rpx;
+height: 920rpx;
 padding: 25rpx;
 padding-top: 80rpx;
 font-size: 28rpx;
@@ -193,6 +259,7 @@ page {
     overflow: hidden;
     background: #fff;
     -webkit-overflow-scrolling: auto;
+    position: fixed;
 }
 
 .container {
