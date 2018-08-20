@@ -13,6 +13,8 @@ urlpatterns = [
     url(r'^community/$', views.CommunityGroup.as_view(), name='community_group'),
     url(r'^upload/$', views.UploadFile.as_view(), name='upload'),
     url(r'^userinfo/$', views.UserInfo.as_view(), name='userinfo'),
+    url(r'^notices/$', views.NoticeInfo.as_view(), name='notice_info'),
+    url(r'^notices/readed/$', views.MarkNotice.as_view(), name='notice_readed'),
     #auth
     url(r'^get-token/$', token_views.obtain_auth_token),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
