@@ -203,13 +203,17 @@ class BookEbook(APIView):
         return Response(ebook_infos)
 
 class CommunityGroup(APIView):
-    def get(self, request, level):
+
+    def get(self, request):
         community_info = []
-        moments = Moment.objects.filter(level=level)
         try:
             student = Student.objects.get(user=request.user)
         except ObjectDoesNotExist:
             return Response(STUDENTNOTEXIST, status=403)
+
+        level = student.level
+        moments = Moment.objects.filter(level=level)
+
         if moments:
             for moment in moments:
                 community_message = {}
