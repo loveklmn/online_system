@@ -6,7 +6,6 @@ from rest_framework.response import Response
 import os
 from backend import settings
 from datetime import datetime
-import json
 # Create your views here.
 
 STUDENTNOTEXIST = {'msg': 'This user have not related to a student.'}
@@ -143,7 +142,7 @@ class BookHomework(APIView):
         except ObjectDoesNotExist:
             homework = Homework.objects.create(book=book, author=student, content=' ')
         homework.content = request.POST.get('content', ' ')
-        attachments = json.loads(request.POST.get('attachments',r'{}'))
+        attachments = request.POST.get('attachments',r'{}')
         homework.images = ' '.join(attachments.get('image', ''))
         homework.videos = ' '.join(attachments.get('video', ''))
         homework.audios = ' '.join(attachments.get('audio', ''))
