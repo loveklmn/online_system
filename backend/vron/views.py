@@ -260,3 +260,36 @@ class UploadFile(APIView):
             'savepath': os.path.join('static', 'upload', file.name),
         }
         return Response(response, status=201)
+
+class UserInfo(APIView):
+    def get(self, request):
+        student_query = Student.objects.filter(user=request.user)
+        if not student_query.exists():
+            return Response(STUDENTNOTEXIST, status=404)
+
+        student = student_query[0]
+        nickname = student.nickname if student.nickname else request.user.username
+        avatar = student.avatar
+        level = student.level
+
+        userinfo = {
+            'nickname': nickname,
+            'avatar': avatar,
+            'level': level
+        }
+
+        return Response(userinfo)
+
+    def post(self, request):
+        student_query = Student.objects.filter(user=request.user)
+        if not student_query.exists():
+            return Response(STUDENTNOTEXIST, status=404)
+
+        student = student_query[0]
+        student.nickname = request.POST.get('nickname', student.nickname)
+        student.avatar = request.POST.get('avatar', student.avatar)
+
+        student.save()
+        return Response(status=201)
+
+
