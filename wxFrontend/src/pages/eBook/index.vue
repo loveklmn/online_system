@@ -1,34 +1,173 @@
 <template>
-  <div>
-    Waiting for refing to small student.
-    <div class="weui-grid__label"> bookid: {{id}} </div>
+  <div class="contain">
+      <div class="translate-warp" v-if="isTranslate&&translate!==''">{{translate}}</div>
+    <swiper class="cont" circular="true" skip-hidden-item-layout="true" @change="changePage">
+    <swiper-item v-for="page in pages" :key="page.number">
+      <div class="item" v-for="(sen,index1) in page.sentences" :key="index1">
+        <image @click="clickme" class="slide-image" :src="page.picture"/>
+        <label @blur="deactivate(sen)" @click="activate(sen)" :class="sen.class" :style="sen.style"></label>
+      </div>
+    </swiper-item>
+    </swiper>
+    <div class="footer">
+    <div class="item min" style="margin-right: 126rpx;">
+      <image @click="tapFollow" class="btn-min" src="../../static/images/book_opt_0a.png" />
+      <div class="text">词句跟读</div>
+    </div>
+    <div class="item" style="margin-right: 126rpx;">
+      <image @click="autoPlay" class="play-btn" src="../../static/images/book_opt_1a.png" />
+      <div class="text">连续听读</div>
+    </div>
+    <div class="item min">
+       <image @click="tapSpeaking" class="btn-min" src="../../static/images/book_opt_2a.png" />
+      <div class="text">口语评测</div>
+    </div>
+    </div>
   </div>
 </template>
-
 <script>
-
 export default {
-  components: {
-  },
   methods: {
-
+    countBox: function () {
+      this.pages.forEach(
+        function (page) {
+          page.sentences.forEach(
+            function (sen) {
+              sen.class = ''
+              sen.style = `position:absolute; top:${sen.x1}rpx; left:${sen.y1}rpx; width:${sen.x2}rpx;height:${sen.y2}rpx`
+            })
+        })
+    },
+    activate (sen) {
+      let vm = this
+      wx.playBackgroundAudio({dataUrl: 'https://sp0.baidu.com/-rM1hT4a2gU2pMbgoY3K/gettts?lan=uk&text=' + sen.content + '&spd=2&source=alading'})
+      this.pages.forEach(
+        function (page) {
+          page.sentences.forEach(
+            function (sen) {
+              sen.class = ''
+            })
+          sen.class = 'active'
+          vm.translate = sen.translated
+        })
+    },
+    changePage (e) {
+      this.translate = ''
+      this.current = e.target.current
+    }
   },
   data () {
     return {
-      id: null
+      id: null,
+      current: 0,
+      isTranslate: true,
+      translate: '',
+      pages: [
+        {
+          number: 0,
+          picture: 'https://i.loli.net/2018/08/20/5b7aa40cb1bab.png',
+          sentences: [
+            {
+              content: 'It is dark',
+              audio: 'https://sp0.baidu.com/-rM1hT4a2gU2pMbgoY3K/gettts?lan=uk&text=' + this.content + '&spd=2&source=alading',
+              translated: '天黑了',
+              x1: 100,
+              y1: 100,
+              x2: 200,
+              y2: 200,
+              class: ''
+            },
+            {
+              content: 'It is dark in the park',
+              audio: 'https://sp0.baidu.com/-rM1hT4a2gU2pMbgoY3K/gettts?lan=uk&text=' + this.content + '&spd=2&source=alading',
+              translated: '公园里天黑了',
+              x1: 600,
+              y1: 500,
+              x2: 200,
+              y2: 200,
+              class: ''
+            }
+          ]
+        },
+        {
+          number: 1,
+          picture: 'https://i.loli.net/2018/08/20/5b7a3c66ef933.png',
+          sentences: [
+            {
+              content: 'I do something',
+              audio: 'https://sp0.baidu.com/-rM1hT4a2gU2pMbgoY3K/gettts?lan=uk&text=' + this.content + '&spd=2&source=alading',
+              translated: '公园里天黑了',
+              x1: 300,
+              y1: 250,
+              x2: 220,
+              y2: 210,
+              class: ''
+            }
+          ]
+        }
+      ]
     }
-  },
-
-  created () {
-
   },
   onLoad (options) {
     this.id = options.id
+    this.countBox()
   }
 }
 </script>
 
 <style scoped>
+.contain{
+  background-color: #f7fbfe;
+}
+
+swiper {
+    width: 100%;
+    height: 100%;
+}
+
+swiper-item {
+    position: relative;
+    height: 100%;
+}
+
+.slide-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+swiper-item label {
+    position: absolute;
+    box-sizing: border-box;
+    border-radius: 3px;
+}
+
+swiper-item label.active {
+    border: 2px solid #f23442;
+}
+
+.item {
+  width: 100%;
+  height: 100%;
+}
+.cont {
+width: 93%;
+height: 950rpx;
+padding: 25rpx;
+padding-top: 80rpx;
+font-size: 28rpx;
+}
+
+.banner {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.slide-image {
+  width: 100%;
+  height: auto;
+}
 .weui-grid__icon {
   display: block;
   width: 170rpx;
@@ -37,6 +176,7 @@ export default {
 }
 
 .weui-grid__label {
+  padding-top: 50rpx;
   margin-top: 5px;
   display: block;
   text-align: center;
@@ -45,5 +185,196 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+page {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #fff;
+    -webkit-overflow-scrolling: auto;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+}
+
+.main {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 0 8px 86px;
+}
+
+.main .box {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.main .box .locked {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+
+swiper {
+    width: 100%;
+    height: 100%;
+}
+
+swiper-item {
+    position: relative;
+}
+
+.slide-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+swiper-item label {
+    position: absolute;
+    box-sizing: border-box;
+    border-radius: 3px;
+}
+
+swiper-item label.active {
+    border: 2px solid #f23442;
+}
+
+.footer {
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 0 104rpx;
+    height: 82px;
+    background: url('https://ddbcdn.kingsunedu.com/wx/v2/book_bg.png') center top no-repeat;
+    background-size: cover;
+    font-size: 24rpx;
+    color: #888;
+}
+
+.footer .item {
+    display: inline-block;
+    width: 97rpx;
+    height: 97rpx;
+    padding-top: 8px;
+    text-align: center;
+}
+
+.footer .item .text {
+    padding-top: 4px;
+}
+
+.play-btn {
+    width: 97rpx;
+    height: 97rpx;
+    vertical-align: top;
+}
+
+.btn-min {
+    width: 68rpx;
+    height: 68rpx;
+    vertical-align: top;
+}
+
+.catalog-btn {
+    position: fixed;
+    top: 40rpx;
+    right: 0;
+    width: 66rpx;
+    height: 101rpx;
+}
+
+.catalog-btn image {
+    width: 100%;
+    height: 100%;
+}
+
+.mask {
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.6);
+}
+
+.rightSlide .wrapper {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 80%;
+    height: 100%;
+    overflow: auto;
+    background-color: #fff;
+    transform: translate(100%,0);
+    backface-visibility: hidden;
+    z-index: 101;
+    transition: transform 0.3s;
+    transition: transform 0.3s,-webkit-transform 0.3s;
+}
+
+.rightSlide .toggle {
+    transform: translate(0,0);
+}
+
+.rightSlide .wrapper .bd {
+    padding: 50rpx 27rpx 0 40rpx;
+    position: relative;
+}
+
+.rightSlide .wrapper .bd .item {
+    margin-bottom: 20rpx;
+}
+
+.rightSlide .wrapper .bd .sub {
+    padding: 0 0 0 20rpx;
+    line-height: 86rpx;
+    font-size: 28rpx;
+}
+
+.rightSlide .locked .h3 {
+    padding-right: 36rpx;
+    background: url('https://ddbcdn.kingsunedu.com/wx/v2/ic_locked.png') right top no-repeat;
+    background-size: 26rpx 34rpx;
+}
+
+.rightSlide .locked:first-child .h3,.rightSlide .item:first-child .h3 {
+    background: none;
+    padding-right: 145rpx;
+}
+
+.rightSlide .translate {
+    position: absolute;
+    right: 27rpx;
+    top: 40rpx;
+    width: 139rpx;
+    height: 49rpx;
+}
+
+.rightSlide .translate image {
+    width: 100%;
+    height: 100%;
+}
+
+.translate-warp {
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    font-size: 28rpx;
+    padding: 10rpx 30rpx;
 }
 </style>
