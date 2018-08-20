@@ -7,7 +7,6 @@ import os
 from backend import settings
 from datetime import datetime
 import json
-# Create your views here.
 
 STUDENTNOTEXIST = {'msg': 'This user have not related to a student.'}
 BOOKNOTFOUND = {'msg': 'Book not found'}

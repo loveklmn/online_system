@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from rest_framework.authtoken.models import Token
-from datetime import datetime
+from django.utils import timezone
 
 @receiver(post_save, sender=User)
 def create_token(sender, instance=None, created=False, **kwargs):
@@ -38,7 +38,7 @@ class Progress(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     punched = models.BooleanField(default=False)
     current_page = models.IntegerField()
-    latest_read_time = models.DateTimeField(default=datetime.now)
+    latest_read_time = models.DateTimeField(default=timezone.now)
 
 
 class Page(models.Model):
@@ -68,7 +68,7 @@ class Word(models.Model):
 class Homework(models.Model):
     author = models.ForeignKey(Student, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    created_time = models.DateTimeField(default=datetime.now)
+    created_time = models.DateTimeField(default=timezone.now)
     content = models.TextField()
     images = models.CharField(max_length=1000, default="")
     videos = models.CharField(max_length=1000, default="")
@@ -76,7 +76,7 @@ class Homework(models.Model):
 
 class Moment(models.Model):
     homework = models.ForeignKey(Homework, on_delete=models.CASCADE)
-    created_time = models.DateTimeField(default=datetime.now)
+    created_time = models.DateTimeField(default=timezone.now)
     vote_count = models.IntegerField(default=0)
     level = models.IntegerField()
 
@@ -95,4 +95,4 @@ class Comment(models.Model):
 
 class Notice(models.Model):
     content = models.TextField()
-    created_time = models.DateTimeField(default=datetime.now)
+    created_time = models.DateTimeField(default=timezone.now)
