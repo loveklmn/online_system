@@ -26,8 +26,19 @@ export function formatYMD (stringDate) {
   return `${year}年${month}月${date}日`
 }
 
+export function formatFullTime (stringDate) {
+  let time = new Date(stringDate)
+  let year = time.getFullYear()
+  let month = time.getMonth() + 1
+  let date = time.getDate()
+  let hour = time.getHours()
+  let minute = time.getMinutes()
+  return `${year}年${month}月${date}日 ${hour}小时${minute}分`
+}
+
 export default {
   formatNumber,
   formatTime,
-  formatYMD
+  formatYMD,
+  formatFullTime
 }
