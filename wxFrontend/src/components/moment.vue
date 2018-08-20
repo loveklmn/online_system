@@ -6,7 +6,7 @@
       <div class="user-info">
         <h3 class="user-name" v-if="x.author">{{x.author.username}}</h3>
       </div>
-      <span class="user-time">{{x.created_time}}</span>
+      <span class="user-time">{{getTime}}</span>
     </div>
 
     <div class="list-header">
@@ -18,13 +18,13 @@
       <div  class="content-img">
         <ul  class="content-img-ul clear-fix">
           <li
-            v-for="y in x.attachments.image"
+            v-for="y in x.attactments.image"
             :key="index"
             class="img-li-default"
             :class= "imgClass">
             <img
               class="img-div"
-              :src="y"
+              :src="'http://101.200.62.189:8000/' + y"
               ></img>
           </li>
         </ul>
@@ -33,7 +33,7 @@
 
     <div class="list-footer">
       <div class="footer-tag">
-        <img class="footer-icon" :src="getSrc"></img>
+        <img class="footer-icon" :src="getIconSrc"></img>
         <span class="tag-style">{{x.vote_count}}</span>
       </div>  
       <div class="footer-tag">
@@ -53,14 +53,13 @@ export default {
   },
   props: ['x'],
   computed: {
-    getSrc () {
+    getIconSrc () {
       let path = '/static/images/friendCircle/'
       let pic = this.x.action.liked ? 'heart-active.png' : 'heart-default.png'
-      console.log(path + pic)
       return path + pic
     },
     imgClass () {
-      let size = this.x.attachments.image.length
+      let size = this.x.attactments.image.length
       let clazz = ''
       switch (size) {
         case 1:
@@ -75,6 +74,13 @@ export default {
           break
       }
       return clazz
+    },
+    getTime () {
+      let time = new Date(this.x.created_time)
+      let year = time.getFullYear()
+      let month = time.getMonth()
+      let date = time.getDate()
+      return `${year}年${month + 1}月${date}日`
     }
   },
   mounted () {
@@ -100,7 +106,7 @@ a {
 }
 
 .content .list-footer {
-    width: 32%;
+    width: 40%;
     margin-bottom: 35rpx;
     color: #cdcdcd;
     display: flex;
@@ -116,11 +122,10 @@ a {
 }
 
 .content .list-footer .footer-tag .tag-style {
-    margin-left: 5rpx;
+    margin-left: 15rpx;
     margin-top: 5rpx;
     font-size: 35rpx;
     color: black;
-    float: right;
 }
 
 .avatar {
