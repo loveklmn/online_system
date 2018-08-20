@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^books/(\d+)/ebook/$', views.BookEbook.as_view(), name='ebook'),
     url(r'^books/(\d+)/progress/$', views.BookProgress.as_view(), name='progress'),
     url(r'^books/(\d+)/homework/$', views.BookHomework.as_view(), name='homework'),
-    url(r'^community/(\d+)/$', views.CommunityGroup.as_view(), name='community_group'),
+    url(r'^community/$', views.CommunityGroup.as_view(), name='community_group'),
     url(r'^upload/$', views.UploadFile.as_view(), name='upload'),
     url(r'^userinfo/$', views.UserInfo.as_view(), name='userinfo'),
     #auth
