@@ -53,23 +53,7 @@ export default [
     }
   },
   {
-    path: '/join',
-    name: 'join',
-    component: Main,
-    children: [
-      {
-        path: 'join_page',
-        name: 'join_page',
-        meta: {
-          icon: '_qq',
-          title: '管理员交流群'
-        },
-        component: () => import('@/view/join-page.vue')
-      }
-    ]
-  },
-  {
-    path: '/mange_user_page',
+    path: '/manage_user_page',
     name: 'manageUser',
     meta: {
       icon: 'logo-buffer',
@@ -84,7 +68,7 @@ export default [
           icon: 'md-trending-up',
           title: '新建账户'
         },
-        component: () => import('@/view/components/count-to/count-to.vue')
+        component: () => import('@/view/new-accounts/new-accounts.vue')
       },
       {
         path: 'modify_user_page',
@@ -150,6 +134,7 @@ export default [
           title: '阅读拓展导入'
         },
         component: () => import('@/view/update/update-paste.vue')
+        // component: () => import('@/view/assignment/assignment.vue')
       },
       {
         path: 'game_import',
@@ -234,5 +219,47 @@ export default [
       hideInMenu: true
     },
     component: () => import('@/view/error-page/404.vue')
+  },
+  {
+    path: '/reviewInfo',
+    name: 'review-info',
+    component: Main,
+    meta: {
+      hideInMenu: true
+    }
+  },
+  {
+    path: '/generate_accounts',
+    name: 'generateAccounts',
+    component: Main,
+    meta: {
+      hideInMenu: true
+    },
+    children: [
+      {
+        path: 'fill_generate_info',
+        name: 'fill_info',
+        meta: {
+          title: '完善信息',
+        },
+        component: () => import('@/view/new-accounts/new-accounts.vue')
+      },
+      {
+        path: 'generate_accounts',
+        name: 'generate',
+        meta: {
+          title: '确认生成'
+        },
+        component: () => import('@/view/new-accounts/generate-accounts.vue')
+      },
+      {
+        path: 'generate_result',
+        name: 'generate_result',
+        meta: {
+          title: '生成结果'
+        },
+        component: () => import('@/view/new-accounts/generate-result.vue')
+      }
+    ]
   }
 ]
