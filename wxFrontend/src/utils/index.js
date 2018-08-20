@@ -18,7 +18,16 @@ export function formatTime (date) {
   return `${t1} ${t2}`
 }
 
+export function formatYMD (stringDate) {
+  let time = new Date(stringDate)
+  let year = time.getFullYear()
+  let month = time.getMonth() + 1
+  let date = time.getDate()
+  return `${year}年${month}月${date}日`
+}
+
 export default {
   formatNumber,
-  formatTime
+  formatTime,
+  formatYMD
 }

@@ -47,6 +47,7 @@
 </template>
  
 <script>
+import { formatYMD } from '@/utils/index'
 export default {
   data () {
     return {
@@ -78,11 +79,7 @@ export default {
       return clazz
     },
     getTime () {
-      let time = new Date(this.x.created_time)
-      let year = time.getFullYear()
-      let month = time.getMonth()
-      let date = time.getDate()
-      return `${year}年${month + 1}月${date}日`
+      return formatYMD(this.x.created_time)
     }
   },
   methods: {
