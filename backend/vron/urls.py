@@ -16,6 +16,8 @@ urlpatterns = [
     url(r'^notices/$', views.NoticeInfo.as_view(), name='notice_info'),
     url(r'^notices/readed/$', views.MarkNotice.as_view(), name='notice_readed'),
     url(r'^students/$', views.StudentList.as_view(), name='student_list'),
+    url(r'^generatekey/$', views.KeyGenerator.as_view(), name='key_generator'),
     #auth
+    url(r'^register/$', views.register_view, name='register'),
     url(r'^get-token/$', token_views.obtain_auth_token),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
