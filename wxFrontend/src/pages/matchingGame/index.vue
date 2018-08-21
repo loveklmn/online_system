@@ -59,40 +59,42 @@ export default {
   },
   methods: {
     select: function (id) {
+      console.log(id, ' ', this.previd)
       if (!this.get_pic(id).inmatch) {
         this.get_pic(id).selected = true
       }
       if (this.previd === 0) { // 之前没有选中按钮
         this.previd = id
-        // debugger
-        // console.log(this)
         return
       }
-      console.log('???')
       if (this.same_side(id)) { //  之前选中的按钮在同一侧
         this.unselect(this.previd)
         this.previd = id
         return
       }
       // 之前选中的按钮在对面一侧，分为两种情况：匹配和不匹配
-      if (this.match(id)) { // 若匹配
-        this.matched_num += 1
-        this.set_inmatch(id)
-        this.set_inmatch(this.previd)
-        this.draw_correct_line(id, this.previd)
-        this.slowly_hide_canvas()
-        this.make_correct_sound()
-        this.unselect_both(id, this.previd)
-        if (this.matched_num === this.num) {
-          this.draw_all_correct_line()
-          this.make_all_correct_sound()
+      setTimeout(() => {
+        if (this.match(id)) { // 若匹配
+          this.matched_num += 1
+          this.draw_correct_line(id, this.previd)
+          this.set_inmatch(id)
+          this.set_inmatch(this.previd)
+          this.previd = 0
+          this.make_correct_sound()
+          // this.unselect_both(id, this.previd)
+          if (this.matched_num === this.num) {
+            this.draw_all_correct_line()
+            this.make_all_correct_sound()
+          } else {
+            this.slowly_hide_canvas()
+          }
+        } else { // 若不匹配
+          this.draw_wrong_line(id, this.previd)
+          this.make_wrong_sound()
+          this.slowly_hide_canvas()
+          this.unselect_both(id, this.previd)
         }
-      } else { // 若不匹配
-        this.draw_wrong_line(id, this.previd)
-        this.make_wrong_sound()
-        this.slowly_hide_canvas()
-        this.unselect_both(id, this.previd)
-      }
+      }, 300)
     },
     unselect_both: function (id, previd) {
       let that = this
@@ -118,7 +120,9 @@ export default {
     },
     unselect: function (id) {
       console.log(`${id} is unselected`)
-      this.get_pic(id).selected = false
+      if (!this.get_pic(this.previd).inmatch) {
+        this.get_pic(id).selected = false
+      }
     },
     set_inmatch: function (id) {
       this.get_pic(id).inmatch = true

@@ -41,12 +41,18 @@ export default {
 .pic_selected {
   width: 180rpx;
   height: 180rpx;
-  margin: auto;
-  padding: auto;
+  margin: 10rpx;
+  padding: 0;
+  float: center;
+  border: 2rpx solid #dddddd;
+  border-radius: 15rpx;
+  box-shadow: 8rpx 2rpx 2rpx #cccccc;
 }
 .pic_block {
   width: 100%;
-  margin: auto;
-  padding: auto;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-around;
 }
 </style>
