@@ -67,10 +67,15 @@ export default {
     },
     returnLast () {
       this.$router.push({
-        name: 'fill_info'
+        name: 'fill_info',
+        query: {
+          level: this.level,
+          amount: this.amount
+        }
         // save message
       })
     }
   }
 }
 </script>
+

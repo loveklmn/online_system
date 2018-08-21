@@ -41,6 +41,12 @@ export default {
       current: 0
     }
   },
+  created () {
+    if (this.$route.query) {
+      this.level = this.$route.query.level
+      this.amount = this.$route.query.amount
+    }
+  },
   methods: {
     nextPage () {
       this.$router.push({
