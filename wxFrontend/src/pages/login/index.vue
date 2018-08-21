@@ -44,21 +44,12 @@ export default {
     },
     login () {
       console.log('requests start')
-      request.post('get-token/', {
-        username: this.username,
-        password: this.password
-      }).then((res) => {
-        console.log(res)
-        if (res.statusCode === 200 && res.data.token) {
-          console.log(res)
-          this.$store.commit('setToken', res.data.token)
-          wx.switchTab({url: '../../pages/index/main'})
-        } else {
-          this.msg = '用户名或密码错误'
-          this.setVisible()
-        }
+      request.login(this.username, this.password).then(() => {
+        console.log('登陆成功')
+        wx.switchTab({url: '../../pages/index/main'})
       }).catch((err) => {
-        this.msg = '网络错误'
+        this.msg = err.message
+        this.setVisible()
         console.log(err)
       })
     }
@@ -83,7 +74,7 @@ page {
   padding: 0;
   box-sizing: border-box;
   background-color: #f2f2f2
-} 
+}
 
 .login-icon {
   flex: none;
@@ -109,7 +100,7 @@ page {
   width: 14px;
   height: 14px
 }
- 
+
 .loginLab {
   margin: 15px 15px 15px 10px;
   color: #545454;
@@ -125,7 +116,7 @@ page {
   color: #cccccc;
   font-size: 14px
 }
- 
+
 .line {
   width: 100%;
   height: 1px;
@@ -141,7 +132,7 @@ page {
   margin-bottom: 0px;
   padding-bottom: 0px;
 }
- 
+
 .loginBtn {
   width: 80%;
   margin-top: 35px;

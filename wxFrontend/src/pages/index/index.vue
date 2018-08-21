@@ -75,7 +75,6 @@ export default {
       .get('books/')
       .then(res => {
         if (res.data.length > 0) {
-          console.log(res)
           res.data.forEach((book) => {
             book.percent = this.progress(book)
           })
@@ -86,7 +85,7 @@ export default {
         }
       })
       .catch(err => {
-        console.log(err)
+        console.log('请求失败: ' + err.message)
       })
   },
   methods: {
