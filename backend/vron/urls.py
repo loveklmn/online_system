@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^userinfo/$', views.UserInfo.as_view(), name='userinfo'),
     url(r'^notices/$', views.NoticeInfo.as_view(), name='notice_info'),
     url(r'^notices/readed/$', views.MarkNotice.as_view(), name='notice_readed'),
+    url(r'^students/$', views.StudentList.as_view(), name='student_list'),
     #auth
     url(r'^get-token/$', token_views.obtain_auth_token),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
