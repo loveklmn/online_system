@@ -1,28 +1,26 @@
 stages:
-    - lint
+    - back_lint
+    - front_lint
 
-wx_lint:
-    image: node:8.11.3
-    stage: lint
-    script:
-        - cd ./wxFrontend
-        - npm install
-        - npm run lint
-
-admin_lint:
-    image: node:8.11.3
-    stage: lint
-    script:
-        - cd ./adminFrontend
-        - npm install
-        - npm run lint
-
-backend_lint:
-    image: continuumio/miniconda3 
-    stage: lint
+blint:
+    image: continuumio/miniconda3
+    stage: back_lint 
     script:
         - cd ./backend
         - conda env create -n super -f environment.yml
         - echo 'conda install ok'
         - source activate super
         - pylint --disable=R,C --load-plugins pylint_django backend vron
+
+
+flint:
+    image: node:8.11.3
+    stage: front_lint 
+    script:
+        - cd ./wxFrontend
+        - npm install
+        - npm run lint
+        - cd ../adminFrontend
+        - npm install
+        - npm run lint
+ 
