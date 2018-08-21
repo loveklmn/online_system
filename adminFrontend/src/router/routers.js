@@ -133,8 +133,7 @@ export default [
           icon: 'md-clipboard',
           title: '阅读拓展导入'
         },
-        component: () => import('@/view/update/update-paste.vue')
-        // component: () => import('@/view/assignment/assignment.vue')
+        component: () => import('@/view/assignment/assignment.vue')
       },
       {
         path: 'game_import',
