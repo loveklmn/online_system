@@ -331,3 +331,21 @@ class MarkNotice(APIView):
         student = stu_query[0]
         IsNoticeReaded.objects.get_or_create(notice=notice, student=student)
         return Response(status=201)
+
+class StudentList(APIView):
+    def get(self, request):
+        stu_query = Student.objects.filter(user=request.user)
+        if stu_query.exists():
+            return Response({'msg': 'You don\'t have access.'}, status=403)
+
+        student_list = []
+        students_query = Student.objects.all()
+        if students_query.exists():
+            for student in students_query:
+                info = {}
+                info['username'] = student.user.username
+                info['level'] = student.level
+                info['nickname'] = student.nickname
+                info['score'] = student.score
+                student_list.append(info)
+        return Response(student_list)
