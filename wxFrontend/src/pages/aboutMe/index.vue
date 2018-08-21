@@ -4,7 +4,7 @@
     <i-panel class="cell-panel-demo" title="账户">
       <i-cell-group>
         <i-cell title="修改密码" isLink url="/pages/changePassword/main" />
-        <i-cell title="消息" isLink url="/pages/message/main"/>
+        <i-cell title="消息" isLink url="/pages/notice/main"/>
       </i-cell-group>
     </i-panel>
 
