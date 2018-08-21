@@ -25,6 +25,7 @@
             <img
               class="img-div"
               :src="'http://101.200.62.189:8000/' + y"
+              @click="predivImage"
               ></img>
           </li>
         </ul>
@@ -49,6 +50,7 @@
 export default {
   data () {
     return {
+      previewImages: []
     }
   },
   props: ['x'],
@@ -83,7 +85,22 @@ export default {
       return `${year}年${month + 1}月${date}日`
     }
   },
+  methods: {
+    getFullUrl (y) {
+      return 'http://101.200.62.189:8000/' + y
+    },
+    predivImage (e) {
+      console.log(e)
+      wx.previewImage({
+        current: e.currentTarget.id, // 当前显示图片的http链接
+        urls: this.previewImages // 需要预览的图片http链接列表
+      })
+    }
+  },
   mounted () {
+    this.x.attactments.image.forEach(element => {
+      this.previewImages.push(this.getFullUrl(element))
+    })
     // console.log(this.x.attachments.pic_urls)
   }
 }
