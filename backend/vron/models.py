@@ -101,3 +101,7 @@ class Notice(models.Model):
 class IsNoticeReaded(models.Model):
     notice = models.ForeignKey(Notice, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
+
+class ActiveKey(models.Model):
+    level = models.IntegerField()
+    key = models.CharField(max_length=18)

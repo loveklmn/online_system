@@ -1,4 +1,5 @@
-from vron.models import Notice, IsNoticeReaded, Student, Book, Progress, Word, Page, Sentence, Moment, Like, Comment, Homework
+from vron.models import Notice, IsNoticeReaded, Student, Book, Progress, Word, Page, Sentence, Moment, Like, Comment, Homework, ActiveKey
+from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.views import exception_handler, APIView
 from django.core.exceptions import ObjectDoesNotExist
@@ -6,7 +7,9 @@ from rest_framework.response import Response
 import os
 from backend import settings
 from datetime import datetime
-import json
+import json, random, string
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 STUDENTNOTEXIST = {'msg': 'This user have not related to a student.'}
 BOOKNOTFOUND = {'msg': 'Book not found'}
@@ -332,6 +335,7 @@ class MarkNotice(APIView):
         IsNoticeReaded.objects.get_or_create(notice=notice, student=student)
         return Response(status=201)
 
+
 class StudentList(APIView):
     def get(self, request):
         stu_query = Student.objects.filter(user=request.user)
@@ -349,3 +353,44 @@ class StudentList(APIView):
                 info['score'] = student.score
                 student_list.append(info)
         return Response(student_list)
+
+
+class KeyGenerator(APIView):
+    def post(self, request):
+        level = int(request.POST.get('level'))
+        count = int(request.POST.get('count'))
+        keys = []
+
+        for _ in range(count):
+            key = self.getRandomKey()
+            while ActiveKey.objects.filter(key=key).exists():
+                key = self.getRandomKey()
+            ActiveKey.objects.create(level=level, key=key)
+            keys.append(key)
+
+        return Response(keys, status=201)
+
+    def getRandomKey(self, size=18):
+        alphas = string.ascii_uppercase + string.ascii_lowercase
+        return ''.join(random.choice(alphas) for _ in range(size))
+
+
+@csrf_exempt
+def register_view(request):
+    if request.method == 'GET':
+        return JsonResponse({'msg': 'Method "GET" not allowed.'}, status=405)
+
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    key = request.POST.get('key')
+    key_query = ActiveKey.objects.filter(key=key)
+    if not key_query.exists():
+        return JsonResponse({'msg': '激活码无效'}, status=403)
+
+    if User.objects.filter(username=username).exists():
+        return JsonResponse({'msg': '用户名已被注册'}, status=403)
+    level = key_query[0].level
+    key_query.delete()
+    user = User.objects.create_user(username=username, password=password)
+    Student.objects.create(user=user, level=level, avatar='')
+    return JsonResponse({'msg': '注册成功'}, status=201)
