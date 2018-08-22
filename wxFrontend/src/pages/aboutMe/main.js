@@ -12,7 +12,8 @@ export default {
       'i-cell': '../../static/iview/cell/index',
       'i-panel': '../../static/iview/panel/index',
       'i-card': '../../static/iview/card/index',
-      'i-icon': '../../static/iview/icon/index'
+      'i-icon': '../../static/iview/icon/index',
+      'i-button': '../../static/iview/button/index'
     }
   }
 }

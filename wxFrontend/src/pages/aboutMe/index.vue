@@ -11,6 +11,9 @@
     <i-panel class="cell-panel-demo" title="关于">
       <i-cell title="关于弗恩英语" is-link url="/pages/aboutVron/main" />
     </i-panel>
+
+    <i-button class="sign-out-button" @click="readyToExit" type="error">退出</i-button>
+
   </div>
 </template>
 
@@ -31,6 +34,20 @@ export default {
   methods: {
     navToUserinfo () {
       wx.navigateTo({url: '/pages/userinfo/main'})
+    },
+    readyToExit () {
+      wx.showModal({
+        title: '您确认退出吗?',
+        content: '您的账户将会被注销',
+        confirmText: '确定',
+        cancelText: '取消',
+        success: function (res) {
+          if (res.confirm) {
+            wx.clearStorage()
+            wx.redirectTo({ url: '/pages/login/main' })
+          }
+        }
+      })
     }
   },
   onShow () {
@@ -47,4 +64,7 @@ export default {
 }
 </script>
 <style scoped>
+.sign-out-button {
+  padding-top: 100rpx;
+}
 </style>
