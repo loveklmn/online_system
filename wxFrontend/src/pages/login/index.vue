@@ -18,7 +18,7 @@
       <input class="inputText" v-model='password' type="password" placeholder="请输入密码" />
     </div>
   </div>
-  <button class="loginBtn" type="primary" @click="login">确定</button>
+  <button class="loginBtn" @click="login">确定</button>
  </div>
 </template>
 
@@ -136,5 +136,7 @@ page {
 .loginBtn {
   width: 80%;
   margin-top: 35px;
+  color: white;
+  background-color:#f28d01;
 }
 </style>

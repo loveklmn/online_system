@@ -142,7 +142,7 @@ page,
 }
 
 .weui-navbar__item.weui-bar__item_on {
-  color: #1aad19;
+  color: #5187e8;
 }
 
 .weui-navbar__slider {
