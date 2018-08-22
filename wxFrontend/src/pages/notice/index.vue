@@ -1,10 +1,7 @@
 <template>
   <div>
     <div
-      v-for="notice in reverse"
-      :key="index"
-      class="card"
-      @click="read(notice)">
+      v-for="(notice,index) in reverse" :key="index" class="card" @click="read(notice)">
       <i-card :title="notice.title">
         <view slot="content">{{notice.content}}</view>
       </i-card>
