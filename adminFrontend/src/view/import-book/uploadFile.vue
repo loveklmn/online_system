@@ -15,7 +15,7 @@
               </RadioGroup>
           </FormItem>
           <FormItem label="书目标题" prop="title">
-              <Input v-model="currentBook.title" placeholder="书目标题"></Input>
+              <Input v-model="currentBook.title" placeholder="书目标题" />
           </FormItem>
           <FormItem label="封面图片" prop="cover">
             <Upload
@@ -68,13 +68,13 @@
       <Card title="上传预览">
         <Form :model="currentBook" label-position="top">
           <FormItem label="上传级别">
-            <Input v-model="currentBook.level" disabled></Input>
+            <Input v-model="currentBook.level" disabled />
           </FormItem>
           <FormItem label="所属类别">
-            <Input v-model="currentBook.type" disabled></Input>
+            <Input v-model="currentBook.type" disabled />
           </FormItem>
           <FormItem label="书目标题">
-            <Input v-model="currentBook.title" disabled></Input>
+            <Input v-model="currentBook.title" disabled />
           </FormItem>
           <FormItem label="上传文件列表">
             <Table height="200" :columns="titleList" :data="fileList"></Table>
