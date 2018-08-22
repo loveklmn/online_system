@@ -193,7 +193,7 @@ export default {
       for (let value = 1; value <= this.num; value += 1) {
         let id1 = this.get_id_of_value(-value, this.leftpics)
         let id2 = this.get_id_of_value(value, this.rightpics)
-        console.log(`value 1 : left:${id1} right:${id2}`)
+        console.log(`value ${value} : left:${id1} right:${id2}`)
         this.context_action(context, id1, id2)
       }
       wx.drawCanvas({
@@ -248,6 +248,8 @@ page {
   position: absolute;
   width: 100%;
   height: 100%;
+  left: 0;
+  top: 0;
 }
 
 .hidden {
