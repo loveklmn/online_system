@@ -54,7 +54,7 @@ export default [
   },
   {
     path: '/manage_user_page',
-    name: 'manageUser',
+    name: 'manage_user',
     meta: {
       icon: 'logo-buffer',
       title: '用户权限管理'
@@ -63,7 +63,7 @@ export default [
     children: [
       {
         path: 'create_user_page',
-        name: 'createUser',
+        name: 'create_user',
         meta: {
           icon: 'md-trending-up',
           title: '新建账户'
@@ -72,7 +72,7 @@ export default [
       },
       {
         path: 'modify_user_page',
-        name: 'modifyUser',
+        name: 'modify_user',
         meta: {
           icon: 'md-pause',
           title: '修改账户权限'
@@ -81,7 +81,7 @@ export default [
       },
       {
         path: 'modify_password_page',
-        name: 'modifyPassword',
+        name: 'modify_password',
         meta: {
           icon: 'logo-editor',
           title: '修改账户密码'
@@ -106,11 +106,11 @@ export default [
           icon: 'ios-document',
           title: '创建新书'
         },
-        component: () => import('@/view/importBook/uploadFile.vue')
+        component: () => import('@/view/import-book/uploadFile.vue')
       },
       {
-        path: 'parent_child_instruct',
-        name: 'parent_child_instruct',
+        path: 'import_guidance',
+        name: 'import_guidance',
         meta: {
           icon: 'md-clipboard',
           title: '亲子阅读指导导入'
@@ -118,8 +118,8 @@ export default [
         component: () => import('@/view/update/update-paste.vue')
       },
       {
-        path: 'ebook-import',
-        name: 'ebook_import',
+        path: 'import_ebook',
+        name: 'import_ebook',
         meta: {
           icon: 'md-clipboard',
           title: 'E_book 导入'
@@ -127,17 +127,18 @@ export default [
         component: () => import('@/view/update/update-paste.vue')
       },
       {
-        path: 'exercise_import',
-        name: 'exercise_import',
+        path: 'import_assignment',
+        name: 'import_assignment',
         meta: {
           icon: 'md-clipboard',
           title: '阅读拓展导入'
         },
-        component: () => import('@/view/assignment/assignment.vue')
+        component: () => import('@/view/update/update-paste.vue')
+        // component: () => import('@/view/assignment/assignment.vue')
       },
       {
-        path: 'game_import',
-        name: 'game_import',
+        path: 'import_game',
+        name: 'import_game',
         meta: {
           icon: 'md-clipboard',
           title: '游戏素材导入'
@@ -147,8 +148,8 @@ export default [
     ]
   },
   {
-    path: 'data_static',
-    name: 'data_static',
+    path: 'student_statistics',
+    name: 'student_statistics',
     meta: {
       icon: 'md-clipboard',
       title: '学生数据统计'
@@ -167,8 +168,8 @@ export default [
     ]
   },
   {
-    path: 'message_manage',
-    name: 'message_manage',
+    path: 'manage_message',
+    name: 'manage_message',
     meta: {
       icon: 'md-clipboard',
       title: '社群消息管理'
@@ -229,7 +230,7 @@ export default [
   },
   {
     path: '/generate_accounts',
-    name: 'generateAccounts',
+    name: 'generate_accounts',
     component: Main,
     meta: {
       hideInMenu: true
@@ -237,7 +238,7 @@ export default [
     children: [
       {
         path: 'fill_generate_info',
-        name: 'fill_info',
+        name: 'fill_generate_info',
         meta: {
           title: '完善信息',
         },
