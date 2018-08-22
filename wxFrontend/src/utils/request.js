@@ -63,6 +63,7 @@ class Request {
       wx.uploadFile({
         url: vm.baseURL + 'upload/',
         filePath: file,
+        header: vm.header,
         name: 'file',
         success (res) {
           let data = JSON.parse(res.data)
