@@ -23,7 +23,7 @@
                 </Header>
                 <Content :style="{padding: '0 16px 16px'}">
                     <Card>
-                        <pageimport class="pageimport">Content</pageimport>
+                        <pageimport class="pageimport" :page="curpage">Content</pageimport>
                     </Card>
                 </Content>
             </Layout>
@@ -39,7 +39,8 @@ export default {
         'https://picsum.photos/200/300/?image=1',
         'https://picsum.photos/200/300/?image=2',
         'https://picsum.photos/200/300/?image=3'
-      ]
+      ],
+      curpage: null
     }
   },
   computed: {
@@ -47,6 +48,7 @@ export default {
   methods: {
     test: function (e) {
       console.log(e)
+      this.curpage = e
     }
   },
   components: {
