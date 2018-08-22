@@ -2,7 +2,7 @@ from vron.models import Notice, IsNoticeReaded, Student, Book, Progress, Word, P
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.views import exception_handler, APIView
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from rest_framework.response import Response
 import os
 from backend import settings
@@ -14,13 +14,42 @@ from django.views.decorators.csrf import csrf_exempt
 STUDENTNOTEXIST = {'msg': 'This user have not related to a student.'}
 BOOKNOTFOUND = {'msg': 'Book not found'}
 
+
+def manager_required(func):
+    '''
+    只能装饰APIView类post或get成员函数
+    '''
+    def warpper(*args, **kwargs):
+        request = args[1]
+        stu_query = Student.objects.filter(user=request.user)
+        if stu_query.exists():
+            raise PermissionDenied()
+        else:
+            func(*args, **kwargs)
+    return warpper
+
+
+def stu_required(func):
+    '''
+    只能装饰APIView类post或get成员函数
+    '''
+    def warpper(*args, **kwargs):
+        request = args[1]
+        stu_query = Student.objects.filter(user=request.user)
+        if not stu_query.exists():
+            raise PermissionDenied()
+        else:
+            func(*args, **kwargs)
+    return warpper
+
+
 def vron_exception_handler(exc, context):
     response = exception_handler(exc, context)
 
     if response is not None:
         if response.data.get('detail'):
             response.data['msg'] = response.data['detail']
-
+            del response.data['detail']
     return response
 
 
@@ -77,6 +106,14 @@ class BookList(APIView):
                     bookinfos, key=lambda x: x['progress']['latest_read_time'], reverse=True)
             return Response(bookinfos)
 
+    @manager_required
+    def post(self, request):
+        '''
+        Add or update book info
+        '''
+        pass
+
+
 
 class BookGuidance(APIView):
 
@@ -105,15 +142,12 @@ class BookGuidance(APIView):
 
 class BookHomework(APIView):
 
+    @stu_required
     def get(self, request, book_id):
         '''
         GET User homework
         '''
-        try:
-            student = Student.objects.get(user=request.user)
-        except ObjectDoesNotExist:
-            return Response(STUDENTNOTEXIST, status=403)
-
+        student = Student.objects.get(user=request.user)
         try:
             book = Book.objects.get(id=book_id)
         except ObjectDoesNotExist:
@@ -135,14 +169,12 @@ class BookHomework(APIView):
 
         return Response(homework_info)
 
+    @stu_required
     def post(self, request, book_id):
         '''
         POST: upload user homework
         '''
-        try:
-            student = Student.objects.get(user=request.user)
-        except ObjectDoesNotExist:
-            return Response(STUDENTNOTEXIST, status=403)
+        student = Student.objects.get(user=request.user)
 
         try:
             book = Book.objects.get(id=book_id)
@@ -164,16 +196,14 @@ class BookHomework(APIView):
 
 class BookProgress(APIView):
 
+    @stu_required
     def post(self, request, book_id):
         try:
             book = Book.objects.get(id=book_id)
         except ObjectDoesNotExist:
             return Response({'msg': 'Book not found.'}, status=404)
 
-        try:
-            student = Student.objects.get(user=request.user)
-        except ObjectDoesNotExist:
-            return Response(STUDENTNOTEXIST, status=403)
+        student = Student.objects.get(user=request.user)
 
         try:
             progress = Progress.objects.get(user=student, book=book)
@@ -185,6 +215,7 @@ class BookProgress(APIView):
         return Response(status=201)
 
 class BookEbook(APIView):
+
 
     def get(self, request, book_id):
         book_data = Book.objects.filter(id=book_id)
@@ -216,12 +247,10 @@ class BookEbook(APIView):
 
 class CommunityGroup(APIView):
 
+    @stu_required
     def get(self, request):
         community_info = []
-        try:
-            student = Student.objects.get(user=request.user)
-        except ObjectDoesNotExist:
-            return Response(STUDENTNOTEXIST, status=403)
+        student = Student.objects.get(user=request.user)
 
         level = student.level
         moments = Moment.objects.filter(level=level)
@@ -278,11 +307,11 @@ class UploadFile(APIView):
 
 
 class UserInfo(APIView):
-    def get(self, request):
-        student_query = Student.objects.filter(user=request.user)
-        if not student_query.exists():
-            return Response(STUDENTNOTEXIST, status=404)
 
+    @stu_required
+    def get(self, request):
+
+        student_query = Student.objects.filter(user=request.user)
         student = student_query[0]
         nickname = student.nickname if student.nickname else request.user.username
         avatar = student.avatar
@@ -296,10 +325,9 @@ class UserInfo(APIView):
 
         return Response(userinfo)
 
+    @stu_required
     def post(self, request):
         student_query = Student.objects.filter(user=request.user)
-        if not student_query.exists():
-            return Response(STUDENTNOTEXIST, status=404)
 
         student = student_query[0]
         student.nickname = request.POST.get('nickname', student.nickname)
@@ -330,10 +358,10 @@ class NoticeInfo(APIView):
         return Response(notice_infos)
 
 class MarkNotice(APIView):
+
+    @stu_required
     def post(self, request):
         stu_query = Student.objects.filter(user=request.user)
-        if not stu_query.exists():
-            return Response(STUDENTNOTEXIST, status=403)
 
         notice_id = request.POST.get('id')
         notice_query = Notice.objects.filter(id=notice_id)
@@ -346,10 +374,9 @@ class MarkNotice(APIView):
 
 
 class StudentList(APIView):
+
+    @manager_required
     def get(self, request):
-        stu_query = Student.objects.filter(user=request.user)
-        if stu_query.exists():
-            return Response({'msg': 'You don\'t have access.'}, status=403)
 
         student_list = []
         students_query = Student.objects.all()
@@ -365,6 +392,8 @@ class StudentList(APIView):
 
 
 class KeyGenerator(APIView):
+
+    @manager_required
     def post(self, request):
         level = int(request.POST.get('level'))
         count = int(request.POST.get('count'))
