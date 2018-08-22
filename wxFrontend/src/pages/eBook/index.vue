@@ -3,7 +3,7 @@
     <div class="main">
       <div class="box">
         <div class="translate-warp" v-if="isTranslate&&translate!==''">{{translate}}</div>
-        <swiper class="cont" duration="100" skip-hidden-item-layout="true" @change="changePage">
+        <swiper :current="currentPage" class="cont" duration="100" skip-hidden-item-layout="true" @change="changePage">
           <swiper-item v-for="page in pages" :key="page.number">
             <div class="item" v-for="(sen,index1) in page.sentences" :key="index1">
               <image @click="clickme" class="slide-image" :src="page.picture" />
@@ -30,11 +30,11 @@
   </div>
   </template>
 <script>
+import request from '@/utils/request'
+
 export default {
   data () {
     return {
-      id: null,
-      current: 0,
       isTranslate: true,
       translate: '',
       voice: '',
@@ -88,7 +88,9 @@ export default {
   },
   onLoad (options) {
     this.id = options.id
+    this.current = options.page
     this.countBox()
+    console.log(this.current)
   },
   computed: {
     playIconSrc: function () {
@@ -113,6 +115,9 @@ export default {
       } else {
         return '../../static/images/translate_default.png'
       }
+    },
+    currentPage: function () {
+      return this.current
     }
   },
   methods: {
@@ -147,6 +152,13 @@ export default {
       this.translate = ''
       this.current = e.target.current
       this.refresh()
+      let url = 'books/' + this.id + '/progress/'
+      request.post(url, {
+        current_page: this.current
+      }).then((res) => {
+        console.log('书的id' + this.id + '更新的进度是' + this.current + '页')
+        console.log(res)
+      })
     },
     record () {
       let vm = this
