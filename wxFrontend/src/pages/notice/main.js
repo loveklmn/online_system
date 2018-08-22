@@ -6,6 +6,7 @@ app.$mount()
 
 export default {
   config: {
+    navigationBarTitleText: '消息',
     usingComponents: {
       'i-card': '../../static/iview/card/index'
     }

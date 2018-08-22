@@ -6,6 +6,7 @@ app.$mount()
 
 export default {
   config: {
+    'navigationBarTitleText': '个人信息',
     usingComponents: {
       'i-cell-group': '../../static/iview/cell-group/index',
       'i-cell': '../../static/iview/cell/index',

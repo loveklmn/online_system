@@ -6,6 +6,7 @@ app.$mount()
 
 export default {
   config: {
+    'navigationBarTitleText': '更改密码',
     usingComponents: {
       'i-cell-group': '../../static/iview/cell-group/index',
       'i-cell': '../../static/iview/cell/index',
