@@ -179,56 +179,69 @@ class BookGuidance(APIView):
 
 class BookHomework(APIView):
 
-    @stu_required
     def get(self, request, book_id):
         '''
-        GET User homework
+        stu:GET User homework
+        manager:Only get homework assignment
         '''
-        student = Student.objects.get(user=request.user)
         try:
             book = Book.objects.get(id=book_id)
         except ObjectDoesNotExist:
             return Response(BOOKNOTFOUND, status=404)
 
-        homework_info = {}
-        homework_info['assignment'] = book.assignment
-        homework_info['homework'] = {}
+        stu_query = Student.objects.filter(user=request.user)
+        if stu_query.exists():
+            student = Student.objects.get(user=request.user)
 
-        try:
-            homework = Homework.objects.get(book_id=book_id, author=student)
-            homework_info['homework']['content'] = homework.content
-            homework_info['homework']['attachments'] = {}
-            homework_info['homework']['attachments']['image'] = homework.images.split()
-            homework_info['homework']['attachments']['video'] = homework.videos.split()
-            homework_info['homework']['attachments']['audio'] = homework.audios.split()
-        except ObjectDoesNotExist:
-            pass
+            homework_info = {}
+            homework_info['assignment'] = book.assignment
+            homework_info['homework'] = {}
+
+            try:
+                homework = Homework.objects.get(book_id=book_id, author=student)
+                homework_info['homework']['content'] = homework.content
+                homework_info['homework']['attachments'] = {}
+                homework_info['homework']['attachments']['image'] = homework.images.split()
+                homework_info['homework']['attachments']['video'] = homework.videos.split()
+                homework_info['homework']['attachments']['audio'] = homework.audios.split()
+            except ObjectDoesNotExist:
+                pass
+        else:
+
+            homework_info = {'assignment': book.assignment}
 
         return Response(homework_info)
 
-    @stu_required
     def post(self, request, book_id):
         '''
-        POST: upload user homework
+        Student: upload user homework
+        Manager: Update book assignment
         '''
-        student = Student.objects.get(user=request.user)
-
         try:
             book = Book.objects.get(id=book_id)
         except ObjectDoesNotExist:
             return Response(BOOKNOTFOUND, status=404)
+        stu_query = Student.objects.filter(user=request.user)
+        if stu_query.exists():
+            student = Student.objects.get(user=request.user)
 
-        try:
-            homework = Homework.objects.get(book=book, author=student)
-        except ObjectDoesNotExist:
-            homework = Homework.objects.create(book=book, author=student, content=' ')
-        homework.content = request.POST.get('content', ' ')
-        attachments = json.loads(request.POST.get('attachments',r'{}'))
-        homework.images = ' '.join(attachments.get('image', ''))
-        homework.videos = ' '.join(attachments.get('video', ''))
-        homework.audios = ' '.join(attachments.get('audio', ''))
-        homework.save()
-        return Response(status=201)
+            try:
+                homework = Homework.objects.get(book=book, author=student)
+            except ObjectDoesNotExist:
+                homework = Homework.objects.create(book=book, author=student, content=' ')
+            homework.content = request.POST.get('content', ' ')
+            attachments = json.loads(request.POST.get('attachments',r'{}'))
+            homework.images = ' '.join(attachments.get('image', ''))
+            homework.videos = ' '.join(attachments.get('video', ''))
+            homework.audios = ' '.join(attachments.get('audio', ''))
+            homework.save()
+            return Response(status=201)
+        else:
+            book.assignment = request.POST.get('assignment')
+            return Response({
+                'id': book.id,
+                'assignment': book.assignment
+            })
 
 
 class BookProgress(APIView):
@@ -252,7 +265,6 @@ class BookProgress(APIView):
         return Response(status=201)
 
 class BookEbook(APIView):
-
 
     def get(self, request, book_id):
         book_data = Book.objects.filter(id=book_id)
