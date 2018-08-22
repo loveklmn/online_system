@@ -150,7 +150,7 @@ class BookList(APIView):
                 book.guidance = guidance
             book.save()
 
-        return Response(BookSerializer(book).data)
+        return Response(BookSerializer(book).data, status=201)
 
 class BookGuidance(APIView):
 
@@ -176,6 +176,35 @@ class BookGuidance(APIView):
 
         else:
             return Response({'msg': 'Book not found'}, status=404)
+
+    @manager_required
+    def post(self, request, book_id):
+        book_query = Book.objects.filter(id=book_id)
+        if not book_query.exists():
+            return Response(BOOKNOTFOUND, status=404)
+
+        response_info = {}
+        book = book_query[0]
+        guidance = request.POST.get('guidance')
+        book.guidance = guidance
+        response_info['guidance'] = book.guidance
+        words = json.loads(request.POST.get('words'))
+        Word.objects.filter(guidance=book).delete()
+
+        response_info['words'] = []
+        for word in words:
+            word_created = Word.objects.create(
+                guidance=book,
+                word=word['word'],
+                meaning=word['meaning'])
+            response_info['words'].append({
+                'word': word_created.word,
+                'meaning': word_created.meaning
+            })
+        return Response(response_info, status=201)
+
+
+
 
 class BookHomework(APIView):
 
