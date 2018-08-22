@@ -83,10 +83,10 @@ export default [
         path: 'modify_password_page',
         name: 'modifyPassword',
         meta: {
-          icon: 'logo-markdown',
+          icon: 'logo-editor',
           title: '修改账户密码'
         },
-        component: () => import('@/view/components/markdown/markdown.vue')
+        component: () => import('@/view/components/editor/editor.vue')
       }
     ]
   },
