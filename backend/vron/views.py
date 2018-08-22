@@ -36,36 +36,45 @@ class BookList(APIView):
         """
         List all books of one level, or create a new book of this level
         """
+        isManager = False
         if not Student.objects.filter(user_id=request.user.id):
-            return Response({'msg': 'This user have not related to a student.'})
-        student = Student.objects.get(user_id=request.user.id)
-
-        books = Book.objects.filter(level=student.level)
+            books = Book.objects.all()
+            isManager = True
+        else:
+            student = Student.objects.get(user_id=request.user.id)
+            books = Book.objects.filter(level=student.level)
         if not books.exists():
             return Response({'msg': 'Cannot find book for this level'}, status=404)
         else:
             bookinfos = []
             for book in books:
-                progress = {}
-                if not Progress.objects.filter(user_id=request.user.id, book=book):
-                    Progress.objects.create(
-                        user_id=request.user.id, book=book, current_page=0)
-                progress = Progress.objects.get(
-                    user_id=request.user.id, book=book)
+
                 bookinfo = {}
                 bookinfo['id'] = book.id
                 bookinfo['cover'] = book.cover
                 bookinfo['title'] = book.title
                 bookinfo['pages_num'] = book.pages_num
-                bookinfo['progress'] = {
-                    'current_page': progress.current_page,
-                    'punched': progress.punched,
-                    'latest_read_time': progress.latest_read_time
-                }
                 bookinfo['type'] = book.read_type
+
+                if not isManager:
+                    progress = {}
+                    if not Progress.objects.filter(user=student, book=book):
+                        Progress.objects.create(
+                            user=student, book=book, current_page=0)
+                    progress = Progress.objects.get(
+                        user=student, book=book)
+                    bookinfo['progress'] = {
+                        'current_page': progress.current_page,
+                        'punched': progress.punched,
+                        'latest_read_time': progress.latest_read_time
+                    }
+                else:
+                    bookinfo['level'] = book.level
+
                 bookinfos.append(bookinfo)
-            bookinfos = sorted(
-                bookinfos, key=lambda x: x['progress']['latest_read_time'], reverse=True)
+            if not isManager:
+                bookinfos = sorted(
+                    bookinfos, key=lambda x: x['progress']['latest_read_time'], reverse=True)
             return Response(bookinfos)
 
 
