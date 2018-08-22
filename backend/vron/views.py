@@ -10,6 +10,7 @@ from datetime import datetime
 import json, random, string
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from .serializers import BookSerializer
 
 STUDENTNOTEXIST = {'msg': 'This user have not related to a student.'}
 BOOKNOTFOUND = {'msg': 'Book not found'}
@@ -25,7 +26,7 @@ def manager_required(func):
         if stu_query.exists():
             raise PermissionDenied()
         else:
-            func(*args, **kwargs)
+            return func(*args, **kwargs)
     return warpper
 
 
@@ -39,7 +40,7 @@ def stu_required(func):
         if not stu_query.exists():
             raise PermissionDenied()
         else:
-            func(*args, **kwargs)
+            return func(*args, **kwargs)
     return warpper
 
 
@@ -111,9 +112,45 @@ class BookList(APIView):
         '''
         Add or update book info
         '''
-        pass
+        book_id = int(request.POST.get('id'))
+        cover = request.POST.get('cover')
+        level = request.POST.get('level')
+        title = request.POST.get('title')
+        assignment = request.POST.get('assignment')
+        pages_num = request.POST.get('pages_num')
+        read_type = request.POST.get('read_type')
+        guidance = request.POST.get('guidance')
+        if book_id == -1:
+            book = Book.objects.create(
+                cover=cover,
+                level=level,
+                title=title,
+                pages_num=pages_num,
+                assignment=assignment,
+                guidance=guidance,
+                read_type=read_type)
+        else:
+            book_query = Book.objects.filter(id=book_id)
+            if not book_query.exists():
+                return Response(BOOKNOTFOUND, status=404)
+            book = book_query[0]
+            if cover:
+                book.cover = cover
+            if level:
+                book.level = level
+            if title:
+                book.title = title
+            if assignment:
+                book.assignment = assignment
+            if pages_num:
+                book.pages_num = pages_num
+            if read_type:
+                book.read_type = read_type
+            if guidance:
+                book.guidance = guidance
+            book.save()
 
-
+        return Response(BookSerializer(book).data)
 
 class BookGuidance(APIView):
 
