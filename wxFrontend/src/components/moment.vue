@@ -2,7 +2,7 @@
   <div class="content">
 
     <div class="list-header">
-      <img class="avatar" v-if="x.author" :src="x.author.avatar">
+      <img class="avatar" v-if="x.author" :src="serverLink + x.author.avatar">
       <div class="user-info">
         <h3 class="user-name" v-if="x.author">{{x.author.username}}</h3>
       </div>
@@ -24,7 +24,7 @@
             :class= "imgClass">
             <img
               class="img-div"
-              :src="'http://101.200.62.189:8000/' + y"
+              :src="serverLink + y"
               @click="predivImage"
               ></img>
           </li>
@@ -36,18 +36,19 @@
       <div class="footer-tag">
         <img class="footer-icon" :src="getIconSrc"></img>
         <span class="tag-style">{{x.vote_count}}</span>
-      </div>  
+      </div>
       <div class="footer-tag">
         <img class="footer-icon" src="/static/images/friendCircle/comment.png"></img>
         <span class="tag-style">{{x.comment_count}}</span>
-      </div>  
+      </div>
     </div>
     <view class='line'> </view>
   </div>
 </template>
- 
+
 <script>
 import { formatYMD } from '@/utils/index'
+import request from '@/utils/request'
 export default {
   data () {
     return {
@@ -56,6 +57,9 @@ export default {
   },
   props: ['x'],
   computed: {
+    serverLink: function () {
+      return request.baseURL.slice(0, -5)
+    },
     getIconSrc () {
       let path = '/static/images/friendCircle/'
       let pic = this.x.action.liked ? 'heart-active.png' : 'heart-default.png'
@@ -84,7 +88,7 @@ export default {
   },
   methods: {
     getFullUrl (y) {
-      return 'http://101.200.62.189:8000/' + y
+      return request.baseURL + y
     },
     predivImage (e) {
       console.log(e)
@@ -98,11 +102,10 @@ export default {
     this.x.attactments.image.forEach(element => {
       this.previewImages.push(this.getFullUrl(element))
     })
-    // console.log(this.x.attachments.pic_urls)
   }
 }
 </script>
- 
+
 <style>
 a {
     color: #007AFF;
