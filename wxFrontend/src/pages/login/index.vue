@@ -43,14 +43,11 @@ export default {
       this.visible = !this.visible
     },
     login () {
-      console.log('requests start')
       request.login(this.username, this.password).then(() => {
-        console.log('登陆成功')
         wx.switchTab({url: '../../pages/index/main'})
       }).catch((err) => {
         this.msg = err.message
         this.setVisible()
-        console.log(err)
       })
     }
   }

@@ -26,8 +26,6 @@ export default {
       request.get(url)
         .then((res) => {
           this.theData = res.data
-        }).catch((err) => {
-          console.log(err)
         })
     }
   },

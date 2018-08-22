@@ -74,7 +74,6 @@ export default {
           this.homework = res.data.homework
           this.previewImages = this.homework.attachments.image.map(url => request.baseURL + url)
           this.submitted = true
-          console.log('get homework: ' + res.data.homework.content)
         } else {
           this.previewImages = []
           this.homework = {
@@ -87,11 +86,7 @@ export default {
           }
           this.submitted = false
         }
-      } else {
-        console.log('请求错误')
       }
-    }).catch((err) => {
-      console.log(err)
     })
   },
   methods: {
@@ -109,7 +104,6 @@ export default {
           for (let i = 0; i < res.tempFilePaths.length; i++) {
             let currentFile = res.tempFilePaths[i]
             request.upload(currentFile).then((url) => {
-              console.log(url)
               vm.homework.attachments.image.push(url)
               vm.previewImages.push(request.baseURL + url)
             })
@@ -122,7 +116,6 @@ export default {
       })
     },
     predivImage (e) {
-      console.log(e)
       wx.previewImage({
         current: e.currentTarget.id, // 当前显示图片的http链接
         urls: this.previewImages // 需要预览的图片http链接列表
@@ -135,13 +128,11 @@ export default {
       this.homework.attachments.image.splice(index, 1)
     },
     submit () {
-      console.log(this.homework)
       let url = 'books/' + this.id + '/homework/'
       request.post(url, {
         content: this.homework.content,
         attachments: JSON.stringify(this.homework.attachments)
       }).then((res) => {
-        console.log(res)
         this.submitted = true
       })
     }

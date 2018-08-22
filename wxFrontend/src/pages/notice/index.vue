@@ -34,8 +34,6 @@ export default {
           this.notices.forEach((item) => {
             item.title = formatFullTime(item.created_time) + this.haveRead(item.have_read)
           })
-        }).catch((err) => {
-          console.log(err)
         })
     },
     haveRead (flag) {
@@ -43,14 +41,11 @@ export default {
     },
     read (notice) {
       let url = 'notices/readed/'
-      console.log('read!')
       let that = this
       request.post(url, {id: notice.id})
         .then((res) => {
           notice.have_read = true
           notice.title = formatFullTime(notice.created_time) + that.haveRead(notice.have_read)
-        }).catch((err) => {
-          console.log(err)
         })
     }
   },

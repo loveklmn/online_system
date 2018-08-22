@@ -33,18 +33,10 @@ export default {
     request
       .get(url)
       .then(res => {
-        console.log(res)
         if (res.statusCode === 200) {
-          console.log(res.data)
           this.vocabulary = res.data.words
           this.guidance = res.data.guidance
-        } else {
-          console.log(res)
-          console.log('empty')
         }
-      })
-      .catch(err => {
-        console.log(err)
       })
   },
   onLoad (options) {
@@ -112,7 +104,7 @@ export default {
   display: flex;
 }
 
-.flex_item{ 
+.flex_item{
   vertical-align: middle;
   padding: 40rpx 80rpx;
   font-size: 30rpx;
