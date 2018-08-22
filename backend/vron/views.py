@@ -2,7 +2,7 @@ from vron.models import Notice, IsNoticeReaded, Student, Book, Progress, Word, P
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.views import exception_handler, APIView
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from rest_framework.response import Response
 import os
 from backend import settings
@@ -10,9 +10,39 @@ from datetime import datetime
 import json, random, string
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from .serializers import BookSerializer
 
 STUDENTNOTEXIST = {'msg': 'This user have not related to a student.'}
 BOOKNOTFOUND = {'msg': 'Book not found'}
+
+
+def manager_required(func):
+    '''
+    只能装饰APIView类post或get成员函数
+    '''
+    def warpper(*args, **kwargs):
+        request = args[1]
+        stu_query = Student.objects.filter(user=request.user)
+        if stu_query.exists():
+            raise PermissionDenied()
+        else:
+            return func(*args, **kwargs)
+    return warpper
+
+
+def stu_required(func):
+    '''
+    只能装饰APIView类post或get成员函数
+    '''
+    def warpper(*args, **kwargs):
+        request = args[1]
+        stu_query = Student.objects.filter(user=request.user)
+        if not stu_query.exists():
+            raise PermissionDenied()
+        else:
+            return func(*args, **kwargs)
+    return warpper
+
 
 def vron_exception_handler(exc, context):
     response = exception_handler(exc, context)
@@ -20,7 +50,7 @@ def vron_exception_handler(exc, context):
     if response is not None:
         if response.data.get('detail'):
             response.data['msg'] = response.data['detail']
-
+            del response.data['detail']
     return response
 
 
@@ -36,38 +66,91 @@ class BookList(APIView):
         """
         List all books of one level, or create a new book of this level
         """
+        isManager = False
         if not Student.objects.filter(user_id=request.user.id):
-            return Response({'msg': 'This user have not related to a student.'})
-        student = Student.objects.get(user_id=request.user.id)
-
-        books = Book.objects.filter(level=student.level)
+            books = Book.objects.all()
+            isManager = True
+        else:
+            student = Student.objects.get(user_id=request.user.id)
+            books = Book.objects.filter(level=student.level)
         if not books.exists():
             return Response({'msg': 'Cannot find book for this level'}, status=404)
         else:
             bookinfos = []
             for book in books:
-                progress = {}
-                if not Progress.objects.filter(user_id=request.user.id, book=book):
-                    Progress.objects.create(
-                        user_id=request.user.id, book=book, current_page=0)
-                progress = Progress.objects.get(
-                    user_id=request.user.id, book=book)
+
                 bookinfo = {}
                 bookinfo['id'] = book.id
                 bookinfo['cover'] = book.cover
                 bookinfo['title'] = book.title
                 bookinfo['pages_num'] = book.pages_num
-                bookinfo['progress'] = {
-                    'current_page': progress.current_page,
-                    'punched': progress.punched,
-                    'latest_read_time': progress.latest_read_time
-                }
                 bookinfo['type'] = book.read_type
+
+                if not isManager:
+                    progress = {}
+                    if not Progress.objects.filter(user=student, book=book):
+                        Progress.objects.create(
+                            user=student, book=book, current_page=0)
+                    progress = Progress.objects.get(
+                        user=student, book=book)
+                    bookinfo['progress'] = {
+                        'current_page': progress.current_page,
+                        'punched': progress.punched,
+                        'latest_read_time': progress.latest_read_time
+                    }
+                else:
+                    bookinfo['level'] = book.level
+
                 bookinfos.append(bookinfo)
-            bookinfos = sorted(
-                bookinfos, key=lambda x: x['progress']['latest_read_time'], reverse=True)
+            if not isManager:
+                bookinfos = sorted(
+                    bookinfos, key=lambda x: x['progress']['latest_read_time'], reverse=True)
             return Response(bookinfos)
 
+    @manager_required
+    def post(self, request):
+        '''
+        Add or update book info
+        '''
+        book_id = int(request.POST.get('id'))
+        cover = request.POST.get('cover')
+        level = request.POST.get('level')
+        title = request.POST.get('title')
+        assignment = request.POST.get('assignment')
+        pages_num = request.POST.get('pages_num')
+        read_type = request.POST.get('read_type')
+        guidance = request.POST.get('guidance')
+        if book_id == -1:
+            book = Book.objects.create(
+                cover=cover,
+                level=level,
+                title=title,
+                pages_num=pages_num,
+                assignment=assignment,
+                guidance=guidance,
+                read_type=read_type)
+        else:
+            book_query = Book.objects.filter(id=book_id)
+            if not book_query.exists():
+                return Response(BOOKNOTFOUND, status=404)
+            book = book_query[0]
+            if cover:
+                book.cover = cover
+            if level:
+                book.level = level
+            if title:
+                book.title = title
+            if assignment:
+                book.assignment = assignment
+            if pages_num:
+                book.pages_num = pages_num
+            if read_type:
+                book.read_type = read_type
+            if guidance:
+                book.guidance = guidance
+            book.save()
+
+        return Response(BookSerializer(book).data, status=201)
 
 class BookGuidance(APIView):
 
@@ -94,77 +177,112 @@ class BookGuidance(APIView):
         else:
             return Response({'msg': 'Book not found'}, status=404)
 
+    @manager_required
+    def post(self, request, book_id):
+        book_query = Book.objects.filter(id=book_id)
+        if not book_query.exists():
+            return Response(BOOKNOTFOUND, status=404)
+
+        response_info = {}
+        book = book_query[0]
+        guidance = request.POST.get('guidance')
+        book.guidance = guidance
+        response_info['guidance'] = book.guidance
+        words = json.loads(request.POST.get('words'))
+        Word.objects.filter(guidance=book).delete()
+
+        response_info['words'] = []
+        for word in words:
+            word_created = Word.objects.create(
+                guidance=book,
+                word=word['word'],
+                meaning=word['meaning'])
+            response_info['words'].append({
+                'word': word_created.word,
+                'meaning': word_created.meaning
+            })
+        return Response(response_info, status=201)
+
+
+
+
 class BookHomework(APIView):
 
     def get(self, request, book_id):
         '''
-        GET User homework
+        stu:GET User homework
+        manager:Only get homework assignment
         '''
-        try:
-            student = Student.objects.get(user=request.user)
-        except ObjectDoesNotExist:
-            return Response(STUDENTNOTEXIST, status=403)
-
         try:
             book = Book.objects.get(id=book_id)
         except ObjectDoesNotExist:
             return Response(BOOKNOTFOUND, status=404)
 
-        homework_info = {}
-        homework_info['assignment'] = book.assignment
-        homework_info['homework'] = {}
+        stu_query = Student.objects.filter(user=request.user)
+        if stu_query.exists():
+            student = Student.objects.get(user=request.user)
 
-        try:
-            homework = Homework.objects.get(book_id=book_id, author=student)
-            homework_info['homework']['content'] = homework.content
-            homework_info['homework']['attachments'] = {}
-            homework_info['homework']['attachments']['image'] = homework.images.split()
-            homework_info['homework']['attachments']['video'] = homework.videos.split()
-            homework_info['homework']['attachments']['audio'] = homework.audios.split()
-        except ObjectDoesNotExist:
-            pass
+            homework_info = {}
+            homework_info['assignment'] = book.assignment
+            homework_info['homework'] = {}
+
+            try:
+                homework = Homework.objects.get(book_id=book_id, author=student)
+                homework_info['homework']['content'] = homework.content
+                homework_info['homework']['attachments'] = {}
+                homework_info['homework']['attachments']['image'] = homework.images.split()
+                homework_info['homework']['attachments']['video'] = homework.videos.split()
+                homework_info['homework']['attachments']['audio'] = homework.audios.split()
+            except ObjectDoesNotExist:
+                pass
+        else:
+
+            homework_info = {'assignment': book.assignment}
 
         return Response(homework_info)
 
     def post(self, request, book_id):
         '''
-        POST: upload user homework
+        Student: upload user homework
+        Manager: Update book assignment
         '''
-        try:
-            student = Student.objects.get(user=request.user)
-        except ObjectDoesNotExist:
-            return Response(STUDENTNOTEXIST, status=403)
-
         try:
             book = Book.objects.get(id=book_id)
         except ObjectDoesNotExist:
             return Response(BOOKNOTFOUND, status=404)
+        stu_query = Student.objects.filter(user=request.user)
+        if stu_query.exists():
+            student = Student.objects.get(user=request.user)
 
-        try:
-            homework = Homework.objects.get(book=book, author=student)
-        except ObjectDoesNotExist:
-            homework = Homework.objects.create(book=book, author=student, content=' ')
-        homework.content = request.POST.get('content', ' ')
-        attachments = json.loads(request.POST.get('attachments',r'{}'))
-        homework.images = ' '.join(attachments.get('image', ''))
-        homework.videos = ' '.join(attachments.get('video', ''))
-        homework.audios = ' '.join(attachments.get('audio', ''))
-        homework.save()
-        return Response(status=201)
+            try:
+                homework = Homework.objects.get(book=book, author=student)
+            except ObjectDoesNotExist:
+                homework = Homework.objects.create(book=book, author=student, content=' ')
+            homework.content = request.POST.get('content', ' ')
+            attachments = json.loads(request.POST.get('attachments',r'{}'))
+            homework.images = ' '.join(attachments.get('image', ''))
+            homework.videos = ' '.join(attachments.get('video', ''))
+            homework.audios = ' '.join(attachments.get('audio', ''))
+            homework.save()
+            return Response(status=201)
+        else:
+            book.assignment = request.POST.get('assignment')
+            return Response({
+                'id': book.id,
+                'assignment': book.assignment
+            })
 
 
 class BookProgress(APIView):
 
+    @stu_required
     def post(self, request, book_id):
         try:
             book = Book.objects.get(id=book_id)
         except ObjectDoesNotExist:
             return Response({'msg': 'Book not found.'}, status=404)
 
-        try:
-            student = Student.objects.get(user=request.user)
-        except ObjectDoesNotExist:
-            return Response(STUDENTNOTEXIST, status=403)
+        student = Student.objects.get(user=request.user)
 
         try:
             progress = Progress.objects.get(user=student, book=book)
@@ -207,12 +325,10 @@ class BookEbook(APIView):
 
 class CommunityGroup(APIView):
 
+    @stu_required
     def get(self, request):
         community_info = []
-        try:
-            student = Student.objects.get(user=request.user)
-        except ObjectDoesNotExist:
-            return Response(STUDENTNOTEXIST, status=403)
+        student = Student.objects.get(user=request.user)
 
         level = student.level
         moments = Moment.objects.filter(level=level)
@@ -269,11 +385,11 @@ class UploadFile(APIView):
 
 
 class UserInfo(APIView):
-    def get(self, request):
-        student_query = Student.objects.filter(user=request.user)
-        if not student_query.exists():
-            return Response(STUDENTNOTEXIST, status=404)
 
+    @stu_required
+    def get(self, request):
+
+        student_query = Student.objects.filter(user=request.user)
         student = student_query[0]
         nickname = student.nickname if student.nickname else request.user.username
         avatar = student.avatar
@@ -287,10 +403,9 @@ class UserInfo(APIView):
 
         return Response(userinfo)
 
+    @stu_required
     def post(self, request):
         student_query = Student.objects.filter(user=request.user)
-        if not student_query.exists():
-            return Response(STUDENTNOTEXIST, status=404)
 
         student = student_query[0]
         student.nickname = request.POST.get('nickname', student.nickname)
@@ -321,10 +436,10 @@ class NoticeInfo(APIView):
         return Response(notice_infos)
 
 class MarkNotice(APIView):
+
+    @stu_required
     def post(self, request):
         stu_query = Student.objects.filter(user=request.user)
-        if not stu_query.exists():
-            return Response(STUDENTNOTEXIST, status=403)
 
         notice_id = request.POST.get('id')
         notice_query = Notice.objects.filter(id=notice_id)
@@ -337,10 +452,9 @@ class MarkNotice(APIView):
 
 
 class StudentList(APIView):
+
+    @manager_required
     def get(self, request):
-        stu_query = Student.objects.filter(user=request.user)
-        if stu_query.exists():
-            return Response({'msg': 'You don\'t have access.'}, status=403)
 
         student_list = []
         students_query = Student.objects.all()
@@ -356,6 +470,8 @@ class StudentList(APIView):
 
 
 class KeyGenerator(APIView):
+
+    @manager_required
     def post(self, request):
         level = int(request.POST.get('level'))
         count = int(request.POST.get('count'))
