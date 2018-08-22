@@ -3,7 +3,7 @@
     <div class="main">
       <div class="box">
         <div class="translate-warp" v-if="isTranslate&&translate!==''">{{translate}}</div>
-        <swiper class="cont" circular="true" skip-hidden-item-layout="true" @change="changePage">
+        <swiper class="cont" duration="100" skip-hidden-item-layout="true" @change="changePage">
           <swiper-item v-for="page in pages" :key="page.number">
             <div class="item" v-for="(sen,index1) in page.sentences" :key="index1">
               <image @click="clickme" class="slide-image" :src="page.picture" />
