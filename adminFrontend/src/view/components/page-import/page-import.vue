@@ -30,13 +30,29 @@
         long
         class="add-sentence-button"
         @click="addNewSentence"> 添加新句子 </Button>
-      <sentenceimport
+      <!-- <sentenceimport
         v-for="sen in page.sentences"
         :key="sen.id"
         :sentence.sync="sen"
         v-on:deleteSentence="deleteSentence"
         v-on:selectArea="selectArea">
-      </sentenceimport>
+      </sentenceimport> -->
+
+      <Collapse accordion>
+        <Panel
+          v-for="sen in page.sentences"
+          :key="sen.id"
+          :name="sen.content">
+          {{sen.content}}
+          <sentenceimport
+            slot="content"
+            :sentence.sync="sen"
+            v-on:deleteSentence="deleteSentence"
+            v-on:selectArea="selectArea">
+          </sentenceimport>
+        </Panel>
+    </Collapse>
+
     </Content>
   </Layout>
 </template>
@@ -71,6 +87,7 @@ export default {
         x2: null,
         y2: null
       }
+      newSen.content = `新句子${this.page.sentences.length + 1}`
       this.page.sentences.push(newSen)
     },
     deletePage: function () {
