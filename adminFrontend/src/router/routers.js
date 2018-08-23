@@ -83,7 +83,7 @@ export default [
         path: 'modify_password_page',
         name: 'modify_password',
         meta: {
-          icon: 'logo-editor',
+          icon: 'logo-markdown',
           title: '修改账户密码'
         },
         component: () => import('@/view/components/editor/editor.vue')
@@ -109,15 +109,6 @@ export default [
         component: () => import('@/view/import-book/uploadFile.vue')
       },
       {
-        path: 'import_guidance',
-        name: 'import_guidance',
-        meta: {
-          icon: 'md-clipboard',
-          title: '亲子阅读指导导入'
-        },
-        component: () => import('@/view/update/update-paste.vue')
-      },
-      {
         path: 'import_ebook',
         name: 'import_ebook',
         meta: {
@@ -133,8 +124,7 @@ export default [
           icon: 'md-clipboard',
           title: '阅读拓展导入'
         },
-        component: () => import('@/view/update/update-paste.vue')
-        // component: () => import('@/view/assignment/assignment.vue')
+        component: () => import('@/view/assignment-page/assignment-page.vue')
       },
       {
         path: 'import_game',
@@ -261,5 +251,60 @@ export default [
         component: () => import('@/view/new-accounts/generate-result.vue')
       }
     ]
+  },
+  {
+    path: '/book_detail',
+    name: 'book_detail',
+    component: Main,
+    meta: {
+      hideInMenu: true
+    },
+    children: [
+      {
+        path: 'book_detail_info',
+        name: 'book_detail_info',
+        meta: {
+          title: "本书详情"
+        },
+        component: () => import('@/view/book-detail-page/book-detail.vue')
+      }
+    ]
+  },
+  {
+    path: '/import_assignment',
+    name: 'import_assignment',
+    component: Main,
+    meta: {
+      hideInMenu: true
+    },
+    children: [
+      {
+        path: 'assignment_success',
+        name: 'assignment_success',
+        meta: {
+          title: '阅读拓展导入',
+        },
+        component: () => import('@/view/assignment-page/assignment-success.vue')
+      }
+    ]
+  },
+  {
+    path: '/import_guidance',
+    name: 'import_guidance',
+    component: Main,
+    meta: {
+      hideInMenu: true
+    },
+    children: [
+      {
+        path: 'guidance_success',
+        name: 'guidance_success',
+        meta: {
+          title: '阅读拓展导入',
+        },
+        component: () => import('@/view/guidance-page/guidance-success.vue')
+      }
+    ]
   }
 ]
+
