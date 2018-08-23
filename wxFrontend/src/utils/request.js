@@ -18,7 +18,6 @@ class Request {
   validateToken () {
     let token = store.getters.token
     if (!token) {
-      console.log('no token')
       delete this.header.Authorization
       wx.reLaunch({url: '/pages/login/main'})
       return false
@@ -45,6 +44,32 @@ class Request {
             resolve(0)
           } else {
             reject(new Error('用户名或密码错误'))
+          }
+        },
+        fail () {
+          reject(new Error('网络错误'))
+        }
+      })
+    })
+  }
+  register (username, password, key) {
+    let url = this.baseURL + 'register/'
+    let vm = this
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: url,
+        data: {
+          username: username,
+          password: password,
+          key: key
+        },
+        method: 'POST',
+        header: vm.header,
+        success (res) {
+          if (res.statusCode === 201) {
+            resolve(res)
+          } else {
+            reject(new Error(res.data.msg))
           }
         },
         fail () {
@@ -102,6 +127,6 @@ export default new Request({
   baseURL: 'http://101.200.62.189:8000/vron/',
   withBaseURL: true,
   header: {
-    'content-type': 'application/x-www-form-urlencoded'
+    'content-type': 'application/json'
   }
 })

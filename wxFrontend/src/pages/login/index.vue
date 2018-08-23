@@ -18,6 +18,9 @@
       <input class="inputText" v-model='password' type="password" placeholder="请输入密码" />
     </div>
   </div>
+  <div class="instruction">
+    <p>还没有账户?来<a href="/pages/register/main">注册</a>一下~</p>
+  </div>
   <button class="loginBtn" @click="login">确定</button>
  </div>
 </template>
@@ -31,6 +34,7 @@ export default {
     return {
       username: '',
       password: '',
+
       msg: '',
       visible: false
     }
@@ -68,7 +72,6 @@ page {
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 0;
   box-sizing: border-box;
   background-color: #f2f2f2
 }
@@ -114,6 +117,25 @@ page {
   font-size: 14px
 }
 
+.instruction {
+  padding-left: 40rpx;
+  padding-top: 20rpx;
+  display:flex;
+  font-size: 20rpx;
+}
+
+.instruction a {
+  display:flex;
+  font-size: 20rpx;
+  color: green;
+}
+
+.instruction p {
+  display:flex;
+  font-size: 20rpx;
+  color: gray;
+}
+
 .line {
   width: 100%;
   height: 1px;
@@ -125,9 +147,6 @@ page {
   width: 100%;
   height: auto;
   background-color: #f2f2f2;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  padding-bottom: 0px;
 }
 
 .loginBtn {
