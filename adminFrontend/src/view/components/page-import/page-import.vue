@@ -14,11 +14,17 @@
           v-on:mousedown="onmousedown"
           v-on:mousemove="onmousemove"
           v-on:mouseup="onmouseup"/>
-        <div id="select-box" hidden></div>
+        <div
+          id="select-box"
+          :style="{
+            left: x1 + 'px',
+            top: y1 + 'px',
+            width: (x2 - x1) + 'px',
+            height: (y2 - y1) + 'px'}"></div>
       </div>
 
       <Upload class="upload-button" action="//jsonplaceholder.typicode.com/posts/">
-          <Button icon="ios-cloud-upload-outline">Upload files</Button>
+          <Button icon="ios-cloud-upload-outline">上传本页对应的图片</Button>
       </Upload>
       <Button
         type="error"
@@ -32,11 +38,11 @@
         class="add-sentence-button"
         @click="addNewSentence"> 添加新句子 </Button>
 
-      <Collapse accordion>
+      <Collapse v-model="curSenIndexChar" accordion>
         <Panel
-          v-for="sen in page.sentences"
+          v-for="(sen, index) in page.sentences"
           :key="sen.id"
-          :name="sen.content">
+          :name="index.toString()">
           {{sen.content}}
           <sentenceimport
             slot="content"
@@ -56,19 +62,73 @@ export default {
   data () {
     return {
       defaultPic: require('@/assets/images/addPage.png'),
-      x1: 0,
-      y1: 0,
-      x2: 0,
-      y2: 0,
+      // x1: 0,
+      // y1: 0,
+      // x2: 0,
+      // y2: 0,
+      xstart: 0,
+      ystart: 0,
+      xend: 0,
+      yend: 0,
+      canSelect: false,
       isSelecting: false,
-      curSentence: null
+      // curSentence: null,
+      // curSenIndex: -1,
+      curSenIndexChar: '-1',
+      selectBox: null,
+      offsetLeft: 0,
+      offsetTop: 0
     }
   },
   props: ['page'],
   components: {
     sentenceimport
   },
+  watch: {
+    page: function (val) {
+      if (this.page.picture !== null) {
+        // let holder = document.getElementById('pic-holder')
+        // let rect = holder.getBoundingClientRect()
+        // this.offsetTop = rect.top
+        // this.offsetLeft = rect.left
+      }
+    }
+  },
   computed: {
+    curSenIndex: function () {
+      return parseInt(this.curSenIndexChar)
+    },
+    x1: function () {
+      if (this.curSenIndex >= 0) {
+        return this.page.sentences[this.curSenIndex].x1
+      } else {
+        return -1
+      }
+    },
+    y1: function () {
+      if (this.curSenIndex >= 0) {
+        return this.page.sentences[this.curSenIndex].y1
+      } else {
+        return -1
+      }
+    },
+    x2: function () {
+      if (this.curSenIndex >= 0) {
+        return this.page.sentences[this.curSenIndex].x2
+      } else {
+        return -1
+      }
+    },
+    y2: function () {
+      if (this.curSenIndex >= 0) {
+        return this.page.sentences[this.curSenIndex].y2
+      } else {
+        return -1
+      }
+    },
+    curSentence: function () {
+      return this.page.sentences[this.curSenIndex]
+    }
   },
   methods: {
     addNewSentence: function () {
@@ -76,10 +136,10 @@ export default {
         content: null,
         audio: null,
         translated: null,
-        x1: null,
-        y1: null,
-        x2: null,
-        y2: null
+        x1: 0,
+        x2: 0,
+        y1: 0,
+        y2: 0
       }
       newSen.content = `新句子${this.page.sentences.length + 1}`
       this.page.sentences.push(newSen)
@@ -93,25 +153,26 @@ export default {
       console.log('delete!', index)
     },
     onmousedown: function (e) {
-      if (!this.isSelecting) {
+      if (!this.canSelect) {
         return
       }
+      this.canSelect = false
+      this.isSelecting = true
       console.log('down!')
-      let div = document.getElementById('select-box')
-      div.hidden = 0
-      this.x1 = e.clientX
-      this.y1 = e.clientY
-      this.x2 = this.x1
-      this.y2 = this.y1
+      console.log(this.xstart, this.ystart, this.xend, this.yend)
+      this.xstart = e.clientX - this.offsetLeft
+      this.ystart = e.clientY - this.offsetTop
+      this.xend = this.xstart
+      this.yend = this.ystart
       this.reCalc()
     },
     onmousemove: function (e) {
       if (!this.isSelecting) {
         return
       }
-      console.log('move!')
-      this.x2 = e.clientX
-      this.y2 = e.clientY
+      // console.log('move!')
+      this.xend = e.clientX - this.offsetLeft
+      this.yend = e.clientY - this.offsetTop
       this.reCalc()
     },
     onmouseup: function (e) {
@@ -120,39 +181,30 @@ export default {
       }
       this.isSelecting = false
       console.log('up!')
-      let div = document.getElementById('select-box')
-      div.hidden = 1
     },
     selectArea: function (sentence) {
-      console.log('selectArea is called!')
-      this.isSelecting = !this.isSelecting
-      this.curSentence = sentence
-    },
-    reCalc: function () {
-      let x1 = this.x1
-      let y1 = this.y1
-      let x2 = this.x2
-      let y2 = this.y2
-      console.log(x1, y1, x2, y2)
-      let x3 = Math.min(x1, x2)
-      let x4 = Math.max(x1, x2)
-      let y3 = Math.min(y1, y2)
-      let y4 = Math.max(y1, y2)
-      let div = document.getElementById('select-box')
       let holder = document.getElementById('pic-holder')
       let rect = holder.getBoundingClientRect()
-      let top = rect.top
-      let left = rect.left
-      div.style.left = x3 - left + 'px'
-      div.style.top = y3 - top + 'px'
-      div.style.width = x4 - x3 + 'px'
-      div.style.height = y4 - y3 + 'px'
-
-      this.curSentence.x1 = x3 - left
-      this.curSentence.y1 = y3 - top
-      this.curSentence.x2 = x4 - left
-      this.curSentence.y2 = y4 - top
+      this.offsetTop = rect.top
+      this.offsetLeft = rect.left
+      console.log('selectArea is called!')
+      this.canSelect = true
+      // this.curSentence = sentence
+    },
+    reCalc: function () {
+      console.log(this.curSentence)
+      console.log(this.x1, this.y1, this.x2, this.y2)
+      this.curSentence.x1 = Math.min(this.xstart, this.xend)
+      this.curSentence.x2 = Math.max(this.xstart, this.xend)
+      this.curSentence.y1 = Math.min(this.ystart, this.yend)
+      this.curSentence.y2 = Math.max(this.ystart, this.yend)
     }
+  },
+  mounted () {
+    // let holder = document.getElementById('pic-holder')
+    // let rect = holder.getBoundingClientRect()
+    // this.offsetTop = rect.top
+    // this.offsetLeft = rect.left
   }
 }
 </script>
@@ -179,7 +231,7 @@ export default {
   margin: auto;
 }
 #select-box {
-    border: 1px dotted #000;
+    border: 2px solid red;
     position: absolute;
 }
 .upload-button {
