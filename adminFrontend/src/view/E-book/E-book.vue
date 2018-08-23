@@ -23,6 +23,11 @@
                       :name="-1">
                       <img src="@/assets/images/addPage.png" class="preview"/>
                     </MenuItem> -->
+                    <Button
+                      type="dashed"
+                      ghost
+                      class="add-page-button"
+                      @click="addNewPage">添加新页面</Button>
                 </Menu>
             </Sider>
             <Layout>
@@ -31,7 +36,10 @@
                 </Header>
                 <Content :style="{padding: '0 16px 16px'}">
                     <Card>
-                        <pageimport class="pageimport" :page.sync="curpage"></pageimport>
+                        <pageimport
+                          class="pageimport"
+                          :page.sync="curpage"
+                          v-on:deletePage="deletePage"></pageimport>
                     </Card>
                 </Content>
             </Layout>
@@ -102,15 +110,39 @@ export default {
   },
   methods: {
     select: function (i) {
-      console.log(i)
+      // console.log(i)
       this.curpage = this.book[i]
-      console.log(this.curpage)
+      // console.log(this.curpage)
     },
     countPreview: function () {
       this.preview = []
       for (let i = 0; i < this.book.length; i += 1) {
         this.preview.push(this.book[i].picture)
       }
+    },
+    addNewPage: function () {
+      let newPage = {
+        number: null,
+        picture: null,
+        sentences: [
+          {
+            content: null,
+            audio: null,
+            translated: null,
+            x1: null,
+            y1: null,
+            x2: null,
+            y2: null
+          }
+        ]
+      }
+      this.book.push(newPage)
+      this.book[this.book.length - 1].number = 100
+      // this.book.push(this.defaultPage)
+    },
+    deletePage: function (pageNum) {
+      this.book.splice(pageNum - 1, 1)
+      console.log(this.book)
     }
   },
   watch: {
@@ -123,7 +155,6 @@ export default {
   },
   mounted () {
     this.countPreview()
-    console.log(this.preview)
   }
 }
 </script>
@@ -138,6 +169,10 @@ export default {
 .menu-item {
   padding: auto;
   margin: 0;
+}
+.add-page-button {
+  width: 100px;
+  margin-left: 25px;
 }
 .page-num {
   font-size: 30px;

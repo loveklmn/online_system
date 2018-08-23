@@ -28,12 +28,21 @@
         <Input v-model="sentence.y2" class="coordinate"/>
       </div>
 
+      <Button
+        type="error"
+        @click="deleteSentence">删除该句子</Button>
+
     </Form>
   </card>
 </template>
 <script>
 export default {
-  props: ['sentence']
+  props: ['sentence'],
+  methods: {
+    deleteSentence: function () {
+      this.$emit('deleteSentence', this.sentence)
+    }
+  }
 }
 </script>
 <style scoped>
