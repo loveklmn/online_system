@@ -1,7 +1,7 @@
 <template>
 <div class="main">
   <div class="step-row">
-    <Steps :current="current" class="steps">
+    <Steps :current="0" class="steps">
       <Step title="填写生成账号信息"></Step>
       <Step title="确认生成账号信息"></Step>
       <Step title="账号生成成功"></Step>
@@ -12,19 +12,15 @@
     <Card title="填写生成激活码相关信息" class="mainPanel">
       <div>
         <p class="description">请选择生成激活码所在级别:&nbsp;&nbsp;</p>
-        <Select v-model="level" :lable-width="200" class="level-selector">
-          <Option value="k1">k1</Option>
-          <Option value="k2">k2</Option>
-          <Option value="k3">k3</Option>
-        </Select>
+        <InputNumber :max="500" :min="1" v-model="level"></InputNumber>
       </div>
       <div>
-        <p class="description">请输入您想要生成激活码的数量(不多于233个):&nbsp;&nbsp;&nbsp;</p>
-        <Input v-model="amount" placeholder="输入你想要生成的账户数量" class="amount-input"/>
+        <p class="description">请输入您想要生成激活码的数量(不多于500个):&nbsp;&nbsp;&nbsp;</p>
+        <InputNumber :max="500" :min="1" v-model="amount"></InputNumber>
       </div>
       <div>
-        <Button type="primary" @click="nextPage" class="next-step-btn">下一步</Button>
-        <Button type="warning" @click="reset" class="next-step-btn">返回首页</Button>
+        <Button type="primary" class="next-step-btn" @click="nextPage">下一步</Button>
+        <Button type="warning" class="next-step-btn" @click="reset">返回首页</Button>
       </div>
     </Card>
   </div>
@@ -33,18 +29,16 @@
 <script>
 import './format.less'
 export default {
-  name: 'fill-info',
   data () {
     return {
-      level: 'k1',
-      amount: 1,
-      current: 0
+      level: 1,
+      amount: 1
     }
   },
   created () {
     if (this.$route.query) {
-      this.level = this.$route.query.level
-      this.amount = this.$route.query.amount
+      this.level = this.$route.query.level || this.level
+      this.amount = this.$route.query.amount || this.amount
     }
   },
   methods: {
