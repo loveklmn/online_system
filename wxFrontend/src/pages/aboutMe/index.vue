@@ -12,8 +12,9 @@
       <i-cell title="关于弗恩英语" is-link url="/pages/aboutVron/main" />
     </i-panel>
 
-    <i-button class="sign-out-button" @click="readyToExit" type="error">退出</i-button>
-
+    <div class="sign-out-button">
+      <i-button  @click="readyToExit" type="error">退出</i-button>
+    </div>
   </div>
 </template>
 
