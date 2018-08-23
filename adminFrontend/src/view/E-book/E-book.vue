@@ -130,7 +130,7 @@ export default {
     },
     addNewPage: function () {
       let newPage = {
-        number: null,
+        number: this.book.length,
         picture: null,
         sentences: [
           {
@@ -148,11 +148,12 @@ export default {
       this.curpage = newPage
     },
     deletePage: function (pageNum) {
+      console.log(pageNum)
       let index = pageNum - 1
       this.book.splice(index, 1)
       if (this.book.length === 0) {
-        this.curpage = null
-      } else if (index <= this.book.length) {
+        this.addNewPage()
+      } else if (index < this.book.length) {
         this.curpage = this.book[index]
       } else {
         this.curpage = this.book[this.book.length - 1]

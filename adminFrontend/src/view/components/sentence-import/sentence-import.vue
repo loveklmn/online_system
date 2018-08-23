@@ -11,7 +11,7 @@
         <Input v-model="sentence.translated"/>
       </FormItem>
       <FormItem>
-        <Button> 选择对应区域 </Button>
+        <Button @click="selectArea"> 选择对应区域 </Button>
       </FormItem>
 
       <div>
@@ -41,6 +41,9 @@ export default {
   methods: {
     deleteSentence: function () {
       this.$emit('deleteSentence', this.sentence)
+    },
+    selectArea: function () {
+      this.$emit('selectArea', this.sentence)
     }
   }
 }
