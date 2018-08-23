@@ -17,11 +17,12 @@
         <div id="select-box" hidden></div>
       </div>
 
-      <Upload action="//jsonplaceholder.typicode.com/posts/">
+      <Upload class="upload-button" action="//jsonplaceholder.typicode.com/posts/">
           <Button icon="ios-cloud-upload-outline">Upload files</Button>
       </Upload>
       <Button
         type="error"
+        class="delete-button"
         @click="deletePage">删除该页面</Button>
 
     </Content>
@@ -30,13 +31,6 @@
         long
         class="add-sentence-button"
         @click="addNewSentence"> 添加新句子 </Button>
-      <!-- <sentenceimport
-        v-for="sen in page.sentences"
-        :key="sen.id"
-        :sentence.sync="sen"
-        v-on:deleteSentence="deleteSentence"
-        v-on:selectArea="selectArea">
-      </sentenceimport> -->
 
       <Collapse accordion>
         <Panel
@@ -187,5 +181,13 @@ export default {
 #select-box {
     border: 1px dotted #000;
     position: absolute;
+}
+.upload-button {
+  position: absolute;
+  top: 423px;
+}
+.delete-button {
+  position: absolute;
+  top: 460px;
 }
 </style>

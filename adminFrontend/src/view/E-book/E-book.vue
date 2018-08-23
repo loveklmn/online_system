@@ -28,6 +28,12 @@
                       ghost
                       class="add-page-button"
                       @click="addNewPage">添加新页面</Button>
+                    <Button
+                      type="primary"
+                      class="add-page-button"
+                      @click="importBook">上传这本书</Button>
+                    <!-- <MenuItem>
+                    </MenuItem> -->
                 </Menu>
             </Sider>
             <Layout>
@@ -160,6 +166,9 @@ export default {
       }
       console.log(this.curpage)
       console.log(this.book)
+    },
+    importBook: function () {
+      console.log('importBook is called!')
     }
   },
   watch: {
@@ -189,8 +198,10 @@ export default {
   margin: 0;
 }
 .add-page-button {
+  margin-top: 5px;
   width: 100px;
   margin-left: 25px;
+  display: block;
 }
 .page-num {
   font-size: 30px;
