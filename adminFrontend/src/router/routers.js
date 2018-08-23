@@ -109,6 +109,15 @@ export default [
         component: () => import('@/view/import-book/uploadFile.vue')
       },
       {
+        path: 'import_guidance',
+        name: 'import_guidance',
+        meta: {
+          icon: 'md-clipboard',
+          title: '亲子阅读指导导入'
+        },
+        component: () => import('@/view/bookshelf-page/bookshelf-page.vue')
+      },
+      {
         path: 'import_ebook',
         name: 'import_ebook',
         meta: {
