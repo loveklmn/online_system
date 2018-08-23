@@ -17,7 +17,7 @@
                 <div class="weui-grids">
                   <block v-for="book in intensiveReading" :key="book.id">
                     <div @click="navToNavigator(book)" class="weui-grid">
-                      <image class="weui-grid__icon" :src="book.cover" />
+                      <image class="weui-grid__icon" :src="book.rcover" />
                       <div class="weui-grid__label">{{book.title}}</div>
                       <i-progress v-if="book.percent === 100" :percent="book.percent" status="success"></i-progress>
                       <i-progress v-else :percent="book.percent"></i-progress>
@@ -32,7 +32,7 @@
               <div class="weui-grids">
                 <block v-for="book in extensiveReading" :key="book.id">
                   <div @click="navToNavigator(book)" class="weui-grid">
-                    <image class="weui-grid__icon" :src="book.cover" />
+                    <image class="weui-grid__icon" :src="book.rcover" />
                     <div class="weui-grid__label">{{book.title}}</div>
                     <i-progress v-if="book.percent === 100" :percent="book.percent" status="success"></i-progress>
                     <i-progress v-else :percent="book.percent"></i-progress>
@@ -77,6 +77,7 @@ export default {
         if (res.data.length > 0) {
           res.data.forEach((book) => {
             book.percent = this.progress(book)
+            book.rcover = request.baseURL + book.cover
           })
           this.intensiveReading = res.data.filter(book => book.type === 'IR')
           this.extensiveReading = res.data.filter(book => book.type === 'ER')
@@ -89,7 +90,7 @@ export default {
     },
     navToNavigator (book) {
       let url =
-        '/pages/navigator/main?id=' + book.id + '&title=' + book.title + '&cover=' + book.cover + '&page=' + book.progress.current_page
+        '/pages/navigator/main?id=' + book.id + '&title=' + book.title + '&cover=' + book.rcover + '&page=' + book.progress.current_page
       wx.navigateTo({ url })
     },
     progress (book) {
@@ -119,7 +120,6 @@ page,
   display: flex;
   position: absolute;
   z-index: 500;
-  top: 0;
   width: 100%;
   border-bottom: 1rpx solid #ccc;
   background-color: #fafafa;
@@ -170,8 +170,6 @@ page,
 }
 
 .weui-grids {
-  /* border-top: 1rpx solid #d9d9d9; */
-  /* border-left: 1rpx solid #d9d9d9; */
   overflow: hidden;
 }
 
@@ -181,8 +179,6 @@ page,
   padding: 10px;
   width: 33.33333333%;
   box-sizing: border-box;
-  /* border-right: 1rpx solid #d9d9d9; */
-  /* border-bottom: 1rpx solid #d9d9d9; */
 }
 
 .weui-grid__icon {

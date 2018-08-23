@@ -10,7 +10,7 @@
 </template>
 
 <script>
-
+import request from '@/utils/request'
 export default {
   components: {
   },
@@ -45,6 +45,11 @@ export default {
     this.title = options.title
     this.cover = options.cover
     wx.setStorageSync('current', options.page)
+    let url = 'books/' + this.id + '/progress/'
+    request
+      .post(url, {
+        current_page: this.current
+      })
   }
 }
 </script>
