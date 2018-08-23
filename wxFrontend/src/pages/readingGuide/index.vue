@@ -4,7 +4,7 @@
   <div class="display_box">
     <wxParse :content="guidance" />
   </div>
-  <i-panel title="词汇表">
+  <i-panel title="词汇表" v-if="vocabulary.length" >
     <i-cell-group>
       <block v-for="(item,index) in vocabulary" :key="index">
         <i-cell :title="item.word" :label="item.meaning" @click="play(item.word)"></i-cell>

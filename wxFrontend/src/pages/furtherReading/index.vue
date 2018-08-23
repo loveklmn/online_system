@@ -98,7 +98,7 @@ export default {
       }
       wx.chooseImage({
         count: 9,
-        sizeType: ['original', 'compressed'],
+        sizeType: ['compressed'],
         sourceType: ['album', 'camera'],
         success: function (res) {
           for (let i = 0; i < res.tempFilePaths.length; i++) {
