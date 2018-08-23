@@ -1,0 +1,67 @@
+.book-info {
+  display: flex;
+  flex-direction: column;
+  width:90%;
+  height: 80%;
+  .top-part {
+    flex-grow: 2;
+    margin-top: 2%;
+    margin-bottom:2%;
+    .basic-info {
+      .query-book {
+        display: flex;
+        flex-direction: row;
+        .book-cover {
+          width:50px;
+          flex-grow: 1;
+        }
+        .book-detail {
+          flex-grow: 3;
+          .book-title {
+            font-size: 20px;
+            margin-left: 7%;
+          }
+          .book-else-title {
+            font-size: 16px;
+            margin-top: 2%;
+            margin-left: 7%;
+          }
+          .modify-btn {
+            margin-top: 2%;
+            margin-left: 7%;
+          }
+        }
+      }
+      .new-book {
+        display: flex;
+        flex-direction: row;
+        .new-cover {
+          width: 50px;
+          flex-grow: 1;
+        }
+        .new-detail {
+          width: 50px;
+          flex-grow: 3;
+        }
+      }
+    }
+  }
+  .bottom-part {
+    flex-grow: 2;
+    margin-bottom: 2%;
+    .function-entrance {
+      display: flex;
+      flex-direction: row;
+      .level-icon {
+        flex-grow: 1;
+        margin: 3%;
+      }
+    }
+  }
+}
+.upload-picture {
+  width: 50%;
+  height: 50%;
+  margin-top: 20%;
+  margin-left: 20%;
+}
