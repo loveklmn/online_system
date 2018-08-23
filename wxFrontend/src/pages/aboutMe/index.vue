@@ -1,6 +1,6 @@
 <template>
   <div>
-    <i-card full title="username" extra="\>" thumb="https://i.loli.net/2018/08/11/5b6edc7419a1a.png"></i-card>
+    <i-card full :title="nickname" @click="navToUserinfo" :thumb="avatarurl"></i-card>
     <i-panel class="cell-panel-demo" title="账户">
       <i-cell-group>
         <i-cell title="修改密码" isLink url="/pages/changePassword/main" />
@@ -15,14 +15,35 @@
 </template>
 
 <script>
+import request from '@/utils/request'
 export default {
   data () {
-    return {}
+    return {
+      nickname: '',
+      avatar: ''
+    }
   },
-
-  methods: {},
-
-  created () {}
+  computed: {
+    avatarurl: function () {
+      return request.baseURL + this.avatar
+    }
+  },
+  methods: {
+    navToUserinfo () {
+      wx.navigateTo({url: '/pages/userinfo/main'})
+    }
+  },
+  onShow () {
+    let url = 'userinfo/'
+    request
+      .get(url)
+      .then(res => {
+        if (res.statusCode === 200) {
+          this.nickname = res.data.nickname
+          this.avatar = res.data.avatar
+        }
+      })
+  }
 }
 </script>
 <style scoped>

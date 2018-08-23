@@ -31,13 +31,13 @@
   </template>
 <script>
 import request from '@/utils/request'
-
 export default {
   data () {
     return {
       isTranslate: true,
       translate: '',
       voice: '',
+      current: '',
       recordState: false,
       playState: false,
       pages: [
@@ -90,8 +90,9 @@ export default {
     this.id = options.id
     this.current = options.page
     this.countBox()
-    console.log(this.current)
+    this.current = wx.getStorageSync('current')
   },
+
   computed: {
     playIconSrc: function () {
       if (this.playState === true) {
@@ -155,28 +156,20 @@ export default {
       let url = 'books/' + this.id + '/progress/'
       request.post(url, {
         current_page: this.current
-      }).then((res) => {
-        console.log('书的id' + this.id + '更新的进度是' + this.current + '页')
-        console.log(res)
       })
+      wx.setStorageSync('current', this.current)
     },
     record () {
       let vm = this
       if (this.playState === true) {
-        console.log('play')
         wx.playVoice({
           filePath: this.voice
         })
       } else if (this.recordState === false) {
         this.recordState = true
-        console.log('record start')
         wx.startRecord({
           success: function (e) {
-            console.log(e)
             vm.voice = e.tempFilePath
-          },
-          fail: function (e) {
-            console.log('录音失败')
           }
         })
       } else {

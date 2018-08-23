@@ -44,7 +44,7 @@ export default {
     this.id = options.id
     this.title = options.title
     this.cover = options.cover
-    this.page = options.page
+    wx.setStorageSync('current', options.page)
   }
 }
 </script>

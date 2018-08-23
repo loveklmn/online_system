@@ -74,6 +74,7 @@ export default {
     request
       .get('books/')
       .then(res => {
+        console.log(res)
         if (res.data.length > 0) {
           res.data.forEach((book) => {
             book.percent = this.progress(book)
@@ -98,7 +99,7 @@ export default {
       wx.navigateTo({ url })
     },
     progress (book) {
-      var progress = Math.floor(100 * book.progress.current_page / book.pages_num)
+      var progress = Math.floor(100 * book.progress.current_page / (book.pages_num - 1))
       return progress
     }
   }
