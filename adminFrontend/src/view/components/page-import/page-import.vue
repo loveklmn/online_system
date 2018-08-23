@@ -1,7 +1,13 @@
 <template>
   <Layout class="layout">
     <Content class="pic-content">
-      <img class="pagepic" :src="page.picture"> </img>
+      <div v-if="page.picture === null">
+        <img class="pagepic" :src="defaultPic"/>
+      </div>
+      <div v-else>
+        <img class="pagepic" :src="page.picture"/>
+      </div>
+
       <Upload action="//jsonplaceholder.typicode.com/posts/">
           <Button icon="ios-cloud-upload-outline">Upload files</Button>
       </Upload>
@@ -17,7 +23,7 @@
         @click="addNewSentence"> 添加新句子 </Button>
       <sentenceimport
         v-for="sen in page.sentences"
-        :key="sen.content"
+        :key="sen.id"
         :sentence.sync="sen"
         v-on:deleteSentence="deleteSentence">
       </sentenceimport>
@@ -27,9 +33,16 @@
 <script>
 import sentenceimport from '@/view/components/sentence-import/sentence-import'
 export default {
+  data () {
+    return {
+      defaultPic: require('@/assets/images/addPage.png')
+    }
+  },
   props: ['page'],
   components: {
     sentenceimport
+  },
+  computed: {
   },
   methods: {
     addNewSentence: function () {
@@ -64,7 +77,7 @@ export default {
 }
 .sentence-content {
   flex: 1;
-  height: 100px;
+  max-height: 560px;
 }
 
 .pagepic {

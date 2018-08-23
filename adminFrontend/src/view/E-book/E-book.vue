@@ -53,7 +53,6 @@ export default {
     return {
       preview: [],
       curpage: null,
-      // curid: 0,
       book: [
         {
           number: 1,
@@ -99,7 +98,7 @@ export default {
   },
   computed: {
     defaultPic: function () {
-      return '@/assets/images/addPage.png'
+      return require('@/assets/images/addPage.png')
     },
     curid: function () {
       return this.book.indexOf(this.curpage)
@@ -117,7 +116,16 @@ export default {
     countPreview: function () {
       this.preview = []
       for (let i = 0; i < this.book.length; i += 1) {
-        this.preview.push(this.book[i].picture)
+        if (this.book[i].picture === null) {
+          this.preview.push(this.defaultPic)
+        } else {
+          this.preview.push(this.book[i].picture)
+        }
+      }
+    },
+    countPage: function () {
+      for (let i = 0; i < this.book.length; i += 1) {
+        this.book[i].number = i + 1
       }
     },
     addNewPage: function () {
@@ -137,17 +145,26 @@ export default {
         ]
       }
       this.book.push(newPage)
-      this.book[this.book.length - 1].number = 100
-      // this.book.push(this.defaultPage)
+      this.curpage = newPage
     },
     deletePage: function (pageNum) {
-      this.book.splice(pageNum - 1, 1)
+      let index = pageNum - 1
+      this.book.splice(index, 1)
+      if (this.book.length === 0) {
+        this.curpage = null
+      } else if (index <= this.book.length) {
+        this.curpage = this.book[index]
+      } else {
+        this.curpage = this.book[this.book.length - 1]
+      }
+      console.log(this.curpage)
       console.log(this.book)
     }
   },
   watch: {
     book: function (val) {
       this.countPreview()
+      this.countPage()
     }
   },
   components: {
