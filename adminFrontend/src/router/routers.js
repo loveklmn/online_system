@@ -66,7 +66,7 @@ export default [
         name: 'create_user',
         meta: {
           icon: 'md-trending-up',
-          title: '新建账户'
+          title: '激活码生成'
         },
         component: () => import('@/view/new-accounts/new-accounts.vue')
       },
