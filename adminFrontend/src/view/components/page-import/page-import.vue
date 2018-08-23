@@ -151,6 +151,13 @@ export default {
       let index = this.page.sentences.indexOf(sentence)
       this.page.sentences.splice(index, 1)
       console.log('delete!', index)
+      if (this.page.sentences.length === 0) {
+        this.curSenIndexChar = '-1'
+      } else if (index < this.page.sentences.length) {
+        this.curSenIndexChar = index.toString()
+      } else {
+        this.curSenIndexChar = (this.page.sentences.length - 1).toString()
+      }
     },
     onmousedown: function (e) {
       if (!this.canSelect) {
@@ -159,7 +166,7 @@ export default {
       this.canSelect = false
       this.isSelecting = true
       console.log('down!')
-      console.log(this.xstart, this.ystart, this.xend, this.yend)
+      // console.log(this.xstart, this.ystart, this.xend, this.yend)
       this.xstart = e.clientX - this.offsetLeft
       this.ystart = e.clientY - this.offsetTop
       this.xend = this.xstart
@@ -192,8 +199,8 @@ export default {
       // this.curSentence = sentence
     },
     reCalc: function () {
-      console.log(this.curSentence)
-      console.log(this.x1, this.y1, this.x2, this.y2)
+      // console.log(this.curSentence)
+      // console.log(this.x1, this.y1, this.x2, this.y2)
       this.curSentence.x1 = Math.min(this.xstart, this.xend)
       this.curSentence.x2 = Math.max(this.xstart, this.xend)
       this.curSentence.y1 = Math.min(this.ystart, this.yend)

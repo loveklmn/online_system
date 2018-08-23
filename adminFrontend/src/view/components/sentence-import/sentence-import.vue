@@ -43,6 +43,18 @@
 <script>
 export default {
   props: ['sentence'],
+  watch: {
+    sentence () {
+      // let xleft = Math.min(this.sentence.x1, this.sentence.x2)
+      // let ytop = Math.min(this.sentence.y1, this.sentence.y2)
+      // let xright = Math.max(this.sentence.x1, this.sentence.x2)
+      // let ybottom = Math.max(this.sentence.y1, this.sentence.y2)
+      // this.sentence.x1 = xleft
+      // this.sentence.y1 = ytop
+      // this.sentence.x2 = xright
+      // this.sentence.y2 = ybottom
+    }
+  },
   methods: {
     deleteSentence: function () {
       this.$emit('deleteSentence', this.sentence)
