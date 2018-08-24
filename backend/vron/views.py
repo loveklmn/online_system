@@ -2,7 +2,7 @@ from vron.models import Notice, IsNoticeReaded, Student, Book, Progress, Word, P
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.views import exception_handler, APIView
-from rest_framework.exceptions import NotFound, PermissionDenied
+from rest_framework.exceptions import NotFound, PermissionDenied, ParseError
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 import os
@@ -142,9 +142,7 @@ class BookList(APIView):
                 guidance=guidance,
                 read_type=read_type)
         else:
-            book_query = get_book(id=book_id)
-
-            book = book_query[0]
+            book = get_book(id=book_id)[0]
             if cover:
                 book.cover = cover
             if level:
@@ -160,7 +158,6 @@ class BookList(APIView):
             if guidance:
                 book.guidance = guidance
             book.save()
-
         return Response(BookSerializer(book).data, status=201)
 
 class BookGuidance(APIView):
@@ -193,7 +190,7 @@ class BookGuidance(APIView):
         guidance = postdata.get('guidance')
         book.guidance = guidance
         response_info['guidance'] = book.guidance
-        words = json.loads(postdata.get('words'))
+        words = postdata.get('words')
         Word.objects.filter(guidance=book).delete()
 
         response_info['words'] = []
@@ -403,6 +400,22 @@ class UserInfo(APIView):
         student.save()
         return Response(status=201)
 
+class ChangePassword(APIView):
+
+    def post(self, request):
+        user = request.user
+        password = json.loads(request.body).get('password')
+        self.verify_password(password)
+        user.set_password(password)
+        user.save()
+        return Response(status=200)
+
+    def verify_password(self, password):
+        if not password:
+            raise ParseError(detail='Password cannot be empty.')
+        if len(password)<8:
+            detail = 'This password is too simple or too young'
+            raise ParseError(detail=detail)
 
 class NoticeInfo(APIView):
 
