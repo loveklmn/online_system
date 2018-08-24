@@ -2,12 +2,12 @@
   <div class="tables-edit-outer">
     <div v-if="!isEditting" class="tables-edit-con">
       <span class="value-con">{{ value }}</span>
-      <Button v-if="editable" @click="startEdit" class="tables-edit-btn" style="padding: 2px 4px;" type="text"><Icon type="md-create"></Icon></Button>
+      <Button v-if="editable" @click="startEdit" class="tables-edit-btn" type="text"><Icon type="md-create"></Icon></Button>
     </div>
     <div v-else class="tables-editting-con">
-      <Input :value="value" @input="handleInput" class="tables-edit-input"/>
-      <Button @click="saveEdit" style="padding: 6px 4px;" type="text"><Icon type="md-checkmark"></Icon></Button>
-      <Button @click="canceltEdit" style="padding: 6px 4px;" type="text"><Icon type="md-close"></Icon></Button>
+      <Input :value="value" @on-enter="handleEnter" @input="handleInput" class="tables-edit-input"/>
+      <Button @click="saveEdit" class="edit-btn" type="text"><Icon type="md-checkmark"></Icon></Button>
+      <Button @click="canceltEdit" class="edit-btn" type="text"><Icon type="md-close"></Icon></Button>
     </div>
   </div>
 </template>
@@ -17,6 +17,7 @@ export default {
   name: 'TablesEdit',
   props: {
     value: [String, Number],
+    changed: Boolean,
     edittingCellId: String,
     params: Object,
     editable: Boolean
@@ -28,13 +29,22 @@ export default {
   },
   methods: {
     handleInput (val) {
+      this.changed = true
+      this.$emit('input', val)
+    },
+    handleEnter (val) {
+      this.changed = true
       this.$emit('input', val)
     },
     startEdit () {
       this.$emit('on-start-edit', this.params)
     },
     saveEdit () {
-      this.$emit('on-save-edit', this.params)
+      if (this.changed) {
+        this.$emit('on-save-edit', this.params)
+      } else {
+        this.canceltEdit()
+      }
     },
     canceltEdit () {
       this.$emit('on-cancel-edit', this.params)
@@ -57,17 +67,19 @@ export default {
       right: 10px;
       top: 0;
       display: none;
+      padding: 2px 4px;
     }
-    &:hover{
-      .tables-edit-btn{
-        display: inline-block;
-      }
+    .tables-edit-btn{
+      display: inline-block;
     }
   }
   .tables-editting-con{
     .tables-edit-input{
       width: ~"calc(100% - 60px)";
     }
+  }
+  .edit-btn {
+    padding: 6px 4px;
   }
 }
 </style>
