@@ -16,7 +16,7 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=24, default='')
     level = models.IntegerField()
-    avatar = models.CharField(max_length=255)
+    avatar = models.CharField(max_length=255, default='static/upload/default_avatar.jpg')
     score = models.FloatField(default=0)
 
 class Book(models.Model):
