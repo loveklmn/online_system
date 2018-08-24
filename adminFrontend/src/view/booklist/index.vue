@@ -1,49 +1,40 @@
 <template>
   <div>
-    <Card title="所有图书" class="bookshelf">
-      <filter-table @load="loadData"
-                  :data="currentPageBookList"
-                  :columns="columns"
-                  :search="search">
-      </filter-table>
-      <Page :total="page.totalCount" :page-size="page.pageSize" :current="page.pageCurrent" show-total @on-change="changePage" class="page-bar"/>
-      <Divider />
-      <Button type="primary" class="new-book-btn">导入新书</Button>
-    </Card>
+    <filter-table @load="loadData"
+                :data="currentPageBookList"
+                :columns="columns"
+                :search="condition">
+    </filter-table>
+    <Page :total="page.totalCount" :page-size="page.pageSize" :current="page.pageCurrent" show-total @on-change="changePage" class="page-bar"/>
+    <Divider />
+    <Button type="primary" class="new-book-btn">导入新书</Button>
   </div>
 </template>
 
 <script>
-import { getAllBooks } from '@/api/data'
-import FilterTable from './FilterTable'
-
-const pageStatus = {
-  0: {
-    value: 0,
-    name: '少于100'
-  },
-  1: {
-    value: 1,
-    name: '100-200'
-  },
-  2: {
-    value: 2,
-    name: '多于200'
-  }
-}
+import FilterTable from '_c/filter-table'
+import axios from '@/libs/api.request'
 
 const typeStatus = {
-  'ER': {
-    value: 'ER',
+  0: {
+    value: '',
+    name: '全部'
+  },
+  1: {
+    value: '精读',
     name: '精读'
   },
-  'IR': {
-    value: 'IR',
+  2: {
+    value: '泛读',
     name: '泛读'
   }
 }
 
 const levelList = {
+  0: {
+    value: '',
+    name: '全部'
+  },
   1: {
     value: 1,
     name: 'k1'
@@ -63,19 +54,13 @@ const levelList = {
 }
 
 export default {
-  name: 'bookshelf_page',
   components: {
     FilterTable
   },
   data () {
     return {
-      search: {},
+      condition: {},
       columns: [
-        {
-          type: 'selection',
-          width: 60,
-          align: 'center'
-        },
         {
           title: '编号',
           key: 'id',
@@ -112,12 +97,8 @@ export default {
         },
         {
           title: '页数',
-          key: 'page_num',
-          sortable: true,
-          filter: {
-            type: 'Select',
-            option: pageStatus
-          }
+          key: 'pages_num',
+          sortable: true
         },
         {
           title: '详细信息',
@@ -141,57 +122,60 @@ export default {
         }
       ],
       allBooks: [],
-      currentPageBookList: [
-        {
-          id: 1,
-          title: 'a',
-          level: 'k1',
-          type: 'ER',
-          page_num: 20
-        }
-      ],
+      selectedBooks: [],
+      currentPageBookList: [],
       page: {
         totalCount: 0,
-        pageSize: 3,
+        pageSize: 10,
         pageCount: 0,
         pageCurrent: 1
       }
     }
   },
   created () {
-    getAllBooks().then(res => {
-      this.allBooks = res.data
-      this.page.totalCount = this.allBooks.length
-      this.page.pageCount = Math.ceil(this.page.totalCount / this.page.pageSize)
-      this.currentPageBookList = this.allBooks.slice(0, this.page.pageSize)
+    axios.request({
+      url: 'books',
+      method: 'get'
+    }).then(data => {
+      this.selectedBooks = this.allBooks = data.map(book => {
+        if (book.type === 'IR') {
+          book.type = '精读'
+        } else {
+          book.type = '泛读'
+        }
+        return book
+      })
+      this.loadData()
+      this.changePage(1)
     })
-  },
-  async mounted () {
-    await this.loadData(conditionObject)
   },
   methods: {
     changePage (currentPage) {
+      this.page.totalCount = this.selectedBooks.length
       let start = this.page.pageSize * (currentPage - 1)
       let end = this.page.pageSize * currentPage
-      this.currentPageBookList = this.allBooks.slice(start, end)
+      this.currentPageBookList = this.selectedBooks.slice(start, end)
     },
     turnToDetailPage (params) {
-      // params 获得当前书目的数据
-      // let currentBook = params.row
-      // this.$router.push({
-      //   name: 'book_detail_info',
-      //   query: currentBook
-      // })
     },
     loadData () {
-      // serach 记录下会当前的查询条件，此处添加一段逻辑
-      // let conditionObject = {
-      //   id: this.search.id,
-      //   title: this.search.title,
-      //   level: this.search.level,
-      //   type: this.search.type,
-      //   page_num: this.search.page_num
-      // }
+      this.selectedBooks = this.allBooks.filter(this.isSelected)
+      this.changePage(1)
+    },
+    isSelected (book) {
+      if (this.condition.id && book.id !== parseInt(this.condition.id)) {
+        return false
+      }
+      if (this.condition.level && book.level !== this.condition.level) {
+        return false
+      }
+      if (this.condition.title && book.title.indexOf(this.condition.title) === -1) {
+        return false
+      }
+      if (this.condition.type && book.type !== this.condition.type) {
+        return false
+      }
+      return true
     }
   }
 }

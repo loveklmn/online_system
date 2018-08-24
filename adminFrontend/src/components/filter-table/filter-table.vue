@@ -68,7 +68,7 @@ export default {
             return h(this.columns[index].filter.type, {
               props: {
                 placeholder: '输入' + this.columns[index].title,
-                icon: 'ios-search-strong'
+                icon: 'ios-search'
               },
               on: {
                 input: val => {
