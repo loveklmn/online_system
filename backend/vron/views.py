@@ -329,7 +329,7 @@ class CommunityGroup(APIView):
 
                 community_message['author'] = {}
                 community_message['author']['username'] = homework.author.nickname
-                community_message['author']['avatar'] = student.avatar
+                community_message['author']['avatar'] = homework.author.avatar
 
                 community_message['action'] = {}
                 community_message['action']['liked'] = False
