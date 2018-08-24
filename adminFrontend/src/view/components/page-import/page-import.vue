@@ -23,7 +23,11 @@
             height: (y2 - y1) + 'px'}"></div>
       </div>
 
-      <Upload class="upload-button" action="//jsonplaceholder.typicode.com/posts/">
+      <Upload
+        class="upload-button"
+        name="file"
+        :beforeUpload="handleUpload"
+       >
           <Button icon="ios-cloud-upload-outline">上传本页对应的图片</Button>
       </Upload>
       <Button
@@ -58,6 +62,8 @@
 </template>
 <script>
 import sentenceimport from '@/view/components/sentence-import/sentence-import'
+import upload from '@/api/upload'
+import baseURL from '_conf/url'
 export default {
   data () {
     return {
@@ -166,7 +172,6 @@ export default {
       this.canSelect = false
       this.isSelecting = true
       console.log('down!')
-      // console.log(this.xstart, this.ystart, this.xend, this.yend)
       this.xstart = e.clientX - this.offsetLeft
       this.ystart = e.clientY - this.offsetTop
       this.xend = this.xstart
@@ -177,7 +182,6 @@ export default {
       if (!this.isSelecting) {
         return
       }
-      // console.log('move!')
       this.xend = e.clientX - this.offsetLeft
       this.yend = e.clientY - this.offsetTop
       this.reCalc()
@@ -187,7 +191,6 @@ export default {
         return
       }
       this.isSelecting = false
-      console.log('up!')
     },
     selectArea: function (sentence) {
       let holder = document.getElementById('pic-holder')
@@ -196,15 +199,23 @@ export default {
       this.offsetLeft = rect.left
       console.log('selectArea is called!')
       this.canSelect = true
-      // this.curSentence = sentence
     },
     reCalc: function () {
-      // console.log(this.curSentence)
-      // console.log(this.x1, this.y1, this.x2, this.y2)
       this.curSentence.x1 = Math.min(this.xstart, this.xend)
       this.curSentence.x2 = Math.max(this.xstart, this.xend)
       this.curSentence.y1 = Math.min(this.ystart, this.yend)
       this.curSentence.y2 = Math.max(this.ystart, this.yend)
+    },
+    handleUpload (file) {
+      let that = this
+      upload(file)
+        .then((res) => {
+          let savepath = res.savepath
+          that.page.picture = baseURL + savepath
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   },
   mounted () {

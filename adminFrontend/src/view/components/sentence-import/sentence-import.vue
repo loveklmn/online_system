@@ -6,32 +6,34 @@
     <FormItem label="译文">
       <Input v-model="sentence.translated"/>
     </FormItem>
-    <!-- <FormItem label="音频文件">
-      <Input v-model="sentence.audio"/>
-    </FormItem> -->
 
     <FormItem>
-      <Upload action="//jsonplaceholder.typicode.com/posts/">
+      <Button
+        class="inline"
+        icon="ios-play"
+        @click="playSound">播放音频</Button>
+      <Upload
+        name="file"
+        :beforeUpload="handleUpload"
+        class="inline">
           <Button icon="ios-microphone">上传音频</Button>
       </Upload>
     </FormItem>
+
     <FormItem>
       <Button @click="selectArea"> 选择对应区域 </Button>
-    <!-- </FormItem> -->
-
-    <div>
-      <p class="inline-p">x1&nbsp;</p>
-      <Input readonly v-model="sentence.x1" class="coordinate"/>
-      <p class="inline-p">y1&nbsp;</p>
-      <Input readonly v-model="sentence.y1" class="coordinate"/>
-    </div>
-
-    <div>
-      <p class="inline-p">x2&nbsp;</p>
-      <Input readonly v-model="sentence.x2" class="coordinate"/>
-      <p class="inline-p">y2&nbsp;</p>
-      <Input readonly v-model="sentence.y2" class="coordinate"/>
-    </div>
+      <div>
+        <p class="inline">x1&nbsp;</p>
+        <Input readonly v-model="sentence.x1" class="coordinate"/>
+        <p class="inline">y1&nbsp;</p>
+        <Input readonly v-model="sentence.y1" class="coordinate"/>
+      </div>
+      <div>
+        <p class="inline">x2&nbsp;</p>
+        <Input readonly v-model="sentence.x2" class="coordinate"/>
+        <p class="inline">y2&nbsp;</p>
+        <Input readonly v-model="sentence.y2" class="coordinate"/>
+      </div>
     </FormItem>
 
     <Button
@@ -41,6 +43,8 @@
   </Form>
 </template>
 <script>
+import upload from '@/api/upload'
+import baseURL from '_conf/url'
 export default {
   props: ['sentence'],
   watch: {
@@ -61,6 +65,22 @@ export default {
     },
     selectArea: function () {
       this.$emit('selectArea', this.sentence)
+    },
+    playSound: function () {
+      let audio = new Audio(this.sentence.audio)
+      audio.play()
+    },
+    handleUpload (file) {
+      let that = this
+      upload(file)
+        .then((res) => {
+          let savepath = res.savepath
+          that.sentence.audio = baseURL + savepath
+          alert('上传音频成功！')
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 }
@@ -73,7 +93,7 @@ export default {
   width: 30%;
   margin-right: 10px;
 }
-.inline-p {
+.inline {
   display: inline;
 }
 </style>
