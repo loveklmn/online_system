@@ -4,39 +4,39 @@
   <div class="pintu-wrap">
     <div class="pintu-line">
       <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card1.src" :hidden="cards.card1.hidden" @click="card1"/> 
+        <image class="pintu-item" type="primary" :src="cards.card1.src" :hidden="cards.card1.hidden" @click="card1"/>
       </div>
       <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card2.src" :hidden="cards.card2.hidden" @click="card2"/> 
+        <image class="pintu-item" type="primary" :src="cards.card2.src" :hidden="cards.card2.hidden" @click="card2"/>
       </div>
       <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card3.src" :hidden="cards.card3.hidden" @click="card3"/> 
-      </div>
-    </div>
-    <div class="pintu-line">
-      <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card4.src" :hidden="cards.card4.hidden" @click="card4"/> 
-      </div>
-      <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card5.src" :hidden="cards.card5.hidden" @click="card5"/> 
-      </div>
-      <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card6.src" :hidden="cards.card6.hidden" @click="card6"/> 
+        <image class="pintu-item" type="primary" :src="cards.card3.src" :hidden="cards.card3.hidden" @click="card3"/>
       </div>
     </div>
     <div class="pintu-line">
       <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card7.src" :hidden="cards.card7.hidden" @click="card7"/> 
+        <image class="pintu-item" type="primary" :src="cards.card4.src" :hidden="cards.card4.hidden" @click="card4"/>
       </div>
       <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card8.src" :hidden="cards.card8.hidden" @click="card8"/> 
+        <image class="pintu-item" type="primary" :src="cards.card5.src" :hidden="cards.card5.hidden" @click="card5"/>
       </div>
       <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card9.src" :hidden="cards.card9.hidden" @click="card9"/> 
+        <image class="pintu-item" type="primary" :src="cards.card6.src" :hidden="cards.card6.hidden" @click="card6"/>
+      </div>
+    </div>
+    <div class="pintu-line">
+      <div class="pintu-item-wrap">
+        <image class="pintu-item" type="primary" :src="cards.card7.src" :hidden="cards.card7.hidden" @click="card7"/>
+      </div>
+      <div class="pintu-item-wrap">
+        <image class="pintu-item" type="primary" :src="cards.card8.src" :hidden="cards.card8.hidden" @click="card8"/>
+      </div>
+      <div class="pintu-item-wrap">
+        <image class="pintu-item" type="primary" :src="cards.card9.src" :hidden="cards.card9.hidden" @click="card9"/>
       </div>
     </div>
   </div>
- 
+
   <div class="btn-wrap">
     <button type="warn" @click="initGame">重新开始</button>
   </div>
@@ -168,35 +168,36 @@ input{
 .container {
   height: 100%;
   display: flex;
+  padding-top: 200rpx;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
   color: #4e4b4b;
 }
- 
+
 .btn-wrap {
   width: 80%;
   padding: 20px 0;
   text-align: center;
   margin: auto;
 }
- 
+
 .pintu-wrap {
   width: 100%;
   align-items: center;
   padding-left: 60rpx;
 }
- 
+
 .pintu-line {
   display: flex;
 }
- 
+
 .pintu-item-wrap {
   height: 100px;
   width: 30%;
 }
- 
+
 .pintu-item {
   line-height: 100px;
   height: 100%;

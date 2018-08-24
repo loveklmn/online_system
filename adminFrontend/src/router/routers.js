@@ -44,15 +44,6 @@ export default [
     ]
   },
   {
-    path: '',
-    name: 'doc',
-    meta: {
-      title: '弗恩英语官网',
-      href: 'https://hf.vronedu.com/',
-      icon: 'ios-book'
-    }
-  },
-  {
     path: '/manage_user_page',
     name: 'manage_user',
     meta: {
@@ -66,7 +57,7 @@ export default [
         name: 'create_user',
         meta: {
           icon: 'md-trending-up',
-          title: '新建账户'
+          title: '激活码生成'
         },
         component: () => import('@/view/new-accounts/new-accounts.vue')
       },
@@ -91,49 +82,39 @@ export default [
     ]
   },
   {
-    path: '/book_manage',
-    name: 'book_manage',
+    path: '/book',
+    name: 'books',
     meta: {
       icon: 'md-cloud-upload',
-      title: '数据上传'
+      title: '图书管理'
     },
     component: Main,
     children: [
       {
-        path: 'import_books',
-        name: 'import_books',
+        path: 'list',
+        name: 'booklist',
         meta: {
           icon: 'ios-document',
-          title: '创建新书'
+          title: '图书管理'
         },
-        component: () => import('@/view/import-book/uploadFile.vue')
+        component: () => import('@/view/booklist')
       },
       {
-        path: 'import_ebook',
-        name: 'import_ebook',
+        path: ':id/ebook',
+        name: 'ebook',
         meta: {
-          icon: 'md-clipboard',
-          title: 'E_book 导入'
+          hideInMenu: true,
+          title: 'E-book'
         },
-        component: () => import('@/view/update/update-paste.vue')
+        component: () => import('@/view/E-book')
       },
       {
-        path: 'import_assignment',
-        name: 'import_assignment',
+        path: ':id',
+        name: 'book',
         meta: {
-          icon: 'md-clipboard',
-          title: '阅读拓展导入'
+          hideInMenu: true
         },
-        component: () => import('@/view/assignment-page/assignment-page.vue')
-      },
-      {
-        path: 'import_game',
-        name: 'import_game',
-        meta: {
-          icon: 'md-clipboard',
-          title: '游戏素材导入'
-        },
-        component: () => import('@/view/update/update-paste.vue')
+        component: () => import ('@/view/book-info')
       }
     ]
   },
@@ -253,24 +234,6 @@ export default [
     ]
   },
   {
-    path: '/book_detail',
-    name: 'book_detail',
-    component: Main,
-    meta: {
-      hideInMenu: true
-    },
-    children: [
-      {
-        path: 'book_detail_info',
-        name: 'book_detail_info',
-        meta: {
-          title: "本书详情"
-        },
-        component: () => import('@/view/book-detail-page/book-detail.vue')
-      }
-    ]
-  },
-  {
     path: '/import_assignment',
     name: 'import_assignment',
     component: Main,
@@ -285,24 +248,6 @@ export default [
           title: '阅读拓展导入',
         },
         component: () => import('@/view/assignment-page/assignment-success.vue')
-      }
-    ]
-  },
-  {
-    path: '/import_guidance',
-    name: 'import_guidance',
-    component: Main,
-    meta: {
-      hideInMenu: true
-    },
-    children: [
-      {
-        path: 'guidance_success',
-        name: 'guidance_success',
-        meta: {
-          title: '阅读拓展导入',
-        },
-        component: () => import('@/view/guidance-page/guidance-success.vue')
       }
     ]
   }

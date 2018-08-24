@@ -30,17 +30,12 @@
 <script>
 import './format.less'
 export default {
-  name: 'new-accounts',
   data () {
     return {
       level: '',
       amount: '',
       current: 1,
-      loadingStatus: false,
-      accountsList: [{
-        accountNumber: '123455'
-      }
-      ]
+      loadingStatus: false
     }
   },
   created () {
@@ -49,30 +44,25 @@ export default {
   },
   methods: {
     handleSubmit () {
-      // generate accounts (level, amount)
-      // accountsList.append(res)
       this.loadingStatus = true
       setTimeout(() => {
-        this.current = 2
         this.loadingStatus = false
-      }, 500000)
+      }, 20000)
       this.$router.push({
         name: 'generate_result',
         query: {
           level: this.level,
-          amount: this.amount,
-          accountsList: this.accountsList
+          amount: this.amount
         }
       })
     },
     returnLast () {
-      this.$router.push({
-        name: 'fill_info',
+      this.$router.replace({
+        name: 'fill_generate_info',
         query: {
           level: this.level,
           amount: this.amount
         }
-        // save message
       })
     }
   }

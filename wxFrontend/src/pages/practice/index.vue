@@ -1,7 +1,7 @@
 <template>
 <div>
-
-    <div class="weui-grid__label"> bookid: {{id}} </div>
+  <image class="weui-grid__icon" :src="cover" />
+  <div class="weui-grid__label"> {{title}} </div>
 
 <i-button @click="navToGame1(id)" shape="circle" type="info">连线游戏</i-button>
 <i-button @click="navToGame2(id)" shape="circle" type="success">识别单词游戏</i-button>
@@ -26,11 +26,15 @@ export default {
   },
   data () {
     return {
-      id: null
+      id: null,
+      cover: '',
+      title: ''
     }
   },
   onLoad (options) {
     this.id = options.id
+    this.title = options.title
+    this.cover = options.cover
   }
 }
 </script>
@@ -40,7 +44,8 @@ export default {
   display: block;
   width: 170rpx;
   height: 240rpx;
-  margin: 0 auto;
+  margin: auto;
+  padding-top: 100rpx;
 }
 
 .weui-grid__label {

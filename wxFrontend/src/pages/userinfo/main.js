@@ -6,6 +6,7 @@ app.$mount()
 
 export default {
   config: {
+    navigationBarTitleText: '用户信息',
     usingComponents: {
       'i-modal': '../../static/iview/modal/index',
       'i-grid': '../../static/iview/grid/index',

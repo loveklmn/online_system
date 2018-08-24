@@ -8,11 +8,6 @@
     </Steps>
   </div>
   <div class="generate-result">
-    <Card title="生成结果">
-      <div class="success-tip">
-        <Icon type="md-checkmark-circle" color="green" size="10px"/>
-        <p>生成成功!</p>
-      </div>
       <Divider>本次操作信息</Divider>
       <div class="text-tip">
         <p>
@@ -23,23 +18,22 @@
       </div>
       <Divider>生成账号结果</Divider>
       <div class="csv-table">
-        <tables ref="tables" v-model="accountsList" :columns="titleList" />
+        <tables ref="tables" v-model="codeList" :columns="titleList" />
         <Button type="primary" class="export-csv-btn" @click="exportExcel"><Icon type="md-download" color="green" />导出为Csv文件</Button>
       </div>
       <div class="operator-btns">
         <Button type="primary" class="continue-btn" @click="generateAgain">继续生成账号</Button>
         <Button type="warning" class="back-btn" @click="reset">返回首页</Button>
       </div>
-    </Card>
   </div>
 </div>
 </template>
 <script>
 import Tables from '_c/tables'
-// import { getTableData } from '@/api/data'
 import './format.less'
+import axios from '@/libs/api.request'
+
 export default {
-  name: 'new-accounts',
   data () {
     return {
       level: '',
@@ -47,35 +41,41 @@ export default {
       current: 3,
       titleList: [
         {
-          title: '账号',
-          key: 'accountNumber',
+          title: '激活码',
+          key: 'code'
+        },
+        {
+          title: '阅读等级',
+          key: 'level',
           sortable: true
         }
       ],
-      accountsList: [
-        {
-          accountNumber: '123455'
-        }
-      ]
+      codeList: []
     }
   },
   components: {
     Tables
   },
-  created () {
-    this.level = this.$route.query.level
-    this.amount = this.$route.query.amount
-    this.accountsList = this.$route.query.accountsList
+  beforeRouteEnter (to, from, next) {
+    axios.request({
+      url: 'generatekey/',
+      data: {
+        'level': to.query.level,
+        'count': to.query.amount
+      },
+      method: 'post'
+    }).then(data => {
+      next(vm => {
+        vm.codeList = data.map(code => {
+          return {'code': code, 'level': to.query.level}
+        })
+      })
+    })
   },
-  // mounted () {
-  //   getTableData().then(res => {
-  //     this.accountsList = res.data
-  //   })
-  // },
   methods: {
     generateAgain () {
       this.$router.push({
-        name: 'fill_info'
+        name: 'create_user'
       })
     },
     reset () {

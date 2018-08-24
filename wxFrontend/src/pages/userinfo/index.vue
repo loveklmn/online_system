@@ -49,11 +49,8 @@ export default {
         confirmText: '确定',
         cancelText: '取消',
         success: function (res) {
-          console.log(res)
           if (res.confirm) {
             vm.change()
-          } else {
-            console.log('用户点击辅助操作')
           }
         }
       })
@@ -67,7 +64,6 @@ export default {
         })
     },
     changeName (e) {
-      console.log(e)
       this.nickname = e.target.value
       this.showConfirm()
     }
@@ -77,18 +73,10 @@ export default {
     request
       .get(url)
       .then(res => {
-        console.log(res)
         if (res.statusCode === 200) {
-          console.log(res.data)
           this.nickname = res.data.nickname
           this.avatar = res.data.avatar
-        } else {
-          console.log(res)
-          console.log('empty')
         }
-      })
-      .catch(err => {
-        console.log(err)
       })
   }
 }

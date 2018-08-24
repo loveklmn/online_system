@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="container">
   <image class="weui-grid__icon" :src="cover" />
   <div class="weui-grid__label"> {{title}} </div>
   <i-button @click="navToReadGuide" shape="circle" type="info">亲子阅读指导</i-button>
@@ -24,7 +24,7 @@ export default {
       wx.navigateTo({url: url})
     },
     navToPractice () {
-      let url = '/pages/practice/main?id=' + this.id
+      let url = '/pages/practice/main?id=' + this.id + '&title=' + this.title + '&cover=' + this.cover
       wx.navigateTo({url: url})
     },
     navToFurtherRead () {
@@ -50,6 +50,10 @@ export default {
 </script>
 
 <style>
+.container {
+  padding-top: 100rpx;
+  padding-bottom: 100rpx;
+}
 .weui-grid__icon {
   display: block;
   width: 170rpx;
