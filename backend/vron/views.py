@@ -210,9 +210,6 @@ class BookGuidance(APIView):
             })
         return Response(response_info, status=201)
 
-
-
-
 class BookHomework(APIView):
 
     def get(self, request, book_id):
@@ -259,7 +256,7 @@ class BookHomework(APIView):
             except ObjectDoesNotExist:
                 homework = Homework.objects.create(book=book, author=student, content=' ')
             homework.content = postdata.get('content', ' ')
-            attachments = json.loads(postdata.get('attachments',r'{}'))
+            attachments = postdata.get('attachments',r'{}')
             homework.images = ' '.join(attachments.get('image', ''))
             homework.videos = ' '.join(attachments.get('video', ''))
             homework.audios = ' '.join(attachments.get('audio', ''))
@@ -270,7 +267,7 @@ class BookHomework(APIView):
             return Response({
                 'id': book.id,
                 'assignment': book.assignment
-            })
+            }, status=201)
 
 
 class BookProgress(APIView):
@@ -462,7 +459,7 @@ class MarkNotice(APIView):
     @stu_required
     def post(self, request):
         postdata = json.loads(request.body)
-        notice_id = postdata.get('id')
+        notice_id = get_or_raise(postdata, 'id')
         notice_query = Notice.objects.filter(id=notice_id)
         if not notice_query.exists():
             return Response({'msg': 'Notice not found'}, status=404)
