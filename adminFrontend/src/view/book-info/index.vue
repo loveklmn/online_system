@@ -51,22 +51,18 @@
   <div class="bottom-part">
     <Card title="功能入口">
       <div class="function-entrance">
-        <Button shape="circle" class="level-icon">
-          <Icon type="md-aperture" />
-          <p>亲子阅读指导</p>
-        </Button>
-        <Button shape="circle" class="level-icon">
-          <Icon type="md-aperture" />
-          <p>阅读拓展导入</p>
-        </Button>
-        <Button shape="circle" class="level-icon">
-          <Icon type="ios-aperture" />
-          <p>游戏素材导入</p>
-        </Button>
-        <Button shape="circle" class="level-icon">
-          <Icon type="ios-aperture" />
-          <p>E-book导入</p>
-        </Button>
+          <Button :to="`/book/${currentBook.id}/guidance`" shape="circle" class="level-icon" type="primary">
+            亲子阅读指导
+          </Button>
+          <Button :to="`/book/${currentBook.id}/assignment`" shape="circle" class="level-icon" type="primary">
+            阅读拓展导入
+          </Button>
+          <Button :to="`/book/${currentBook.id}/ebook`" shape="circle" class="level-icon" type="primary">
+            游戏素材导入
+          </Button>
+          <Button :to="`/book/${currentBook.id}/ebook`" shape="circle" class="level-icon" type="primary">
+            E-book导入
+          </Button>
       </div>
     </Card>
   </div>
@@ -87,38 +83,43 @@ export default {
       cover: '',
       bookType: '',
       currentBook: {
-        id: 0,
+        id: -1,
         title: '',
-        level: '',
+        level: null,
         read_type: '',
         cover: '',
-        pages_num: '',
+        pages_num: 0,
         assignment: '',
         guidance: ''
       },
       newBook: {
-        id: 0,
+        id: -1,
         title: '',
-        level: '',
+        level: null,
         read_type: '',
         cover: '',
-        pages_num: '',
+        pages_num: 0,
         assignment: '',
         guidance: ''
       }
     }
   },
   created () {
-    axios.request({
-      url: 'books/',
-      method: 'post',
-      data: {
-        id: this.$route.params.id
-      }
-    }).then(data => {
-      this.currentBook = data
-      this.newBook = Object.assign({}, this.currentBook)
-    })
+    let id = parseInt(this.$route.params.id)
+    if (id !== -1) {
+      axios.request({
+        url: 'books/',
+        method: 'post',
+        data: {
+          id: id
+        }
+      }).then(data => {
+        this.currentBook = data
+        this.newBook = Object.assign({}, this.currentBook)
+      })
+    } else {
+      this.modifyMode = true
+    }
   },
   computed: {
   },
@@ -131,17 +132,35 @@ export default {
       this.modifyMode = false
     },
     save () {
-      this.loading = true
-      axios.request({
-        url: 'books/',
-        method: 'post',
-        data: this.newBook
-      }).then((data) => {
-        this.currentBook = data
-        this.newBook = Object.assign({}, this.currentBook)
-        this.loading = false
-        this.modifyMode = false
-      })
+      if (this.id === -1) {
+        if (!this.newBook.title || !this.newBook.level || !this.newBook.cover || !this.newBook.read_type) {
+          this.$Message.error('请填写完整的信息')
+        } else {
+          this.loading = true
+          axios.request({
+            url: 'books/',
+            method: 'post',
+            data: this.newBook
+          }).then((data) => {
+            this.loading = false
+            this.$router.push({
+              path: 'book/' + data.id
+            })
+          })
+        }
+      } else {
+        this.loading = true
+        axios.request({
+          url: 'books/',
+          method: 'post',
+          data: this.newBook
+        }).then((data) => {
+          this.currentBook = data
+          this.newBook = Object.assign({}, this.currentBook)
+          this.loading = false
+          this.modifyMode = false
+        })
+      }
     },
     upload (file) {
       this.uploading = true

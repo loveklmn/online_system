@@ -95,26 +95,44 @@ export default [
         name: 'booklist',
         meta: {
           icon: 'ios-document',
-          title: '图书管理'
+          title: '图书列表'
         },
         component: () => import('@/view/booklist')
+      },
+      {
+        path: ':id',
+        name: 'book',
+        meta: {
+          hideInMenu: true,
+          title: '图书信息'
+        },
+        component: () =>
+          import ('@/view/book-info')
       },
       {
         path: ':id/ebook',
         name: 'ebook',
         meta: {
           hideInMenu: true,
-          title: 'E-book'
+          title: '图书信息'
         },
         component: () => import('@/view/E-book')
       },
       {
-        path: ':id',
-        name: 'book',
+        path: ':id/guidance',
+        name: 'guidance',
+        meta: {
+          hideInMenu: true,
+        },
+        component: () => import('@/view/guidance')
+      },
+      {
+        path: ':id/assignment',
+        name: 'assignment',
         meta: {
           hideInMenu: true
         },
-        component: () => import ('@/view/book-info')
+        component: () => import('@/view/assignment')
       }
     ]
   },
@@ -230,24 +248,6 @@ export default [
           title: '生成结果'
         },
         component: () => import('@/view/new-accounts/generate-result.vue')
-      }
-    ]
-  },
-  {
-    path: '/import_assignment',
-    name: 'import_assignment',
-    component: Main,
-    meta: {
-      hideInMenu: true
-    },
-    children: [
-      {
-        path: 'assignment_success',
-        name: 'assignment_success',
-        meta: {
-          title: '阅读拓展导入',
-        },
-        component: () => import('@/view/assignment-page/assignment-success.vue')
       }
     ]
   }

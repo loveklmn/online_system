@@ -7,7 +7,7 @@
     </filter-table>
     <Page :total="page.totalCount" :page-size="page.pageSize" :current="page.pageCurrent" show-total @on-change="changePage" class="page-bar"/>
     <Divider />
-    <Button type="primary" class="new-book-btn">导入新书</Button>
+    <Button type="primary" :loading="loading" @click="newBook" class="new-book-btn">导入新书</Button>
   </div>
 </template>
 
@@ -59,6 +59,7 @@ export default {
   },
   data () {
     return {
+      loading: false,
       condition: {},
       columns: [
         {
@@ -179,6 +180,11 @@ export default {
         return false
       }
       return true
+    },
+    newBook () {
+      this.$router.push({
+        path: '/book/-1'
+      })
     }
   }
 }
