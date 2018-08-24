@@ -104,7 +104,12 @@
       ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
     },
     "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
-    }
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "\\.(css)$": "<rootDir>/node_modules/jest-css-modules",
+      "^vue$": "vue/dist/vue.common.js"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!mpvue-toast|vue-quill-editor)"
+    ]
   }
 }
