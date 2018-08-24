@@ -82,7 +82,7 @@ export default [
     ]
   },
   {
-    path: '/books',
+    path: '/book',
     name: 'books',
     meta: {
       icon: 'md-cloud-upload',
@@ -107,6 +107,14 @@ export default [
           title: 'E-book'
         },
         component: () => import('@/view/E-book')
+      },
+      {
+        path: ':id',
+        name: 'book',
+        meta: {
+          hideInMenu: true
+        },
+        component: () => import ('@/view/book-info')
       }
     ]
   },
@@ -222,24 +230,6 @@ export default [
           title: '生成结果'
         },
         component: () => import('@/view/new-accounts/generate-result.vue')
-      }
-    ]
-  },
-  {
-    path: '/book',
-    name: 'book',
-    component: Main,
-    meta: {
-      hideInMenu: true
-    },
-    children: [
-      {
-        path: ':id',
-        name: 'book-info',
-        meta: {
-          title: "本书详情"
-        },
-        component: () => import('@/view/book-detail-page/book-detail.vue')
       }
     ]
   },

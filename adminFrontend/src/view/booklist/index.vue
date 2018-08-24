@@ -157,6 +157,9 @@ export default {
       this.currentPageBookList = this.selectedBooks.slice(start, end)
     },
     turnToDetailPage (params) {
+      this.$router.push({
+        path: '/book/' + params.row.id
+      })
     },
     loadData () {
       this.selectedBooks = this.allBooks.filter(this.isSelected)
