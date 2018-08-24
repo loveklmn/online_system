@@ -97,43 +97,16 @@ export default [
           icon: 'ios-document',
           title: '图书管理'
         },
-        component: () => import('@/view/import-book/uploadFile.vue')
+        component: () => import('@/view/booklist')
       },
       {
-        path: 'import_guidance',
-        name: 'import_guidance',
+        path: ':id/ebook',
+        name: 'ebook',
         meta: {
-          icon: 'md-clipboard',
-          title: '亲子阅读指导导入'
+          hideInMenu: true,
+          title: 'E-book'
         },
-        component: () => import('@/view/bookshelf-page/bookshelf-page.vue')
-      },
-      {
-        path: 'import_ebook',
-        name: 'import_ebook',
-        meta: {
-          icon: 'md-clipboard',
-          title: 'E_book 导入'
-        },
-        component: () => import('@/view/E-book/E-book.vue')
-      },
-      {
-        path: 'import_assignment',
-        name: 'import_assignment',
-        meta: {
-          icon: 'md-clipboard',
-          title: '阅读拓展导入'
-        },
-        component: () => import('@/view/assignment-page/assignment-page.vue')
-      },
-      {
-        path: 'import_game',
-        name: 'import_game',
-        meta: {
-          icon: 'md-clipboard',
-          title: '游戏素材导入'
-        },
-        component: () => import('@/view/update/update-paste.vue')
+        component: () => import('@/view/E-book')
       }
     ]
   },

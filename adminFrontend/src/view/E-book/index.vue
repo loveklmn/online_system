@@ -1,6 +1,5 @@
 <template>
     <div class="layout">
-        <!-- <Layout :style="{minHeight: '100vh'}"> -->
         <Layout>
             <Sider width="auto" >
                 <Menu
@@ -14,15 +13,10 @@
                       :name="index"
                       class="menu-item"
                       >
-                      <!-- class="menu-item"> -->
                       <img
                         :src="img"
                         :class="[ index === curid ? 'preview-selected' : 'preview']"/>
                     </MenuItem>
-                    <!-- <MenuItem
-                      :name="-1">
-                      <img src="@/assets/images/addPage.png" class="preview"/>
-                    </MenuItem> -->
                     <Button
                       type="dashed"
                       ghost
@@ -32,8 +26,6 @@
                       type="primary"
                       class="add-page-button"
                       @click="importBook">上传这本书</Button>
-                    <!-- <MenuItem>
-                    </MenuItem> -->
                 </Menu>
             </Sider>
             <Layout>
@@ -45,7 +37,8 @@
                         <pageimport
                           class="pageimport"
                           :page.sync="curpage"
-                          v-on:deletePage="deletePage"></pageimport>
+                          v-on:deletePage="deletePage"
+                          v-on:picChange="countPreview"></pageimport>
                     </Card>
                 </Content>
             </Layout>
@@ -54,53 +47,24 @@
 </template>
 <script>
 import pageimport from '@/view/components/page-import/page-import.vue'
+import axios from '@/libs/api.request'
 export default {
   data () {
     return {
+      bookid: -1,
       preview: [],
       curpage: null,
-      book: [
-        {
-          number: 1,
-          picture: 'https://picsum.photos/200/300/?image=1',
-          sentences: [
-            {
-              content: 'I do something',
-              audio: 'http://a/b',
-              translated: '我干某事',
-              x1: 100,
-              y1: 50,
-              x2: 20,
-              y2: 10
-            },
-            {
-              content: 'I did something',
-              audio: 'http://a/b',
-              translated: '我干过某事',
-              x1: 100,
-              y1: 50,
-              x2: 20,
-              y2: 50
-            }
-          ]
-        },
-        {
-          number: 2,
-          picture: 'https://picsum.photos/200/300/?image=2',
-          sentences: [
-            {
-              content: 'I eat a banana',
-              audio: 'http://b/y',
-              translated: '我吃了一个香蕉',
-              x1: 100,
-              y1: 100,
-              x2: 200,
-              y2: 200
-            }
-          ]
-        }
-      ]
+      book: []
     }
+  },
+  created () {
+    this.bookid = this.$route.params.id
+    axios.request({
+      url: `books/${this.bookid}/ebook/`,
+      method: 'get'
+    }).then(data => {
+      this.initBook(data)
+    })
   },
   computed: {
     defaultPic: function () {
@@ -114,10 +78,17 @@ export default {
     }
   },
   methods: {
+    // 被created调用
+    initBook: function (data) {
+      this.book = Object.values(data)
+      console.log(this.book)
+      if (this.book.length === 0) {
+        this.addNewPage()
+      }
+    },
+    // 左侧Menu(预览)点击时调用
     select: function (i) {
-      // console.log(i)
       this.curpage = this.book[i]
-      // console.log(this.curpage)
     },
     countPreview: function () {
       this.preview = []
@@ -138,37 +109,25 @@ export default {
       let newPage = {
         number: this.book.length,
         picture: null,
-        sentences: [
-          {
-            content: null,
-            audio: null,
-            translated: null,
-            x1: null,
-            y1: null,
-            x2: null,
-            y2: null
-          }
-        ]
+        sentences: []
       }
       this.book.push(newPage)
       this.curpage = newPage
     },
     deletePage: function (pageNum) {
-      console.log(pageNum)
       let index = pageNum - 1
       this.book.splice(index, 1)
       if (this.book.length === 0) {
+        alert('至少要有一面书！')
         this.addNewPage()
       } else if (index < this.book.length) {
         this.curpage = this.book[index]
       } else {
         this.curpage = this.book[this.book.length - 1]
       }
-      console.log(this.curpage)
-      console.log(this.book)
     },
+    // 上传这本书，待后端接口确定后实现
     importBook: function () {
-      console.log('importBook is called!')
     }
   },
   watch: {

@@ -68,19 +68,14 @@ export default {
   data () {
     return {
       defaultPic: require('@/assets/images/addPage.png'),
-      // x1: 0,
-      // y1: 0,
-      // x2: 0,
-      // y2: 0,
+      curSenIndexChar: '-1',
+      // 以下均为鼠标点选区域有关的data
       xstart: 0,
       ystart: 0,
       xend: 0,
       yend: 0,
       canSelect: false,
       isSelecting: false,
-      // curSentence: null,
-      // curSenIndex: -1,
-      curSenIndexChar: '-1',
       selectBox: null,
       offsetLeft: 0,
       offsetTop: 0
@@ -92,11 +87,8 @@ export default {
   },
   watch: {
     page: function (val) {
-      if (this.page.picture !== null) {
-        // let holder = document.getElementById('pic-holder')
-        // let rect = holder.getBoundingClientRect()
-        // this.offsetTop = rect.top
-        // this.offsetLeft = rect.left
+      if (this.page.sentences.length === 0) {
+        this.addNewSentence()
       }
     }
   },
@@ -137,6 +129,9 @@ export default {
     }
   },
   methods: {
+    deletePage: function () {
+      this.$emit('deletePage', this.page.number)
+    },
     addNewSentence: function () {
       let newSen = {
         content: null,
@@ -150,13 +145,9 @@ export default {
       newSen.content = `新句子${this.page.sentences.length + 1}`
       this.page.sentences.push(newSen)
     },
-    deletePage: function () {
-      this.$emit('deletePage', this.page.number)
-    },
     deleteSentence: function (sentence) {
       let index = this.page.sentences.indexOf(sentence)
       this.page.sentences.splice(index, 1)
-      console.log('delete!', index)
       if (this.page.sentences.length === 0) {
         this.curSenIndexChar = '-1'
       } else if (index < this.page.sentences.length) {
@@ -165,13 +156,35 @@ export default {
         this.curSenIndexChar = (this.page.sentences.length - 1).toString()
       }
     },
+    handleUpload (file) {
+      let that = this
+      upload(file)
+        .then((res) => {
+          let savepath = res.savepath
+          that.page.picture = baseURL + savepath
+          that.$emit('picChange')
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    // 以下均为和鼠标点选有关的方法
+    // 首先调用selectArea
+    // 然后是mouse: down -> move -> up
+    // reCalc 主要在move过程中调用
+    selectArea: function (sentence) {
+      let holder = document.getElementById('pic-holder')
+      let rect = holder.getBoundingClientRect()
+      this.offsetTop = rect.top
+      this.offsetLeft = rect.left
+      this.canSelect = true
+    },
     onmousedown: function (e) {
       if (!this.canSelect) {
         return
       }
       this.canSelect = false
       this.isSelecting = true
-      console.log('down!')
       this.xstart = e.clientX - this.offsetLeft
       this.ystart = e.clientY - this.offsetTop
       this.xend = this.xstart
@@ -192,37 +205,24 @@ export default {
       }
       this.isSelecting = false
     },
-    selectArea: function (sentence) {
-      let holder = document.getElementById('pic-holder')
-      let rect = holder.getBoundingClientRect()
-      this.offsetTop = rect.top
-      this.offsetLeft = rect.left
-      console.log('selectArea is called!')
-      this.canSelect = true
-    },
     reCalc: function () {
-      this.curSentence.x1 = Math.min(this.xstart, this.xend)
-      this.curSentence.x2 = Math.max(this.xstart, this.xend)
-      this.curSentence.y1 = Math.min(this.ystart, this.yend)
-      this.curSentence.y2 = Math.max(this.ystart, this.yend)
+      this.curSentence.x1 = Math.min(0, this.xstart, this.xend)
+      this.curSentence.x2 = Math.max(this.xstart, this.xend, 400)
+      this.curSentence.y1 = Math.min(0, this.ystart, this.yend)
+      this.curSentence.y2 = Math.max(this.ystart, this.yend, 400)
     },
-    handleUpload (file) {
-      let that = this
-      upload(file)
-        .then((res) => {
-          let savepath = res.savepath
-          that.page.picture = baseURL + savepath
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+    // 以下是工具函数
+    parseCoordinate: function (param) {
+      if (this.curSenIndex >= 0) {
+        return param
+      } else {
+        return -1
+      }
     }
   },
+  created () {
+  },
   mounted () {
-    // let holder = document.getElementById('pic-holder')
-    // let rect = holder.getBoundingClientRect()
-    // this.offsetTop = rect.top
-    // this.offsetLeft = rect.left
   }
 }
 </script>
