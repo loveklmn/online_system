@@ -98,6 +98,15 @@ export default [
           title: '图书管理'
         },
         component: () => import('@/view/booklist')
+      },
+      {
+        path: ':id/ebook',
+        name: 'ebook',
+        meta: {
+          hideInMenu: true,
+          title: 'E-book'
+        },
+        component: () => import('@/view/E-book')
       }
     ]
   },
