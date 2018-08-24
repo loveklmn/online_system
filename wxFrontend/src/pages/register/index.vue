@@ -2,26 +2,33 @@
   <div>
   <toast :message="msg" :visible.sync="visible"></toast>
   <div class="login-icon">
-    <image class="login-img" src="../../static/images/loginLog.jpg" />
   </div>
   <div class="login-from">
     <div class="inputView">
-      <image class="nameImage" src="../../static/images/name.png" />
       <label class="loginLab">账号</label>
       <input class="inputText" v-model='username' type="text" placeholder="请输入用户名" />
     </div>
   </div>
   <div class="login-from">
     <div class="inputView">
-      <image class="keyImage" src="../../static/images/password.png" />
       <label class="loginLab">密码</label>
       <input class="inputText" v-model='password' type="password" placeholder="请输入密码" />
     </div>
   </div>
-  <div class="instruction">
-    <p>还没有账户?来<a href="/pages/register/main">注册</a>一下~</p>
+  <div class="login-from">
+    <div class="inputView">
+      <label class="loginLab">密码</label>
+      <input class="inputText" v-model='Rpassword' type="password" placeholder="再次输入密码" />
+    </div>
   </div>
-  <button class="loginBtn" @click="login">确定</button>
+  <div class="login-from">
+    <div class="inputView">
+      <label class="loginLab">Key</label>
+      <input class="inputText" v-model='key' type="text" placeholder="请输入key" />
+    </div>
+  </div>
+
+  <button class="loginBtn" @click="check">确定</button>
  </div>
 </template>
 
@@ -34,8 +41,9 @@ export default {
     return {
       username: '',
       password: '',
-
+      Rpassword: '',
       msg: '',
+      key: '',
       visible: false
     }
   },
@@ -46,13 +54,21 @@ export default {
     setVisible () {
       this.visible = !this.visible
     },
-    login () {
-      request.login(this.username, this.password).then(() => {
-        wx.switchTab({url: '../../pages/index/main'})
+    register () {
+      request.register(this.username, this.password, this.key).then(() => {
+        wx.redirectTo({url: '../../pages/login/main'})
       }).catch((err) => {
         this.msg = err.message
         this.setVisible()
       })
+    },
+    check () {
+      if (this.password === this.Rpassword && this.username !== '' && this.password !== '' && this.key !== '') {
+        this.register()
+      } else {
+        this.msg = '您的注册格式有误,请保证账号密码不为空且两次密码输入一致'
+        this.setVisible()
+      }
     }
   }
 }
@@ -102,6 +118,7 @@ page {
 }
 
 .loginLab {
+  padding-left: 40rpx;
   margin: 15px 15px 15px 10px;
   color: #545454;
   font-size: 14px
@@ -119,21 +136,19 @@ page {
 
 .instruction {
   padding-left: 40rpx;
-  padding-top: 20rpx;
-  display:flex;
-  font-size: 20rpx;
+  padding-top: 30rpx;
+  display: flex;
+  font-size: 12px;
 }
 
-.instruction a {
-  display:flex;
-  font-size: 20rpx;
-  color: green;
-}
-
-.instruction p {
-  display:flex;
-  font-size: 20rpx;
+.instruction p{
+  display: flex;
   color: gray;
+}
+
+.instruction a{
+  color: green;
+  display: flex;
 }
 
 .line {
@@ -153,6 +168,6 @@ page {
   width: 80%;
   margin-top: 35px;
   color: white;
-  background-color:#f28d01;
+  background-color:green;
 }
 </style>

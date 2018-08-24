@@ -6,14 +6,15 @@ app.$mount()
 
 export default {
   config: {
-    'navigationBarTitleText': '书圈',
+    'navigationBarTitleText': '用户注册',
     usingComponents: {
       'i-cell-group': '../../static/iview/cell-group/index',
       'i-cell': '../../static/iview/cell/index',
       'i-panel': '../../static/iview/panel/index',
       'i-button': '../../static/iview/button/index',
       'i-card': '../../static/iview/card/index',
-      'i-progress': '../../static/iview/progress/index'
+      'i-icon': '../../static/iview/icon/index',
+      'i-alert': '../../static/iview/alert/index'
     }
   }
 }

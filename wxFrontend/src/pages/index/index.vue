@@ -74,19 +74,13 @@ export default {
     request
       .get('books/')
       .then(res => {
-        console.log(res)
         if (res.data.length > 0) {
           res.data.forEach((book) => {
             book.percent = this.progress(book)
           })
           this.intensiveReading = res.data.filter(book => book.type === 'IR')
           this.extensiveReading = res.data.filter(book => book.type === 'ER')
-        } else {
-          console.log('当前等级没有书目')
         }
-      })
-      .catch(err => {
-        console.log('请求失败: ' + err.message)
       })
   },
   methods: {

@@ -59,7 +59,6 @@ export default {
   },
   methods: {
     select: function (id) {
-      console.log(id, ' ', this.previd)
       if (!this.get_pic(id).inmatch) {
         this.get_pic(id).selected = true
       }
@@ -119,7 +118,6 @@ export default {
       return this.get_pic(id).pos
     },
     unselect: function (id) {
-      console.log(`${id} is unselected`)
       if (!this.get_pic(this.previd).inmatch) {
         this.get_pic(id).selected = false
       }
@@ -131,23 +129,19 @@ export default {
       let green = '#008000'
       this.draw_line_between(id, previd, green)
       this.show_canvas()
-      console.log(`draw a green line between ${id} and ${previd}`)
     },
     make_correct_sound: function () {
       this.innerAudioContext.src = this.correct1src
       this.innerAudioContext.play()
-      console.log('clever!')
     },
     draw_wrong_line: function (id, previd) {
       let red = '#ff0000'
       this.draw_line_between(id, previd, red)
       this.show_canvas()
-      console.log(`draw a RED line between ${id} and ${previd}`)
     },
     make_wrong_sound: function () {
       this.innerAudioContext.src = this.wrongsrc
       this.innerAudioContext.play()
-      console.log('think again~')
     },
     get_x: function (id) {
       let W = wx.getSystemInfoSync().windowWidth
@@ -193,7 +187,6 @@ export default {
       for (let value = 1; value <= this.num; value += 1) {
         let id1 = this.get_id_of_value(-value, this.leftpics)
         let id2 = this.get_id_of_value(value, this.rightpics)
-        console.log(`value ${value} : left:${id1} right:${id2}`)
         this.context_action(context, id1, id2)
       }
       wx.drawCanvas({
@@ -205,7 +198,6 @@ export default {
     make_all_correct_sound: function () {
       this.innerAudioContext.src = this.correctallsrc
       this.innerAudioContext.play()
-      console.log('you are so clever')
     },
     show_canvas: function () {
       this.hide = false
