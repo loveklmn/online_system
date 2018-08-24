@@ -12,11 +12,11 @@
           </swiper-item>
         </swiper>
         <div class="footer">
-          <div class="item min" style="margin-right: 126rpx;">
+          <div class="item min foot_item" >
             <image @click="refresh" class="btn-min" :src="refreshIconSrc" />
             <div class="text">刷新</div>
           </div>
-          <div class="item" style="margin-right: 126rpx;">
+          <div class="item foot_item" >
             <image @click="record" class="play-btn" :src="playIconSrc" />
             <div class="text">录音</div>
           </div>
@@ -258,6 +258,9 @@ font-size: 28rpx;
   overflow: hidden;
 }
 
+.foot_item {
+  margin-right: 126rpx;
+}
 page {
     width: 100%;
     height: 100%;
