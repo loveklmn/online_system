@@ -259,7 +259,7 @@ class BookHomework(APIView):
             except ObjectDoesNotExist:
                 homework = Homework.objects.create(book=book, author=student, content=' ')
             homework.content = postdata.get('content', ' ')
-            attachments = json.loads(postdata.get('attachments',r'{}'))
+            attachments = postdata.get('attachments',r'{}')
             homework.images = ' '.join(attachments.get('image', ''))
             homework.videos = ' '.join(attachments.get('video', ''))
             homework.audios = ' '.join(attachments.get('audio', ''))
