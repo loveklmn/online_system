@@ -8,8 +8,8 @@
               <div class="weui-navbar__title">{{item}}</div>
             </div>
           </block>
-          <div class="weui-navbar__slider" :class="navbarSliderClass"></div>
         </div>
+        <label class="change_level" @click="NavToLevel">等级</label>
         <div class="weui-tab__panel">
           <div class="weui-tab__content" :hidden="activeIndex != 0">
             <div class="page">
@@ -17,7 +17,7 @@
                 <div class="weui-grids">
                   <block v-for="book in intensiveReading" :key="book.id">
                     <div @click="navToNavigator(book)" class="weui-grid">
-                      <image class="weui-grid__icon" :src="book.cover" />
+                      <image class="weui-grid__icon" :src="book.rcover" />
                       <div class="weui-grid__label">{{book.title}}</div>
                       <i-progress v-if="book.percent === 100" :percent="book.percent" status="success"></i-progress>
                       <i-progress v-else :percent="book.percent"></i-progress>
@@ -32,7 +32,7 @@
               <div class="weui-grids">
                 <block v-for="book in extensiveReading" :key="book.id">
                   <div @click="navToNavigator(book)" class="weui-grid">
-                    <image class="weui-grid__icon" :src="book.cover" />
+                    <image class="weui-grid__icon" :src="book.rcover" />
                     <div class="weui-grid__label">{{book.title}}</div>
                     <i-progress v-if="book.percent === 100" :percent="book.percent" status="success"></i-progress>
                     <i-progress v-else :percent="book.percent"></i-progress>
@@ -77,6 +77,7 @@ export default {
         if (res.data.length > 0) {
           res.data.forEach((book) => {
             book.percent = this.progress(book)
+            book.rcover = request.baseURL + book.cover
           })
           this.intensiveReading = res.data.filter(book => book.type === 'IR')
           this.extensiveReading = res.data.filter(book => book.type === 'ER')
@@ -89,12 +90,15 @@ export default {
     },
     navToNavigator (book) {
       let url =
-        '/pages/navigator/main?id=' + book.id + '&title=' + book.title + '&cover=' + book.cover + '&page=' + book.progress.current_page
+        '/pages/navigator/main?id=' + book.id + '&title=' + book.title + '&cover=' + book.rcover + '&page=' + book.progress.current_page
       wx.navigateTo({ url })
     },
     progress (book) {
       var progress = Math.floor(100 * book.progress.current_page / (book.pages_num - 1))
       return progress
+    },
+    NavToLevel () {
+      wx.navigateTo({ url: '/pages/levelinfo/main' })
     }
   }
 }
@@ -119,7 +123,6 @@ page,
   display: flex;
   position: absolute;
   z-index: 500;
-  top: 0;
   width: 100%;
   border-bottom: 1rpx solid #ccc;
   background-color: #fafafa;
@@ -164,14 +167,26 @@ page,
   word-wrap: normal;
 }
 
+.change_level {
+  position: fixed;
+  left: 690rpx;
+  padding-left: 20rpx;
+  top: 110rpx;
+  padding-top: 10rpx;
+  width: 40rpx;
+  height: 100rpx;
+  color: #6db0eb;
+  font-size: 30rpx;
+  background-color: #ebf9fe;
+  border: none;
+}
+
 .weui-tab {
   position: relative;
   height: 100%;
 }
 
 .weui-grids {
-  /* border-top: 1rpx solid #d9d9d9; */
-  /* border-left: 1rpx solid #d9d9d9; */
   overflow: hidden;
 }
 
@@ -181,8 +196,6 @@ page,
   padding: 10px;
   width: 33.33333333%;
   box-sizing: border-box;
-  /* border-right: 1rpx solid #d9d9d9; */
-  /* border-bottom: 1rpx solid #d9d9d9; */
 }
 
 .weui-grid__icon {

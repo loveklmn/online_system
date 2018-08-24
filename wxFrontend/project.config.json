@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 2,
 			"list": [
 				{
 					"id": -1,
@@ -42,6 +42,11 @@
 					"name": "index",
 					"pathName": "pages/eBook/main",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "li",
+					"pathName": "pages/levelinfo/main"
 				}
 			]
 		}
