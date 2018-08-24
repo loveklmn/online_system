@@ -8,8 +8,8 @@
               <div class="weui-navbar__title">{{item}}</div>
             </div>
           </block>
-          <div class="weui-navbar__slider" :class="navbarSliderClass"></div>
         </div>
+        <label class="change_level" @click="NavToLevel">等级</label>
         <div class="weui-tab__panel">
           <div class="weui-tab__content" :hidden="activeIndex != 0">
             <div class="page">
@@ -96,6 +96,9 @@ export default {
     progress (book) {
       var progress = Math.floor(100 * book.progress.current_page / (book.pages_num - 1))
       return progress
+    },
+    NavToLevel () {
+      wx.navigateTo({ url: '/pages/levelinfo/main' })
     }
   }
 }
@@ -162,6 +165,20 @@ page,
   text-overflow: ellipsis;
   white-space: nowrap;
   word-wrap: normal;
+}
+
+.change_level {
+  position: fixed;
+  left: 690rpx;
+  padding-left: 20rpx;
+  top: 110rpx;
+  padding-top: 10rpx;
+  width: 40rpx;
+  height: 100rpx;
+  color: #6db0eb;
+  font-size: 30rpx;
+  background-color: #ebf9fe;
+  border: none;
 }
 
 .weui-tab {
