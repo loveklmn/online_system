@@ -45,7 +45,7 @@
       <Input placeholder="输入关键字搜索" class="search-input" v-model="searchValue"/>
       <Button class="search-btn" type="primary"><Icon type="search"/>&nbsp;&nbsp;搜索</Button>
     </div>
-    <a id="hrefToExportTable" style="display: none;width: 0px;height: 0px;"></a>
+    <a id="hrefToExportTable" class="export-link"></a>
   </div>
 </template>
 
@@ -158,6 +158,7 @@ export default {
           props: {
             params: params,
             value: this.insideTableData[params.index][params.column.key],
+            changed: false,
             edittingCellId: this.edittingCellId,
             editable: this.editable
           },
@@ -174,7 +175,7 @@ export default {
               this.$emit('on-cancel-edit', params)
             },
             'on-save-edit': (params) => {
-              this.value[params.row.initRowIndex][params.column.key] = this.edittingText
+              this.value[params.index][params.column.key] = this.edittingText
               this.$emit('input', this.value)
               this.$emit('on-save-edit', Object.assign(params, {value: this.edittingText}))
               this.edittingCellId = ''
@@ -275,3 +276,10 @@ export default {
   }
 }
 </script>
+<style scoped>
+.export-link {
+  display: none;
+  width: 0px;
+  height: 0px;
+}
+</style>
