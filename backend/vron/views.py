@@ -56,6 +56,11 @@ def get_book(**kwargs):
         raise NotFound('Book({}) not found.'.format(kwargs))
     return book_query
 
+def get_or_raise(data, attr):
+    if data.get(attr):
+        return data[attr]
+    else:
+        raise ParseError('Attr "{}" cannot be empty.'.format(attr))
 
 def vron_exception_handler(exc, context):
     response = exception_handler(exc, context)
@@ -288,7 +293,6 @@ class BookEbook(APIView):
 
     def get(self, request, book_id):
         get_book(id=book_id)
-
         pages = Page.objects.filter(book_id=book_id).order_by('number')
         ebook_infos = []
         if pages:
@@ -312,47 +316,64 @@ class BookEbook(APIView):
                 ebook_infos.append(page_info)
         return Response(ebook_infos)
 
+    @manager_required
+    def post(self, request, book_id):
+        book = get_book(id=book_id)[0]
+        postdata = json.loads(request.body)
+        number = get_or_raise(postdata, 'number')
+        picture = get_or_raise(postdata, 'picture')
+        sentences = postdata.get('sentences')
+        page = Page.objects.get_or_create(book=book,
+                                        number=number,
+                                        picture=picture)[0]
+        if Sentence.objects.filter(page=page).exists():
+            Sentence.objects.filter(page=page).delete()
+        if sentences:
+            for sentence_info in sentences:
+                Sentence.objects.create(
+                    page=page,
+                    content=get_or_raise(sentence_info, 'content'),
+                    audio=get_or_raise(sentence_info, 'audio'),
+                    translated=get_or_raise(sentence_info, 'translated'),
+                    x1=get_or_raise(sentence_info, 'x1'),
+                    y1=get_or_raise(sentence_info, 'y1'),
+                    x2=get_or_raise(sentence_info, 'x2'),
+                    y2=get_or_raise(sentence_info, 'y2')
+                )
+        return Response(status=201)
+
+
 class CommunityGroup(APIView):
 
     @stu_required
     def get(self, request):
         community_info = []
         student = Student.objects.get(user=request.user)
-
         level = student.level
         moments = Moment.objects.filter(level=level)
-
         if moments:
             for moment in moments:
                 community_message = {}
                 homework = moment.homework
-
                 community_message['author'] = {}
                 community_message['author']['username'] = homework.author.nickname
                 community_message['author']['avatar'] = homework.author.avatar
-
                 community_message['action'] = {}
                 community_message['action']['liked'] = False
                 like = Like.objects.filter(actor=student, target=moment)
                 if like and like[0].liked==True:
                     community_message['action']['liked'] = True
-
                 community_message['book'] = {}
                 community_message['book']['title'] = homework.book.title
                 community_message['book']['cover'] = homework.book.cover
-
                 community_message['created_time'] = moment.created_time
-
                 community_message['content'] = homework.content
-
                 community_message['attactments'] = {}
                 community_message['attactments']['image'] = homework.images.split()
                 community_message['attactments']['video'] = homework.videos.split()
-
                 community_message['vote_count'] = moment.vote_count
                 community_message['comment_count'] = len(Comment.objects.filter(target=moment))
                 community_info.append(community_message)
-
         return Response(community_info)
 
 class UploadFile(APIView):
