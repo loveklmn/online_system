@@ -128,12 +128,27 @@ export default {
       this.homework.attachments.image.splice(index, 1)
     },
     submit () {
+      if (this.content === '' || this.attachments === '') {
+        return 0
+      }
       let url = 'books/' + this.id + '/homework/'
       request.post(url, {
         content: this.homework.content,
         attachments: JSON.stringify(this.homework.attachments)
       }).then((res) => {
         this.submitted = true
+        wx.showModal({
+          title: '您要打卡吗?',
+          content: '您的作业将会出现在小伙伴中,您的书名将变为绿色',
+          confirmText: '确定',
+          cancelText: '取消',
+          success: function (res) {
+            if (res.confirm) {
+              // punch api
+              wx.switchTab({ url: '/pages/friendCircle/main' })
+            }
+          }
+        })
       })
     }
   }

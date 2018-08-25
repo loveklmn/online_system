@@ -25,7 +25,7 @@
                 <!--幼儿阶段课程-->
                 <div class="home_s step_k">
                     <div class="step_info">
-                        <img alt="3-6岁幼儿英语" src="https://www.vronedu.com/vronedu/images/yzyxart_k.png"></em>
+                        <img alt="3-6岁幼儿英语" src="https://www.vronedu.com/vronedu/images/yzyxart_k.png">
                         <div class="step_title">
                             <h4 class="fsize24"> 3-6岁幼儿英语 </h4>
                             <p><span>建立英语思维，开发语言能力！</span></p>
@@ -38,7 +38,7 @@
                     <!--幼小衔接课程详情-->
                     <div class="home_s step_o">
                         <div class="step_info">
-                            <img alt="6-7岁幼小衔接英语" src="https://www.vronedu.com/vronedu/images/yzyxart_o.png"></em>
+                            <img alt="6-7岁幼小衔接英语" src="https://www.vronedu.com/vronedu/images/yzyxart_o.png">
                             <div class="step_title">
                                 <h4 class="fsize24">
                                     6-7岁幼小衔接英语
@@ -54,7 +54,7 @@
                         <!--少儿阶段课程-->
                         <div class="home_s step_u">
                             <div class="step_info">
-                               <img alt="7-13岁少儿英语" src="https://www.vronedu.com/vronedu/images/yzyxart_u.png"></em>
+                               <img alt="7-13岁少儿英语" src="https://www.vronedu.com/vronedu/images/yzyxart_u.png">
                                 <div class="step_title">
                                     <h4 class="fsize24">
                                        7-13岁少儿英语
@@ -70,7 +70,7 @@
                             <!--青少年阶段课程-->
                             <div class="home_s step_i">
                                 <div class="step_info">
-                                    <img alt="13-18岁青少年英语" src="https://www.vronedu.com/vronedu/images/yzyxart_i.png"></em>
+                                    <img alt="13-18岁青少年英语" src="https://www.vronedu.com/vronedu/images/yzyxart_i.png">
                                     <div class="step_title">
                                         <h4 class="fsize24">
                                             11-18岁青少年英语</h4>
