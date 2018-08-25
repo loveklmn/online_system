@@ -12,4 +12,12 @@ export default {
 </script>
 
 <style>
+.main-bg {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 750rpx;
+    height: 1214rpx;
+    z-index: -1;
+}
 </style>
