@@ -12,7 +12,7 @@
     <Card title="填写生成激活码相关信息" class="mainPanel">
       <div>
         <p class="description">请选择生成激活码所在级别:&nbsp;&nbsp;</p>
-        <InputNumber :max="500" :min="1" v-model="level"></InputNumber>
+        <InputNumber :max="10" :min="1" v-model="level"></InputNumber>
       </div>
       <div>
         <p class="description">请输入您想要生成激活码的数量(不多于500个):&nbsp;&nbsp;&nbsp;</p>
