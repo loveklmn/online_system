@@ -18,7 +18,14 @@
       </div>
       <Divider>生成账号结果</Divider>
       <div class="csv-table">
-        <tables ref="tables" v-model="codeList" :columns="titleList" />
+        <tables ref="tables" v-model="currentPageCodeList" :columns="titleList" />
+        <Page
+        :total="page.totalCount"
+        :page-size="page.pageSize"
+        :current="page.pageCurrent"
+        show-total
+        @on-change="changePage"
+        class="page-bar"/>
         <Button type="primary" class="export-csv-btn" @click="exportExcel"><Icon type="md-download" color="green" />导出为Csv文件</Button>
       </div>
       <div class="operator-btns">
@@ -50,11 +57,22 @@ export default {
           sortable: true
         }
       ],
-      codeList: []
+      codeList: [],
+      currentPageCodeList: [],
+      page: {
+        totalCount: 0,
+        pageSize: 10,
+        pageCount: 0,
+        pageCurrent: 1
+      }
     }
   },
   components: {
     Tables
+  },
+  mounted () {
+    this.level = this.$route.query.level
+    this.amount = this.$route.query.amount
   },
   beforeRouteEnter (to, from, next) {
     axios.request({
@@ -69,10 +87,17 @@ export default {
         vm.codeList = data.map(code => {
           return {'code': code, 'level': to.query.level}
         })
+        vm.page.totalCount = vm.codeList.length
+        vm.changePage(1)
       })
     })
   },
   methods: {
+    changePage (currentPage) {
+      let start = this.page.pageSize * (currentPage - 1)
+      let end = this.page.pageSize * currentPage
+      this.currentPageCodeList = this.codeList.slice(start, end)
+    },
     generateAgain () {
       this.$router.push({
         name: 'create_user'
