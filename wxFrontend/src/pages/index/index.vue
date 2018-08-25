@@ -1,24 +1,22 @@
 <template>
-  <div class="page">
-    <div class="page__bd">
-      <div class="weui-tab">
-        <div class="weui-navbar">
-          <block v-for="(item,index) in tabs" :key="index">
-            <div :id="index" :class="{'weui-bar__item_on':activeIndex == index}" class="weui-navbar__item" @click="tabClick">
-              <div class="weui-navbar__title">{{item}}</div>
-            </div>
-          </block>
+  <div class="container">
+    <div class="swiper-content">
+        <label class="change_level" @click="NavToLevel">等<br>级</label>
+        <div class="tab">
+            <div @click="tabPage" :class="'tab-item '+(currentNumber==0?'tab-item-current':'') " data-index="0">精读</div>
+            <div @click="tabPage" :class="'tab-item tab-item2 ' + (currentNumber==1 ? 'tab-item-current' : '')" data-index="1">泛读</div>
         </div>
-        <label class="change_level" @click="NavToLevel">等级</label>
-        <div class="weui-tab__panel">
-          <div class="weui-tab__content" :hidden="activeIndex != 0">
+        <swiper @change="switchPage" :current="currentIndex">
+            <swiper-item>
+              <div class="weui-tab__content" :hidden="activeIndex != 0">
             <div class="page">
               <div class="page__bd">
                 <div class="weui-grids">
                   <block v-for="book in intensiveReading" :key="book.id">
                     <div @click="navToNavigator(book)" class="weui-grid">
                       <image class="weui-grid__icon" :src="book.rcover" />
-                      <div class="weui-grid__label">{{book.title}}</div>
+                      <div class="weui-grid__label" v-if="book.progress.punched === false">{{book.title}}</div>
+                      <div class="weui-grid__label_punched" v-else>{{book.title}}</div>
                       <i-progress v-if="book.percent === 100" :percent="book.percent" status="success"></i-progress>
                       <i-progress v-else :percent="book.percent"></i-progress>
                     </div>
@@ -27,48 +25,44 @@
               </div>
             </div>
           </div>
-          <div class="weui-tab__content" :hidden="activeIndex != 1">
-            <div class="page__bd">
+            </swiper-item>
+            <swiper-item>
+                <scroll-view bindscrolltolower="lower" class="scroll-views" scrollX="false" scrollY="true">
+                    <div class="page__bd">
               <div class="weui-grids">
                 <block v-for="book in extensiveReading" :key="book.id">
                   <div @click="navToNavigator(book)" class="weui-grid">
                     <image class="weui-grid__icon" :src="book.rcover" />
-                    <div class="weui-grid__label">{{book.title}}</div>
+                    <div class="weui-grid__label" v-if="book.progress.punched === false">{{book.title}}</div>
+                    <div class="weui-grid__label_punched" v-else>{{book.title}}</div>
                     <i-progress v-if="book.percent === 100" :percent="book.percent" status="success"></i-progress>
                     <i-progress v-else :percent="book.percent"></i-progress>
                   </div>
                 </block>
               </div>
             </div>
-          </div>
-        </div>
+                </scroll-view>
+            </swiper-item>
+        </swiper>
+
+              </div>
       </div>
-    </div>
-  </div>
+
 </template>
 
 <script>
 import request from '@/utils/request'
-
 export default {
   data () {
     return {
-      tabs: ['精读', '泛读'],
+      currentNumber: 0,
+      currentIndex: 0,
       activeIndex: 0,
-      fontSize: 30,
       intensiveReading: [],
       extensiveReading: []
     }
   },
   computed: {
-    navbarSliderClass () {
-      if (this.activeIndex === 0) {
-        return 'weui-navbar__slider_0'
-      }
-      if (this.activeIndex === 1) {
-        return 'weui-navbar__slider_1'
-      }
-    }
   },
   onShow () {
     request
@@ -88,9 +82,13 @@ export default {
     tabClick (e) {
       this.activeIndex = e.currentTarget.id
     },
+    switchPage: function (a) {
+      this.currentNumber = a.target.current
+      this.currentIndex = a.target.current
+    },
     navToNavigator (book) {
       let url =
-        '/pages/navigator/main?id=' + book.id + '&title=' + book.title + '&cover=' + book.rcover + '&page=' + book.progress.current_page
+        '/pages/navigator/main?id=' + book.id + '&title=' + book.title + '&cover=' + book.rcover + '&page=' + book.progress.current_page + '&punched=' + book.progress.punched
       wx.navigateTo({ url })
     },
     progress (book) {
@@ -99,91 +97,35 @@ export default {
     },
     NavToLevel () {
       wx.navigateTo({ url: '/pages/levelinfo/main' })
+    },
+    tabPage: function (a) {
+      this.currentNumber = a.target.dataset.index
+      this.currentIndex = a.target.dataset.index
     }
   }
 }
 </script>
 
 <style scoped>
-page,
-.page,
-.page__bd {
-  height: 100%;
+page {
+  height:91.6%
 }
-.page__bd {
-  padding-bottom: 0;
+.swiper-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }
-.weui-tab__content {
-  padding-top: 60px;
-  text-align: center;
-}
-.weui-navbar {
+
+swiper {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  position: absolute;
   z-index: 500;
+  height: 1167rpx;
   width: 100%;
-  border-bottom: 1rpx solid #ccc;
-  background-color: #fafafa;
-}
-
-.weui-navbar__item {
-  position: relative;
-  display: block;
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  flex: 1;
-  padding: 13px 0;
-  text-align: center;
-  font-size: 0;
-}
-
-.weui-navbar__item.weui-bar__item_on {
-  color: #5187e8;
-}
-
-.weui-navbar__slider {
-  position: absolute;
-  content: " ";
-  left: 0;
-  bottom: 0;
-  width: 6em;
-  height: 3px;
-  -webkit-transition: -webkit-transform 0.3s;
-  transition: -webkit-transform 0.3s;
-  transition: transform 0.3s;
-  transition: transform 0.3s, -webkit-transform 0.3s;
-}
-
-.weui-navbar__title {
-  display: inline-block;
-  font-size: 15px;
-  max-width: 8em;
-  width: auto;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  word-wrap: normal;
-}
-
-.change_level {
-  position: fixed;
-  left: 690rpx;
-  padding-left: 20rpx;
-  top: 110rpx;
-  padding-top: 10rpx;
-  width: 40rpx;
-  height: 100rpx;
-  color: #6db0eb;
-  font-size: 30rpx;
-  background-color: #ebf9fe;
-  border: none;
-}
-
-.weui-tab {
-  position: relative;
-  height: 100%;
 }
 
 .weui-grids {
@@ -197,6 +139,8 @@ page,
   width: 33.33333333%;
   box-sizing: border-box;
 }
+
+
 
 .weui-grid__icon {
   display: block;
@@ -216,6 +160,17 @@ page,
   overflow: hidden;
 }
 
+.weui-grid__label_punched {
+  margin-top: 5px;
+  display: block;
+  text-align: center;
+  color: green;
+  font-size: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 .weui-loading {
   margin: 0 5px;
   width: 20px;
@@ -227,66 +182,167 @@ page,
   background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGgxMDB2MTAwSDB6Ii8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjRTlFOUU5IiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTMwKSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iIzk4OTY5NyIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgzMCAxMDUuOTggNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjOUI5OTlBIiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKDYwIDc1Ljk4IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0EzQTFBMiIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSg5MCA2NSA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNBQkE5QUEiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoMTIwIDU4LjY2IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0IyQjJCMiIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgxNTAgNTQuMDIgNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjQkFCOEI5IiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKDE4MCA1MCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNDMkMwQzEiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTE1MCA0NS45OCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNDQkNCQ0IiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTEyMCA0MS4zNCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNEMkQyRDIiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTkwIDM1IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0RBREFEQSIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgtNjAgMjQuMDIgNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjRTJFMkUyIiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKC0zMCAtNS45OCA2NSkiLz48L3N2Zz4=);
   background-size: 100%;
 }
-.page__hd {
-  padding-top: 40rpx;
+
+.tab {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: 2rpx;
+    border-color:#00a7fe;
+    width: 660rpx;
+    height: 100rpx;
+    border-radius: 50rpx;
+    position: relative;
 }
 
-.page__bd {
-  padding-bottom: 40px;
+.change_level {
+  position: fixed;
+  left: 690rpx;
+  padding-left: 20rpx;
+  top: 110rpx;
+  padding-top: 10rpx;
+  width: 80rpx;
+  height: 100rpx;
+  color: #6db0eb;
+  font-size: 30rpx;
+  background-color: #ebf9fe;
+  border: none;
+  z-index: 9999;
+  border-radius: 20%;
 }
 
-.page__bd_spacing {
-  padding-left: 15px;
-  padding-right: 15px;
+.tab>image {
+    width: 414rpx;
+    height: 54rpx;
+    position: absolute;
+    left: -1rpx;
+    top: -1rpx;
 }
 
-.page__ft {
-  padding-bottom: 10px;
-  text-align: center;
+.tab-item {
+    font-size: 30rpx;
+    width: 320rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    text-align: center;
+    position: absolute;
+    left: 10rpx;
+    top: 10rpx;
 }
 
-.page__title {
-  text-align: left;
-  font-size: 20px;
-  font-weight: 400;
+.tab-item2 {
+    left: 330rpx;
 }
 
-.page__desc {
-  margin-top: 5px;
-  color: #888888;
-  text-align: left;
-  font-size: 14px;
+.tab-item-current {
+    background-color: #00a7fe;
+    border-radius: 40rpx;
+    font-weight: bold;
+    color: #fff;
 }
 
-.weui-loadmore {
-  width: 65%;
-  margin: 1.5em auto;
-  line-height: 1.6em;
-  font-size: 14px;
-  text-align: center;
-  border-top: 1px solid #e5e5e5;
-  margin-top: 2.4em;
+swiper {
+    width: 100%;
 }
 
-.weui-loadmore__tips_in-line {
-  position: relative;
-  top: -0.9em;
-  padding: 2px 0.55em;
-  background-color: #fff;
-  color: #999;
-  display: inline-block;
-  vertical-align: middle;
+.rank-list {
+    width: 100%;
 }
 
-.weui-loadmore__tips_in-dot {
-  position: relative;
-  padding: 0 0.16em;
-  width: 4px;
-  height: 1.6em;
+.rank-list-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border: solid #00a7fe 1rpx;
+    border-radius: 10rpx;
+    height: 140rpx;
+    margin-top: 25rpx;
+    margin-left: 45rpx;
+    width: 660rpx;
 }
 
-.weui-loadmore_line {
-  border-top: 1px solid #e5e5e5;
-  margin-top: 2.4em;
+.rank-list-item:first-child {
+    margin-top: 28rpx;
+}
+
+.rank-num>image {
+    width: 54rpx;
+    height: 44rpx;
+}
+
+.rank-num>view {
+    width: 50rpx;
+    height: 50rpx;
+    border-radius: 50%;
+    background-color: #dcaa63;
+    font-size: 18rpx;
+    color: #382198;
+    text-align: center;
+    line-height: 50rpx;
+    font-weight: bold;
+}
+
+.user-head {
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+    border: solid 3rpx #d0e2ef;
+    margin-left: 30rpx;
+}
+
+.user-name {
+    width: 250rpx;
+    font-size: 32rpx;
+    margin-left: 28rpx;
+}
+
+.user-challenge-success-times {
+    width: 110rpx;
+    font-size: 24rpx;
+    text-align: right;
+}
+
+.rank-footer {
+    width: 100%;
+    height: 30rpx;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 20rpx;
+    width: 100%;
+}
+
+.main-bg {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 750rpx;
+    height: 1214rpx;
+    z-index: -1;
+}
+
+.main-content {
+    width: 662rpx;
+    height: 100%;
+}
+
+button,button::after {
+    border: none;
+}
+
+.loading {
+    position: fixed;
+    top: 80rpx;
+    left: 0;
+    width: 584rpx;
+    height: 958rpx;
+    z-index: -1;
+    margin-left: 83rpx;
 }
 </style>
