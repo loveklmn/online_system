@@ -1,7 +1,7 @@
 <template>
 <div class="main">
   <div class="step-row">
-    <Steps :current="current" class="steps">
+    <Steps :current="1" class="steps">
       <Step title="填写生成账号信息"></Step>
       <Step title="确认生成账号信息"></Step>
       <Step title="账号生成成功"></Step>
@@ -34,7 +34,6 @@ export default {
     return {
       level: '',
       amount: '',
-      current: 1,
       loadingStatus: false
     }
   },

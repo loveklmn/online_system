@@ -43,13 +43,19 @@ export default {
   },
   methods: {
     nextPage () {
-      this.$router.push({
-        name: 'generate',
-        query: {
-          level: this.level,
-          amount: this.amount
-        }
-      })
+      if (this.level === null) {
+        this.$Message.error('级别值不能是空')
+      } else if (this.amount === null) {
+        this.$Message.error('生成账号数量不能为空')
+      } else {
+        this.$router.push({
+          name: 'generate',
+          query: {
+            level: this.level,
+            amount: this.amount
+          }
+        })
+      }
     },
     reset () {
       this.$router.push({
