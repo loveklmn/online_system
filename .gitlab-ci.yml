@@ -3,37 +3,26 @@ stages:
   - lint
   - test
 
-build_backend:
-  image: continuumio/miniconda3
-  stage: build
-  script:
-    - cd ./backend
-    - source activate super
-    - conda env update -f environment.yml
-    - echo 'conda install ok'
-
-build_wx:
-  stage: build
-  script:
-    - cd ./wxFrontend
-    - npm install
-
-build_admin:
-  stage: build
-  script:
-    - cd ./adminFrontend
-    - npm install
+cache:
+  key: "$CI_JOB_STAGE-$CI_COMMIT_REF_SLUG"
+  paths:
+    - wxFrontend/node_modules/
+    - adminFrontend/node_modules/
 
 lint_admin:
   stage: lint
-  script:
+  before_script:
     - cd ./adminFrontend
+    - npm install
+  script:
     - npm run lint
 
 lint_wx:
   stage: lint
-  script:
+  before_script:
     - cd ./wxFrontend
+    - npm install
+  script:
     - npm run lint
 
 lint_backend:
@@ -52,6 +41,8 @@ test_backend:
 
 test_wx:
   stage: test
-  script:
+  before_script:
     - cd ./wxFrontend
+    - npm install
+  script:
     - npm run test
