@@ -1,12 +1,11 @@
 <template>
   <div class="container">
     <div class="main">
-      <div class="box">
         <div class="translate-warp" v-if="isTranslate&&translate!==''">{{translate}}</div>
         <swiper :current="currentPage" class="cont" duration="100" skip-hidden-item-layout="true" @change="changePage">
           <swiper-item v-for="page in pages" :key="page.number">
             <div class="item" v-for="(sen,index1) in page.sentences" :key="index1">
-              <image @click="clickme" class="slide-image" :src="page.picture" />
+              <img class="slide-image" :src="page.picture" />
               <label @click="activate(sen)" :class="sen.class" :style="sen.style"></label>
             </div>
           </swiper-item>
@@ -25,7 +24,6 @@
             <div class="text">翻译</div>
           </div>
         </div>
-      </div>
     </div>
   </div>
   </template>
@@ -40,57 +38,19 @@ export default {
       current: '',
       recordState: false,
       playState: false,
-      pages: [
-        {
-          number: 0,
-          picture: 'https://i.loli.net/2018/08/20/5b7aa40cb1bab.png',
-          sentences: [
-            {
-              content: 'It is dark',
-              audio: '',
-              translated: '天黑了',
-              x1: 188,
-              y1: 114,
-              x2: 230,
-              y2: 210,
-              class: ''
-            },
-            {
-              content: 'It is dark in the park',
-              audio: '',
-              translated: '公园里天黑了',
-              x1: 600,
-              y1: 500,
-              x2: 200,
-              y2: 200,
-              class: ''
-            }
-          ]
-        },
-        {
-          number: 1,
-          picture: 'https://i.loli.net/2018/08/20/5b7a3c66ef933.png',
-          sentences: [
-            {
-              content: 'I do something',
-              audio: '',
-              translated: '公园里天黑了',
-              x1: 300,
-              y1: 260,
-              x2: 350,
-              y2: 332,
-              class: ''
-            }
-          ]
-        }
-      ]
+      pages: []
     }
   },
   onLoad (options) {
     this.id = options.id
     this.current = options.page
-    this.countBox()
     this.current = wx.getStorageSync('current')
+    let url = 'books/' + this.id + '/ebook/'
+    request.get(url)
+      .then((res) => {
+        this.pages = res.data
+        this.countBox()
+      })
   },
 
   computed: {
@@ -123,12 +83,16 @@ export default {
   },
   methods: {
     countBox: function () {
+      console.log('countBox')
       this.pages.forEach(
         function (page) {
           page.sentences.forEach(
             function (sen) {
+              console.log(sen.x1 / 10000 * 400, sen.y1 / 10000 * 400)
               sen.class = ''
-              sen.style = `position:absolute; top:${sen.x1}rpx; left:${sen.y1}rpx; width:${sen.x2 - sen.x1}rpx;height:${sen.y2 - sen.y1}rpx`
+              sen.style = `position:absolute; top:${sen.y1 * 920 / 10000}rpx;
+                           left:${sen.x1 * 667 / 10000}rpx; width:${(sen.x2 - sen.x1) * 667 / 10000}rpx;
+                                           height:${(sen.y2 - sen.y1) * 920 / 10000}rpx`
             })
         })
     },
@@ -202,8 +166,8 @@ swiper-item {
 }
 
 .slide-image {
-    width: 100%;
-    height: 100%;
+    width: 665rpx;
+    height: 920rpx;
     display: block;
 }
 
@@ -211,10 +175,13 @@ swiper-item label {
     position: absolute;
     box-sizing: border-box;
     border-radius: 3px;
+    border: 2px solid #5187e8;
+    z-index: 999;
 }
 
 swiper-item label.active {
     border: 2px solid #5187e8;
+    z-index: 999;
 }
 
 .item {
@@ -260,14 +227,6 @@ font-size: 28rpx;
 
 .foot_item {
   margin-right: 126rpx;
-}
-page {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #fff;
-    -webkit-overflow-scrolling: auto;
-    position: fixed;
 }
 
 .container {
