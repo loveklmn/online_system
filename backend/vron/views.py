@@ -194,6 +194,7 @@ class BookGuidance(APIView):
         book = book_query[0]
         guidance = postdata.get('guidance')
         book.guidance = guidance
+        book.save()
         response_info['guidance'] = book.guidance
         words = postdata.get('words')
         Word.objects.filter(guidance=book).delete()
