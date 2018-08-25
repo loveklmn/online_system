@@ -1,26 +1,57 @@
 stages:
-    - back_lint
-    - front_lint
+  - build
+  - lint
+  - test
 
-blint:
-    image: continuumio/miniconda3
-    stage: back_lint 
-    script:
-        - cd ./backend
-        - conda env create -n super -f environment.yml
-        - echo 'conda install ok'
-        - source activate super
-        - pylint --disable=R,C --load-plugins pylint_django backend vron
+build_backend:
+  image: continuumio/miniconda3
+  stage: build
+  script:
+    - cd ./backend
+    - source activate super
+    - conda env update -f environment.yml
+    - echo 'conda install ok'
 
+build_wx:
+  stage: build
+  script:
+    - cd ./wxFrontend
+    - npm install
 
-flint:
-    image: node:8.11.3
-    stage: front_lint 
-    script:
-        - cd ./wxFrontend
-        - npm install
-        - npm run lint
-        - cd ../adminFrontend
-        - npm install
-        - npm run lint
- 
+build_admin:
+  stage: build
+  script:
+    - cd ./adminFrontend
+    - npm install
+
+lint_admin:
+  stage: lint
+  script:
+    - cd ./adminFrontend
+    - npm run lint
+
+lint_wx:
+  stage: lint
+  script:
+    - cd ./wxFrontend
+    - npm run lint
+
+lint_backend:
+  stage: lint
+  script:
+    - cd ./backend
+    - source activate super
+    - pylint --disable=R,C --load-plugins pylint_django backend vron
+
+test_backend:
+  stage: test
+  script:
+    - cd ./backend
+    - source activate super
+    - python ./manage.py test vron
+
+test_wx:
+  stage: test
+  script:
+    - cd ./wxFrontend
+    - npm run test
