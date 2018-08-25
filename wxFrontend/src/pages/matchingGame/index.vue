@@ -1,5 +1,6 @@
 <template>
   <div class="gameboard">
+    <image class="main-bg" src="../../static/images/main-bg.png"/>
     <div class="vertical_list">
       <matchingGamePic
         v-for="pic in leftpics"

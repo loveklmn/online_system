@@ -1,6 +1,7 @@
 <template>
   <div>
   <!-- readingGuide page -->
+  <image class="main-bg" src="../../static/images/main-bg.png"/>
   <div class="display_box">
     <wxParse :content="guidance" />
   </div>

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <image class="main-bg" src="../../static/images/main-bg.png"/>
     <div class="container">
   <div class="pintu-wrap">
     <div class="pintu-line">
