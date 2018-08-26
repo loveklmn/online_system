@@ -10,10 +10,12 @@
     <Table
       :show-header=false
       border
-      :data="data"
+      :data="currentData"
       :columns="columns"
       stripe>
     </Table>
+
+    <Page :total="data.length" :page-size="pageSize" :current.sync="currentPage" show-total/>
   </div>
 </template>
 
@@ -23,10 +25,12 @@ export default {
   props: [
     'columns',
     'data',
-    'search'
+    'search',
+    'pageSize'
   ],
   data () {
     return {
+      currentPage: 1,
       filters: [{
         title: ''
       }],
@@ -119,6 +123,13 @@ export default {
       }
       this.$set(this.search, this.columns[index].key, inputValue)
       this.load()
+    }
+  },
+  computed: {
+    currentData () {
+      let start = this.pageSize * (this.currentPage - 1)
+      let end = this.pageSize * this.currentPage
+      return this.data.slice(start, end)
     }
   }
 }

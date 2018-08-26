@@ -1,11 +1,11 @@
 <template>
   <div>
     <filter-table @load="loadData"
-                :data="currentPageBookList"
+                :data="selectedBooks"
                 :columns="columns"
-                :search="condition">
+                :search="condition"
+                :pageSize="10">
     </filter-table>
-    <Page :total="page.totalCount" :page-size="page.pageSize" :current="page.pageCurrent" show-total @on-change="changePage" class="page-bar"/>
     <Divider />
     <Button type="primary" :loading="loading" @click="newBook" class="new-book-btn">导入新书</Button>
   </div>
@@ -123,40 +123,27 @@ export default {
         }
       ],
       allBooks: [],
-      selectedBooks: [],
-      currentPageBookList: [],
-      page: {
-        totalCount: 0,
-        pageSize: 10,
-        pageCount: 0,
-        pageCurrent: 1
-      }
+      selectedBooks: []
     }
   },
-  created () {
+  beforeRouteEnter (to, from, next) {
     axios.request({
       url: 'books',
       method: 'get'
     }).then(data => {
-      this.selectedBooks = this.allBooks = data.map(book => {
-        if (book.type === 'IR') {
-          book.type = '精读'
-        } else {
-          book.type = '泛读'
-        }
-        return book
+      next(vm => {
+        vm.selectedBooks = vm.allBooks = data.map(book => {
+          if (book.type === 'IR') {
+            book.type = '精读'
+          } else {
+            book.type = '泛读'
+          }
+          return book
+        })
       })
-      this.loadData()
-      this.changePage(1)
     })
   },
   methods: {
-    changePage (currentPage) {
-      this.page.totalCount = this.selectedBooks.length
-      let start = this.page.pageSize * (currentPage - 1)
-      let end = this.page.pageSize * currentPage
-      this.currentPageBookList = this.selectedBooks.slice(start, end)
-    },
     turnToDetailPage (params) {
       this.$router.push({
         path: '/book/' + params.row.id
@@ -164,7 +151,6 @@ export default {
     },
     loadData () {
       this.selectedBooks = this.allBooks.filter(this.isSelected)
-      this.changePage(1)
     },
     isSelected (book) {
       if (this.condition.id && book.id !== parseInt(this.condition.id)) {
