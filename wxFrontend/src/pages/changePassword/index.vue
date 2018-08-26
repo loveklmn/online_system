@@ -1,31 +1,36 @@
 <template>
   <div>
-    <toast message="错误" :visible.sync="visible"></toast>
-    <i-panel style="padding:15 rpx" title="旧密码">
-      <input  v-model='oldpwd' type="password" placeholder="请输入旧密码" />
-      </i-panel>
-      <i-panel style="padding:15 rpx" title="新密码">
-      <input v-model='newpwd1' type="password" placeholder="请输入新密码" />
-      <input v-model='newpwd2' type="password" placeholder="再次输入新密码" />
-    </i-panel>
-    <i-button @click="change">确定</i-button>
-    <i-alert type="error" v-if="visible === false">
-    您的输入有误
-    <view slot="desc">新密码不能为空或与老密码相同,\n请保持新密码两次输入一致</view>
-</i-alert>
-  </div>
+    <toast :message="msg" :visible.sync="visible"></toast>
+    <div class="login-icon">
+    </div>
+    <div class="login-from">
+        <div class="inputView">
+            <label class="loginLab">密码</label>
+            <input class="inputText" v-model='password' type="password" placeholder="请输入密码" />
+        </div>
+    </div>
+    <div class="login-from">
+        <div class="inputView">
+            <label class="loginLab">密码</label>
+            <input class="inputText" v-model='Rpassword' type="password" placeholder="再次输入密码" />
+        </div>
+    </div>
+
+    <button class="loginBtn" @click="check">确定</button>
+</div>
 </template>
 
 <script>
 import toast from 'mpvue-toast'
+import request from '@/utils/request'
 
 export default {
   data () {
     return {
-      oldpwd: '',
-      newpwd1: '',
-      newpwd2: '',
-      visible: null
+      password: '',
+      Rpassword: '',
+      msg: '',
+      visible: false
     }
   },
   components: {
@@ -36,19 +41,126 @@ export default {
       this.visible = !this.visible
     },
     change () {
-      // if oldpwd is right
-      if (this.newpwd1 === this.newpwd2 && this.newpwd1 !== '' && this.oldpwd !== this.newpwd1) {
-        // implement change password function
+      let url = 'userinfo/change-password/'
+      request.post(url, {password: this.password}).then((res) => {
+        console.log(res)
+        if (res.statusCode === 200) {
+          wx.redirectTo({url: '../../pages/login/main'})
+        } else {
+          this.msg = res.data.msg
+          this.setVisible()
+        }
+      }).catch((err) => {
+        this.msg = err.message
+        this.setVisible()
+      })
+    },
+    check () {
+      if (this.password === this.Rpassword && this.password !== '') {
+        this.change()
       } else {
-        this.setVisible(false)
+        this.msg = '密码不为空且两次密码输入一致'
+        this.setVisible()
       }
     }
-  },
-  created () {}
+  }
 }
 </script>
 
+
 <style>
-  input{padding:7px 15px;color:#495060}
-  .input-title{color:#495060;min-width:65px;padding-right:10px}
+input {
+  padding: 20rpx
+}
+
+page {
+  height: 100%;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background-color: #f2f2f2
+}
+
+.login-icon {
+  flex: none;
+}
+
+.login-img {
+  width: 750rpx;
+}
+
+.login-from {
+  margin-top: 20px;
+  flex: auto;
+  height:100%;
+}
+
+.inputView {
+  background-color: #fff;
+  line-height: 44px;
+}
+
+.nameImage, .keyImage {
+  margin-left: 22px;
+  width: 14px;
+  height: 14px
+}
+
+.loginLab {
+  padding-left: 40rpx;
+  margin: 15px 15px 15px 10px;
+  color: #545454;
+  font-size: 14px
+}
+
+.inputText {
+  flex: block;
+  float: right;
+  text-align: right;
+  margin-right: 22px;
+  margin-top: 11px;
+  color: #cccccc;
+  font-size: 14px
+}
+
+.instruction {
+  padding-left: 40rpx;
+  padding-top: 30rpx;
+  display: flex;
+  font-size: 12px;
+}
+
+.instruction p{
+  display: flex;
+  color: gray;
+}
+
+.instruction a{
+  color: green;
+  display: flex;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  background-color: #cccccc;
+  margin-top: 1px;
+}
+
+.loginBtnView {
+  width: 100%;
+  height: auto;
+  background-color: #f2f2f2;
+}
+
+.loginBtn {
+  width: 80%;
+  margin-top: 35px;
+  color: white;
+  background-color:green;
+}
 </style>

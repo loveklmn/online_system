@@ -1,17 +1,16 @@
 <template>
   <div>
-  <!-- readingGuide page -->
-  <image class="main-bg" src="../../static/images/main-bg.png"/>
-  <div class="display_box">
-    <wxParse :content="guidance" />
-  </div>
-  <i-panel title="词汇表" v-if="vocabulary.length" >
-    <i-cell-group>
-      <block v-for="(item,index) in vocabulary" :key="index">
-        <i-cell :title="item.word" :label="item.meaning" @click="play(item.word)"></i-cell>
-      </block>
-    </i-cell-group>
-  </i-panel>
+    <image class="main-bg" src="../../static/images/main-bg.png"/>
+    <div class="display_box">
+      <wxParse :content="guidance" />
+    </div>
+    <i-panel title="词汇表" v-if="vocabulary.length" >
+      <i-cell-group>
+        <block v-for="(item,index) in vocabulary" :key="index">
+          <i-cell :title="item.word" :label="item.meaning" @click="play(item.word)"></i-cell>
+        </block>
+      </i-cell-group>
+    </i-panel>
   </div>
 </template>
 

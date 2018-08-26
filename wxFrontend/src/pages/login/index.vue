@@ -1,28 +1,28 @@
 <template>
   <div>
-  <toast :message="msg" :visible.sync="visible"></toast>
-  <div class="login-icon">
-    <image class="login-img" src="../../static/images/loginLog.jpg" />
-  </div>
-  <div class="login-from">
-    <div class="inputView">
-      <image class="nameImage" src="../../static/images/name.png" />
-      <label class="loginLab">账号</label>
-      <input class="inputText" v-model='username' type="text" placeholder="请输入用户名" />
+    <toast :message="msg" :visible.sync="visible"></toast>
+    <div class="login-icon">
+        <image class="login-img" src="../../static/images/loginLog.jpg" />
     </div>
-  </div>
-  <div class="login-from">
-    <div class="inputView">
-      <image class="keyImage" src="../../static/images/password.png" />
-      <label class="loginLab">密码</label>
-      <input class="inputText" v-model='password' type="password" placeholder="请输入密码" />
+    <div class="login-from">
+        <div class="inputView">
+            <image class="nameImage" src="../../static/images/name.png" />
+            <label class="loginLab">账号</label>
+            <input class="inputText" v-model='username' type="text" placeholder="请输入用户名" />
+        </div>
     </div>
+    <div class="login-from">
+        <div class="inputView">
+            <image class="keyImage" src="../../static/images/password.png" />
+            <label class="loginLab">密码</label>
+            <input class="inputText" v-model='password' type="password" placeholder="请输入密码" />
+        </div>
+    </div>
+    <div class="instruction">
+        <p>还没有账户?来<a href="/pages/register/main">注册</a>一下~</p>
+    </div>
+    <button class="loginBtn" @click="login">确定</button>
   </div>
-  <div class="instruction">
-    <p>还没有账户?来<a href="/pages/register/main">注册</a>一下~</p>
-  </div>
-  <button class="loginBtn" @click="login">确定</button>
- </div>
 </template>
 
 <script>
@@ -57,8 +57,6 @@ export default {
   }
 }
 </script>
-
-
 <style>
 input {
   padding: 20rpx

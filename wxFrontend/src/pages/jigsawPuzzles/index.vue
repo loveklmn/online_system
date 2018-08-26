@@ -1,48 +1,47 @@
 <template>
   <div>
-    <image class="main-bg" src="../../static/images/main-bg.png"/>
+    <image class="main-bg" src="../../static/images/main-bg.png" />
     <div class="container">
-  <div class="pintu-wrap">
-    <div class="pintu-line">
-      <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card1.src" :hidden="cards.card1.hidden" @click="card1"/>
-      </div>
-      <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card2.src" :hidden="cards.card2.hidden" @click="card2"/>
-      </div>
-      <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card3.src" :hidden="cards.card3.hidden" @click="card3"/>
-      </div>
+        <div class="pintu-wrap">
+            <div class="pintu-line">
+                <div class="pintu-item-wrap">
+                    <image class="pintu-item" type="primary" :src="cards.card1.src" :hidden="cards.card1.hidden" @click="card1" />
+                </div>
+                <div class="pintu-item-wrap">
+                    <image class="pintu-item" type="primary" :src="cards.card2.src" :hidden="cards.card2.hidden" @click="card2" />
+                </div>
+                <div class="pintu-item-wrap">
+                    <image class="pintu-item" type="primary" :src="cards.card3.src" :hidden="cards.card3.hidden" @click="card3" />
+                </div>
+            </div>
+            <div class="pintu-line">
+                <div class="pintu-item-wrap">
+                    <image class="pintu-item" type="primary" :src="cards.card4.src" :hidden="cards.card4.hidden" @click="card4" />
+                </div>
+                <div class="pintu-item-wrap">
+                    <image class="pintu-item" type="primary" :src="cards.card5.src" :hidden="cards.card5.hidden" @click="card5" />
+                </div>
+                <div class="pintu-item-wrap">
+                    <image class="pintu-item" type="primary" :src="cards.card6.src" :hidden="cards.card6.hidden" @click="card6" />
+                </div>
+            </div>
+            <div class="pintu-line">
+                <div class="pintu-item-wrap">
+                    <image class="pintu-item" type="primary" :src="cards.card7.src" :hidden="cards.card7.hidden" @click="card7" />
+                </div>
+                <div class="pintu-item-wrap">
+                    <image class="pintu-item" type="primary" :src="cards.card8.src" :hidden="cards.card8.hidden" @click="card8" />
+                </div>
+                <div class="pintu-item-wrap">
+                    <image class="pintu-item" type="primary" :src="cards.card9.src" :hidden="cards.card9.hidden" @click="card9" />
+                </div>
+            </div>
+        </div>
+        <div class="btn-wrap">
+            <button type="warn" @click="initGame">重新开始</button>
+        </div>
     </div>
-    <div class="pintu-line">
-      <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card4.src" :hidden="cards.card4.hidden" @click="card4"/>
-      </div>
-      <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card5.src" :hidden="cards.card5.hidden" @click="card5"/>
-      </div>
-      <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card6.src" :hidden="cards.card6.hidden" @click="card6"/>
-      </div>
-    </div>
-    <div class="pintu-line">
-      <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card7.src" :hidden="cards.card7.hidden" @click="card7"/>
-      </div>
-      <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card8.src" :hidden="cards.card8.hidden" @click="card8"/>
-      </div>
-      <div class="pintu-item-wrap">
-        <image class="pintu-item" type="primary" :src="cards.card9.src" :hidden="cards.card9.hidden" @click="card9"/>
-      </div>
-    </div>
-  </div>
-
-  <div class="btn-wrap">
-    <button type="warn" @click="initGame">重新开始</button>
-  </div>
 </div>
-  </div>
 </template>
 
 <script>
