@@ -34,18 +34,7 @@ export default {
       wx.navigateTo({url: url})
     },
     punch () {
-      wx.showModal({
-        title: '您确定要打卡吗?',
-        content: '您的作业将会出现在小伙伴中,您的书名将变为绿色',
-        confirmText: '确定',
-        cancelText: '取消',
-        success: function (res) {
-          if (res.confirm) {
-            // punch api
-            wx.switchTab({ url: '/pages/friendCircle/main' })
-          }
-        }
-      })
+      this.navToFurtherRead()
     }
   },
   data () {

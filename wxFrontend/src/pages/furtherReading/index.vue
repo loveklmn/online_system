@@ -128,13 +128,14 @@ export default {
       this.homework.attachments.image.splice(index, 1)
     },
     submit () {
+      let vm = this
       if (this.content === '' || this.attachments === '') {
         return 0
       }
       let url = 'books/' + this.id + '/homework/'
       request.post(url, {
         content: this.homework.content,
-        attachments: JSON.stringify(this.homework.attachments)
+        attachments: this.homework.attachments
       }).then((res) => {
         this.submitted = true
         wx.showModal({
@@ -144,8 +145,12 @@ export default {
           cancelText: '取消',
           success: function (res) {
             if (res.confirm) {
-              // punch api
-              wx.switchTab({ url: '/pages/friendCircle/main' })
+              let url = 'community/'
+              request.get(url, {book: vm.id}).then((res) => {
+                if (res.statusCode === 200) {
+                  wx.switchTab({ url: '/pages/friendCircle/main' })
+                }
+              })
             }
           }
         })
