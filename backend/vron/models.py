@@ -37,7 +37,7 @@ class Progress(models.Model):
     user = models.ForeignKey(Student, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     punched = models.BooleanField(default=False)
-    current_page = models.IntegerField()
+    current_page = models.IntegerField(default=0)
     latest_read_time = models.DateTimeField(default=timezone.now)
 
 

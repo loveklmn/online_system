@@ -261,7 +261,9 @@ class BookHomework(APIView):
         postdata = json.loads(request.body)
         if not is_admin(request.user):
             student = Student.objects.get(user=request.user)
-
+            progress = Progress.objects.get_or_create(user=student, book=book)
+            progress.punched = True;
+            progress.save()
             try:
                 homework = Homework.objects.get(book=book, author=student)
             except ObjectDoesNotExist:
@@ -389,6 +391,23 @@ class CommunityGroup(APIView):
                 community_message['comment_count'] = len(Comment.objects.filter(target=moment))
                 community_info.append(community_message)
         return Response(community_info)
+
+    @stu_required
+    def post(self, request):
+        postdata = json.loads(request.body)
+        book_id = get_or_raise(postdata, 'book')
+        book = get_book(id=book_id)[0]
+        student = Student.objects.get(user=request.user)
+        homework_query = Homework.objects.filter(author=student, book=book)
+        if not homework_query.exists():
+            raise NotFound('Homework for book(id={}) not found.'.format(book_id))
+        homework = homework_query[0]
+        level = student.level
+        moment_query = Moment.objects.filter(homework=homework, level=level)
+        if moment_query.exists():
+            return Response({'msg': 'Cannot punch more than once.'}, status=403)
+        Moment.objects.create(homework=homework, level=level)
+        return Response(status=201)
 
 class UploadFile(APIView):
     def post(self, request):
