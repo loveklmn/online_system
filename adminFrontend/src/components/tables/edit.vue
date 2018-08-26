@@ -5,7 +5,7 @@
       <Button v-if="editable" @click="startEdit" class="tables-edit-btn" type="text"><Icon type="md-create"></Icon></Button>
     </div>
     <div v-else class="tables-editting-con">
-      <Input :value="value" @on-enter="handleEnter" @input="handleInput" class="tables-edit-input"/>
+      <Input :value="value" @on-enter="saveEdit" @input="handleInput" placeholder="输入单词" class="tables-edit-input"/>
       <Button @click="saveEdit" class="edit-btn" type="text"><Icon type="md-checkmark"></Icon></Button>
       <Button @click="canceltEdit" class="edit-btn" type="text"><Icon type="md-close"></Icon></Button>
     </div>
@@ -22,6 +22,11 @@ export default {
     params: Object,
     editable: Boolean
   },
+  data () {
+    return {
+      hasChanged: this.changed
+    }
+  },
   computed: {
     isEditting () {
       return this.edittingCellId === `editting-${this.params.index}-${this.params.column.key}`
@@ -29,18 +34,14 @@ export default {
   },
   methods: {
     handleInput (val) {
-      this.changed = true
-      this.$emit('input', val)
-    },
-    handleEnter (val) {
-      this.changed = true
+      this.hasChanged = true
       this.$emit('input', val)
     },
     startEdit () {
       this.$emit('on-start-edit', this.params)
     },
     saveEdit () {
-      if (this.changed) {
+      if (this.hasChanged) {
         this.$emit('on-save-edit', this.params)
       } else {
         this.canceltEdit()

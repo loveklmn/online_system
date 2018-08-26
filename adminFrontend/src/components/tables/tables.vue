@@ -42,7 +42,8 @@
         :total="insideTableData.length"
         :page-size="pageSize"
         :current.sync ="currentPage"
-        show-total/>
+        show-total
+        class="page-bar"/>
     <div v-if="searchable && searchPlace === 'bottom'" class="search-con search-con-top">
       <Select v-model="searchKey" class="search-col">
         <Option v-for="item in columns" v-if="item.key !== 'handle'" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
@@ -185,10 +186,15 @@ export default {
               this.$emit('on-cancel-edit', params)
             },
             'on-save-edit': (params) => {
-              this.value[params.index][params.column.key] = this.edittingText
-              this.$emit('input', this.value)
-              this.$emit('on-save-edit', Object.assign(params, {value: this.edittingText}))
-              this.edittingCellId = ''
+              if (this.edittingText !== '') {
+                this.value[params.index][params.column.key] = this.edittingText
+                this.$emit('input', this.value)
+                this.$emit('on-save-edit', Object.assign(params, {value: this.edittingText}))
+                this.edittingCellId = ''
+              } else {
+                this.edittingCellId = ''
+                this.$emit('on-cancel-edit', params)
+              }
             }
           }
         })
@@ -298,5 +304,8 @@ export default {
   display: none;
   width: 0px;
   height: 0px;
+}
+.page-bar {
+  margin-top: 2%;
 }
 </style>
