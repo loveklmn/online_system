@@ -19,12 +19,12 @@
                                 <image :src="'../../static/images/rank-num-' + (index + 1) + '.png'" v-if="index<3" />
                                 <div v-if="index>=3">{{index>=9?index+1:'0' + (index + 1) }}</div>
                             </div>
-                            <image class="user-head" src="item.face" />
-                            <div class="user-name">{{item.nick_name}}</div>
+                            <image class="user-head" :src="item.avatarurl" />
+                            <div class="user-name">{{item.nickname}}</div>
                             <div class="user-challenge-success-times">
                                 <div>获得</div>
                                 <rich-text>
-                                    <i class="score">{{item.succ_num}}</i>
+                                    <i style="font-size: 36rpx;color: #ffde00;font-style:italic;">{{item.score}}</i>
                                     分</rich-text>
                             </div>
                         </div>
@@ -48,15 +48,7 @@ export default {
       theData: null,
       currentNumber: 0,
       currentIndex: 0,
-      aList: [
-        { face: '', nick_name: 'name', succ_num: 0 },
-        { face: '', nick_name: 'name', succ_num: 0 },
-        { face: '', nick_name: 'name', succ_num: 0 },
-        { face: '', nick_name: 'name', succ_num: 0 },
-        { face: '', nick_name: 'name', succ_num: 0 },
-        { face: '', nick_name: 'name', succ_num: 0 },
-        { face: '', nick_name: 'name', succ_num: 0 }
-      ]
+      aList: []
     }
   },
   components: {
@@ -86,6 +78,15 @@ export default {
   },
   onLoad () {
     this.getData()
+    let url = 'ranklist/'
+    request.get(url).then((res) => {
+      if (res.statusCode === 200) {
+        this.aList = res.data
+        this.aList.forEach(element => {
+          element.avatarurl = request.baseURL + element.avatar
+        })
+      }
+    })
   },
   onPullDownRefresh () {
     this.getData()
@@ -98,11 +99,6 @@ page {
     height: 91.6%
 }
 
-.score {
-  font-size: 36rpx;
-  color: #ffde00;
-  font-style:italic;
-}
 .swiper-content {
     display: flex;
     flex-direction: column;
