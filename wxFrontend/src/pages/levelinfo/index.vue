@@ -1,22 +1,27 @@
 
 <template>
   <div>
+    <toast :message="msg" :visible.sync="visible"></toast>
     <i-cell-group>
         <i-panel title="您当前的等级为">
-            <i-cell title="K1">
+            <i-cell title="K1" v-if="l1 === true">
                 <i-switch :value="switch1" @click="onChange1" slot="footer"></i-switch>
             </i-cell>
-            <i-cell title="K2">
+            <i-cell title="K2" v-if="l2">
                 <i-switch :value="switch2" @click="onChange2" slot="footer"></i-switch>
             </i-cell>
-            <i-cell title="K3">
+            <i-cell title="K3" v-if="l3">
                 <i-switch :value="switch3" @click="onChange3" slot="footer"></i-switch>
             </i-cell>
-            <i-cell title="K4">
+            <i-cell title="K4" v-if="l4">
                 <i-switch :value="switch4" @click="onChange4" slot="footer"></i-switch>
             </i-cell>
         </i-panel>
     </i-cell-group>
+     <i-panel title="想解锁新等级?">
+            <input v-if="!(l1 && l2 && l3 && l4)" v-model.trim="code"  placeholder="请输入激活码" />
+            <i-button type="info" @click="activate">确定</i-button>
+     </i-panel>
     <div class="page">
         <div class="intro">
             <div>
@@ -92,16 +97,40 @@
   </div>
 </template>
 <script>
+import request from '@/utils/request'
+import toast from 'mpvue-toast'
 export default {
   data () {
     return {
-      level: 'K1',
+      level: [],
       switch1: true,
       switch2: false,
       switch3: false,
       switch4: false,
-      disable: [true, true, true, true]
+      code: '',
+      msg: '',
+      visible: false
     }
+  },
+  components: {
+    toast
+  },
+  computed: {
+    l1: function () {
+      return this.level.indexOf(1) !== -1
+    },
+    l2: function () {
+      return this.level.indexOf(2) !== -1
+    },
+    l3: function () {
+      return this.level.indexOf(3) !== -1
+    },
+    l4: function () {
+      return this.level.indexOf(4) !== -1
+    }
+  },
+  onShow () {
+    this.getlevel()
   },
   methods: {
     setZero () {
@@ -111,28 +140,64 @@ export default {
       this.switch4 = false
     },
     onChange1 (e) {
-      if (!this.disable[0]) {
-        this.setZero()
-        this.switch1 = !this.switch1
-      }
+      this.setZero()
+      this.switch1 = !this.switch1
+      let url = 'userinfo/level/'
+      request.post(url, {level: 1})
     },
     onChange2 (e) {
-      if (!this.disable[1]) {
-        this.setZero()
-        this.switch2 = !this.switch2
-      }
+      this.setZero()
+      this.switch2 = !this.switch2
+      let url = 'userinfo/level/'
+      request.post(url, {level: 2})
     },
     onChange3 (e) {
-      if (!this.disable[2]) {
-        this.setZero()
-        this.switch3 = !this.switch3
-      }
+      this.setZero()
+      this.switch3 = !this.switch3
+      let url = 'userinfo/level/'
+      request.post(url, {level: 3})
     },
     onChange4 (e) {
-      if (!this.disable[3]) {
-        this.setZero()
-        this.switch4 = !this.switch4
+      this.setZero()
+      this.switch4 = !this.switch4
+      let url = 'userinfo/level/'
+      request.post(url, {level: 4})
+    },
+    setVisible () {
+      this.visible = !this.visible
+    },
+    activate () {
+      let vm = this
+      let url = 'userinfo/level/update/'
+      if (this.code !== '') {
+        request
+          .post(url, {code: this.code})
+          .then(res => {
+            console.log(res)
+            if (res.data.level) {
+              vm.msg = '你解锁了L' + res.data.level + '!'
+              vm.setVisible()
+              vm.getlevel()
+            } else {
+              vm.msg = res.data.msg
+              vm.setVisible()
+            }
+          })
+      } else {
+        vm.msg = '请输入激活码哦'
+        vm.setVisible()
       }
+    },
+    getlevel () {
+      let url = 'userinfo/level/'
+      request
+        .get(url)
+        .then(res => {
+          console.log(res.data)
+          if (res.data.length > 0) {
+            this.level = res.data
+          }
+        })
     }
   }
 }
@@ -140,6 +205,10 @@ export default {
 <style>
 .page {
   padding-bottom: 200rpx;
+}
+
+input {
+  padding-left: 40rpx;
 }
 
 img {

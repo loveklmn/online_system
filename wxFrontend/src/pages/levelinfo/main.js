@@ -10,7 +10,8 @@ export default {
     usingComponents: {
       'i-switch': '../../static/iview/switch/index',
       'i-panel': '../../static/iview/panel/index',
-      'i-cell': '../../static/iview/cell/index'
+      'i-cell': '../../static/iview/cell/index',
+      'i-button': '../../static/iview/button/index'
     }
   }
 }
