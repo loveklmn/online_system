@@ -1,7 +1,7 @@
 <template>
   <Layout class="layout">
     <Content class="pic-content">
-      <div v-if="page.picture === null">
+      <div v-if="page === null || page.picture === null">
         <img id="pic" class="pagepic" :src="defaultPic"/>
       </div>
       <div v-else id="pic-holder" class="pic-holder">
@@ -9,13 +9,14 @@
           id="pic"
           class="pagepic"
           :src="page.picture"
-          @click="onmousedown"
           ondragstart="return false;"
           v-on:mousedown="onmousedown"
           v-on:mousemove="onmousemove"
           v-on:mouseup="onmouseup"/>
         <div
           id="select-box"
+          v-on:mousedown="onmousedown"
+          v-on:mousemove="onmousemove"
           :style="{
             left: x1 + 'px',
             top: y1 + 'px',
@@ -27,6 +28,8 @@
         class="upload-button"
         name="file"
         :beforeUpload="handleUpload"
+        accept="image/*"
+        action=""
        >
           <Button icon="ios-cloud-upload-outline">上传本页对应的图片</Button>
       </Upload>
@@ -42,7 +45,7 @@
         class="add-sentence-button"
         @click="addNewSentence"> 添加新句子 </Button>
 
-      <Collapse v-model="curSenIndexChar" accordion>
+      <Collapse v-if="page !== null" v-model="curSenIndexChar" accordion>
         <Panel
           v-for="(sen, index) in page.sentences"
           :key="sen.id"
@@ -61,7 +64,7 @@
   </Layout>
 </template>
 <script>
-import sentenceimport from '@/view/components/sentence-import/sentence-import'
+import sentenceimport from './sentence-import'
 import upload from '@/api/upload'
 import baseURL from '_conf/url'
 export default {
@@ -70,6 +73,7 @@ export default {
       defaultPic: require('@/assets/images/addPage.png'),
       curSenIndexChar: '-1',
       // 以下均为鼠标点选区域有关的data
+      scale: 10000,
       xstart: 0,
       ystart: 0,
       xend: 0,
@@ -98,28 +102,28 @@ export default {
     },
     x1: function () {
       if (this.curSenIndex >= 0) {
-        return this.page.sentences[this.curSenIndex].x1
+        return this.page.sentences[this.curSenIndex].x1 * 400 / this.scale
       } else {
         return -1
       }
     },
     y1: function () {
       if (this.curSenIndex >= 0) {
-        return this.page.sentences[this.curSenIndex].y1
+        return this.page.sentences[this.curSenIndex].y1 * 400 / this.scale
       } else {
         return -1
       }
     },
     x2: function () {
       if (this.curSenIndex >= 0) {
-        return this.page.sentences[this.curSenIndex].x2
+        return this.page.sentences[this.curSenIndex].x2 * 400 / this.scale
       } else {
         return -1
       }
     },
     y2: function () {
       if (this.curSenIndex >= 0) {
-        return this.page.sentences[this.curSenIndex].y2
+        return this.page.sentences[this.curSenIndex].y2 * 400 / this.scale
       } else {
         return -1
       }
@@ -178,8 +182,16 @@ export default {
       this.offsetTop = rect.top
       this.offsetLeft = rect.left
       this.canSelect = true
+      this.curSentence.x1 = 0
+      this.curSentence.y1 = 0
+      this.curSentence.x2 = 0
+      this.curSentence.y2 = 0
     },
     onmousedown: function (e) {
+      if (this.isSelecting) {
+        this.isSelecting = false
+        return
+      }
       if (!this.canSelect) {
         return
       }
@@ -206,10 +218,10 @@ export default {
       this.isSelecting = false
     },
     reCalc: function () {
-      this.curSentence.x1 = Math.min(0, this.xstart, this.xend)
-      this.curSentence.x2 = Math.max(this.xstart, this.xend, 400)
-      this.curSentence.y1 = Math.min(0, this.ystart, this.yend)
-      this.curSentence.y2 = Math.max(this.ystart, this.yend, 400)
+      this.curSentence.x1 = Math.min(400, this.xstart, this.xend) * this.scale / 400
+      this.curSentence.x2 = Math.max(this.xstart, this.xend, 0) * this.scale / 400
+      this.curSentence.y1 = Math.min(400, this.ystart, this.yend) * this.scale / 400
+      this.curSentence.y2 = Math.max(this.ystart, this.yend, 0) * this.scale / 400
     },
     // 以下是工具函数
     parseCoordinate: function (param) {
