@@ -2,17 +2,18 @@
     <div class="container">
     <div class="swiper-content">
         <image class="main-bg" src="../../static/images/main-bg.png" />
-
         <div class="tab">
             <div @click="tabPage" :class="'tab-item '+(currentNumber==0?'tab-item-current':'') " data-index="0">朋友圈</div>
             <div @click="tabPage" :class="'tab-item tab-item2 ' + (currentNumber==1 ? 'tab-item-current' : '')" data-index="1">排行榜</div>
         </div>
         <swiper @change="switchPage" :current="currentIndex">
             <swiper-item>
+              <scroll-view class="scroll-views" scrollX="false" scrollY="true">
                 <moment v-for="(y,index) in theData" :key="index" :x="y"></moment>
+              </scroll-view>
             </swiper-item>
             <swiper-item>
-                <scroll-view bindscrolltolower="lower" class="scroll-views" scrollX="false" scrollY="true">
+                <scroll-view class="scroll-views" scrollX="false" scrollY="true">
                     <div class="rank-list">
                         <div class="rank-list-item" v-for="(item,index) in aList" :key="index">
                             <div class="rank-num">
@@ -64,7 +65,7 @@ export default {
       let url = 'community/'
       request.get(url)
         .then((res) => {
-          this.theData = res.data
+          this.theData = res.data.reverse()
         })
     },
     tabPage: function (a) {
@@ -95,10 +96,6 @@ export default {
 </script>
 
 <style scoped>
-page {
-    height: 91.6%
-}
-
 .swiper-content {
     display: flex;
     flex-direction: column;
@@ -108,16 +105,8 @@ page {
     height: 100%;
 }
 
-swiper {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: flex;
-    z-index: 500;
-    height: 1167rpx;
-    width: 100%;
-}
-
 .tab {
+    position: fixed;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -161,8 +150,9 @@ swiper {
     color: #fff;
 }
 
-swiper {
+.swiper-content>swiper {
     width: 100%;
+    height: 1167rpx;
 }
 
 .rank-list {
@@ -223,9 +213,20 @@ swiper {
     text-align: right;
 }
 
+.scroll-views {
+    height: 88%;
+}
+
 .rank-footer {
     width: 100%;
     height: 30rpx;
+}
+
+page {
+    width: 100%;
+    background-color: #91ccf0;
+    color: white;
+    height: 98.3%;
 }
 
 .container {
@@ -234,6 +235,7 @@ swiper {
     align-items: flex-start;
     margin-top: 20rpx;
     width: 100%;
+    height: 100%;
 }
 
 .main-bg {
@@ -250,8 +252,7 @@ swiper {
     height: 100%;
 }
 
-button,
-button::after {
+button,button::after {
     border: none;
 }
 

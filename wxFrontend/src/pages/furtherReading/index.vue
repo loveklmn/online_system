@@ -146,8 +146,8 @@ export default {
           success: function (res) {
             if (res.confirm) {
               let url = 'community/'
-              request.get(url, {book: vm.id}).then((res) => {
-                if (res.statusCode === 200) {
+              request.post(url, {book: vm.id}).then((res) => {
+                if (res.statusCode === 201) {
                   wx.switchTab({ url: '/pages/friendCircle/main' })
                 }
               })
