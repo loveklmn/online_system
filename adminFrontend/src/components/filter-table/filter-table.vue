@@ -15,7 +15,7 @@
       stripe>
     </Table>
 
-    <Page :total="data.length" :page-size="pageSize" :current.sync="currentPage" show-total/>
+    <Page :total="data.length" :page-size="pageSize" :current.sync="currentPage" show-total class="page-bar"/>
   </div>
 </template>
 
@@ -136,4 +136,7 @@ export default {
 </script>
 
 <style scoped>
+.page-bar {
+  margin-top: 2%;
+}
 </style>

@@ -10,15 +10,29 @@
         <Divider />
         <div class="vocabulary">
           <p class="tip-title"> 词汇表： </p>
-          <Button type="error" class="add-word" @click="addWords">添加单词</Button>
-          <tables
-            ref="tables"
-            editable
-            searchable
-            search-place="top"
-            v-model="words"
-            :columns="columns"/>
         </div>
+        <div class="vocabulary-list">
+          <Card title="添加新单词" class="new-word">
+            <Input v-model="newEnglish" class="input-word" placeholder="输入英文"/>
+            <Input v-model="newChinese" class="input-word" placeholder="输入中文"/>
+            <Button type="error" class="add-btn" @click="addWords">点击添加</Button>
+            <Alert class="alert-tip" v-if="emptyTip" type="warning" show-icon>
+              单词和翻译不能为空！
+            </Alert>
+          </Card>
+          <Card class="word-list">
+            <tables
+              ref="tables"
+              editable
+              searchable
+              search-place="top"
+              v-model="words"
+              border="true"
+              stripe="true"
+              :columns="columns"/>
+          </Card>
+        </div>
+        <Divider />
         <div class="operation-btns">
           <Button :loading="loading" @click="handleCommit" type="primary" class="op-btn">确认上传</Button>
           <Button type="warning" @click="handleReset" class="op-btn">返回</Button>
@@ -39,18 +53,21 @@ export default {
       id: 0,
       guidance: '',
       loading: false,
+      emptyTip: false,
       columns: [
         {
-          title: '英语',
+          title: '英文',
           key: 'word',
           sortable: true,
-          editable: true
+          editable: true,
+          border: true
         },
         {
           title: '中文',
           key: 'meaning',
           sortable: true,
-          editable: true
+          editable: true,
+          border: true
         },
         {
           title: '删除',
@@ -74,6 +91,8 @@ export default {
           ]
         }
       ],
+      newEnglish: '',
+      newChinese: '',
       words: []
     }
   },
@@ -94,10 +113,17 @@ export default {
   },
   methods: {
     addWords () {
-      this.words.push({
-        word: '输入单词',
-        meaning: '输入汉译'
-      })
+      if (this.newEnglish !== '' && this.newChinese !== '') {
+        this.emptyTip = false
+        this.words.unshift({
+          word: this.newEnglish,
+          meaning: this.newChinese
+        })
+        this.newEnglish = ''
+        this.newChinese = ''
+      } else {
+        this.emptyTip = true
+      }
     },
     handleChange (html, text) {
       this.guidance = html
@@ -152,10 +178,27 @@ export default {
   margin-left: 3%;
   font-size: 20px;
 }
+.vocabulary-list {
+  display: flex;
+  flex-direction: row;
+}
+.new-word {
+  flex-grow: 1;
+  margin-left: 2%;
+}
+.word-list {
+  width: 2000px;
+  flex-grow: 3;
+  margin-right: 5%;
+}
+.input-word {
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
 .add-btn {
-  display: inline-block;
-  width: 15%;
-  margin: auto;
+  margin-top: 5%;
+  width: 50%;
+  margin-left: 25%;
 }
 .tip-title {
   display: inline-block;
@@ -165,12 +208,12 @@ export default {
 }
 .operation-btns {
   margin-top: 2%;
-  margin-left: 40%;
-  margin-right: 40%;
+  margin-left: 35%;
+  margin-bottom: 3%;
 }
 .op-btn {
   margin: 5px;
-  width: 120px;
+  width: 200px;
   margin-bottom: 5px;
 }
 .main-content {
@@ -184,5 +227,11 @@ export default {
 }
 .vocabulary {
   margin-right: 5%;
+}
+.ivu-divider.ivu-divider-horizontal {
+  background-color: #bcbec1;
+}
+.alert-tip {
+  margin-top: 2%;
 }
 </style>
