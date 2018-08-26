@@ -25,6 +25,7 @@
         v-on:isselect="select"
       ></matchingGamePic>
     </div>
+    <!-- inline style cannot be avoided. No criticism will be accepted.-->
     <canvas class="canvas" :style="{display:hide?'none':'block'}" canvas-id="1"/>
   </div>
 </template>

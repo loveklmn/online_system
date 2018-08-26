@@ -6,6 +6,7 @@
             <swiper-item v-for="page in pages" :key="page.number">
                 <div class="item" v-for="(sen,index1) in page.sentences" :key="index1">
                     <img class="slide-image" :src="page.picture" />
+                    <!-- inline style cannot be avoided. No criticism will be accepted.-->
                     <label @click="activate(sen)" :class="sen.class" :style="sen.style"></label>
                 </div>
             </swiper-item>

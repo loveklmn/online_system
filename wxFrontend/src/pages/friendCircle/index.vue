@@ -24,7 +24,7 @@
                             <div class="user-challenge-success-times">
                                 <div>获得</div>
                                 <rich-text>
-                                    <i style="font-size: 36rpx;color: #ffde00;font-style:italic;">{{item.succ_num}}</i>
+                                    <i class="score">{{item.succ_num}}</i>
                                     分</rich-text>
                             </div>
                         </div>
@@ -98,6 +98,11 @@ page {
     height: 91.6%
 }
 
+.score {
+  font-size: 36rpx;
+  color: #ffde00;
+  font-style:italic;
+}
 .swiper-content {
     display: flex;
     flex-direction: column;
