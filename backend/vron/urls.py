@@ -23,6 +23,8 @@ urlpatterns = [
         views.UserInfo.as_view(), name='userinfo'),
     url(r'^userinfo/change-password/$',
         views.ChangePassword.as_view(), name='change_password'),
+    url(r'^ranklist/$',
+        views.RankList.as_view(), name='ranklist'),
     url(r'^notices/$',
         views.NoticeInfo.as_view(), name='notice_info'),
     url(r'^notices/readed/$',

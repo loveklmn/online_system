@@ -526,6 +526,23 @@ class KeyGenerator(APIView):
         alphas = string.ascii_uppercase + string.ascii_lowercase
         return ''.join(random.choice(alphas) for _ in range(size))
 
+class RankList(APIView):
+
+    @stu_required
+    def get(self, request):
+        level = Student.objects.get(user=request.user).level
+        students = Student.objects.filter(level=level).order_by('-score')
+        rank_list = []
+        for stu in students:
+            stu_info = {
+                'nickname': stu.nickname,
+                'avatar': stu.avatar,
+                'score': stu.score
+            }
+            if not stu_info['nickname']:
+                stu_info['nickname'] = stu.user.username
+            rank_list.append(stu_info)
+        return Response(rank_list)
 
 @csrf_exempt
 def register_view(request):
