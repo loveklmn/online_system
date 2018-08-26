@@ -78,6 +78,16 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
 
+def update_student_score(stu):
+    score = 0
+    progresses = Progress.objects.filter(user=stu)
+    if progresses:
+        for progress in progresses:
+            score += progress.current_page * 10
+            if progress.punched == True:
+                score += progress.current_page * 3
+    stu.score = score
+    stu.save()
 
 class BookList(APIView):
     def get(self, request):
@@ -285,6 +295,7 @@ class BookProgress(APIView):
             progress.save()
         except ObjectDoesNotExist:
             Progress.objects.create(user=student, book=book, current_page=postdata.get('current_page',0))
+        update_student_score(student)
         return Response(status=201)
 
 class BookEbook(APIView):
