@@ -16,6 +16,16 @@ from .serializers import BookSerializer
 STUDENTNOTEXIST = {'msg': 'This user have not related to a student.'}
 BOOKNOTFOUND = {'msg': 'Book not found'}
 
+def bit_to_num(bit):
+    return 1 << (bit-1)
+
+def num_to_bit(num):
+    bit_array = []
+    for i in range(32):
+        if num%2:
+            bit_array.append(i+1)
+        num = num >> 1
+    return bit_array
 
 def manager_required(func):
     '''
@@ -563,6 +573,42 @@ class RankList(APIView):
             rank_list.append(stu_info)
         return Response(rank_list)
 
+class UserLevel(APIView):
+
+    @stu_required
+    def get(self, request):
+        stu = Student.objects.get(user=request.user)
+        return Response(num_to_bit(stu.accept_level))
+
+    @stu_required
+    def post(self, request):
+        stu = Student.objects.get(user=request.user)
+        postdata = json.loads(request.body)
+        level = get_or_raise(postdata, 'level')
+        accept_level = stu.accept_level
+        if bit_to_num(level)&accept_level:
+            stu.level = level
+            stu.save()
+            return Response(status=200)
+        else:
+            return Response({'msg': '没有当前级别的权限'}, status=401)
+
+class UserLevelUpdate(APIView):
+
+    @stu_required
+    def post(self, request):
+        stu = Student.objects.get(user=request.user)
+        postdata = json.loads(request.body)
+        key = get_or_raise(postdata, 'code')
+        key_query = ActiveKey.objects.filter(key=key)
+        if not key_query.exists():
+            return Response({'msg': '激活码无效'}, status=400)
+        new_level = key_query[0].level
+        stu.accept_level |= bit_to_num(new_level)
+        stu.save()
+        key_query.delete()
+        return Response({'level': new_level})
+
 @csrf_exempt
 def register_view(request):
     if request.method == 'GET':
@@ -579,5 +625,5 @@ def register_view(request):
     level = key_query[0].level
     key_query.delete()
     user = User.objects.create_user(username=username, password=password)
-    Student.objects.create(user=user, level=level, avatar='')
+    Student.objects.create(user=user, level=level, accept_level=bit_to_num(level), avatar='')
     return JsonResponse({'msg': '注册成功'}, status=201)
