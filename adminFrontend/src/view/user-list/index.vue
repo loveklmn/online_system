@@ -169,7 +169,6 @@ export default {
   },
   methods: {
     turnToDetailPage (params) {
-      console.log(params)
       this.$router.push({
         path: '/student/' + params.row.id
       })
