@@ -5,7 +5,7 @@
       <Content class="main-content">
         <div class="main-content">
           <p class="tip-title">指导重点：</p>
-          <editor class="input-editor" v-model="guidance" @on-change="handleChange"/>
+          <editor ref="editor" class="input-editor" v-model="guidance" @on-change="handleChange"/>
         </div>
         <Divider />
         <div class="vocabulary">
@@ -20,13 +20,8 @@
             :columns="columns"/>
         </div>
         <div class="operation-btns">
-          <Button @click="handleCommit" type="primary" class="op-btn">确认上传</Button>
-          <Poptip
-            confirm
-            title="你确定放弃编辑返回吗？"
-            @on-ok="handleReset">
-            <Button type="warning" class="op-btn">返回</Button>
-          </Poptip>
+          <Button :loading="loading" @click="handleCommit" type="primary" class="op-btn">确认上传</Button>
+          <Button type="warning" @click="handleReset" class="op-btn">返回</Button>
         </div>
       </Content>
     </Layout>
@@ -36,12 +31,14 @@
 <script>
 import Editor from '_c/editor'
 import Tables from '_c/tables'
+import axios from '@/libs/api.request'
+
 export default {
   data () {
     return {
-      bookId: 0,
+      id: 0,
       guidance: '',
-      success: false,
+      loading: false,
       columns: [
         {
           title: '英语',
@@ -85,7 +82,15 @@ export default {
     Tables
   },
   created () {
-    // 获得图书id赋值给bookId
+    this.id = this.$route.params.id
+    axios.request({
+      url: `books/${this.id}/guidance`,
+      method: 'get'
+    }).then(data => {
+      this.guidance = data.guidance
+      this.$refs.editor.setValue(data.guidance)
+      this.words = data.words
+    })
   },
   methods: {
     addWords () {
@@ -95,15 +100,27 @@ export default {
       })
     },
     handleChange (html, text) {
-      // 得到富文本编辑器的输入
       this.guidance = html
     },
     handleCommit () {
-      // 数据上传到数据库
-      // if(上传成功) this.$Message.success('上传成功！')
+      this.loading = true
+      axios.request({
+        url: `books/${this.id}/guidance/`,
+        method: 'post',
+        data: {
+          guidance: this.guidance,
+          words: this.words
+        }
+      }).then(data => {
+        this.guidance = data.guidance
+        this.$refs.editor.setValue(data.guidance)
+        this.words = data.words
+        this.loading = false
+        this.$Message.success('上传成功')
+      })
     },
     handleReset () {
-      // 跳转到图书详情页面
+      this.$router.go(-1)
     }
   }
 }
