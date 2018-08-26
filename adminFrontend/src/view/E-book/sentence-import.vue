@@ -14,7 +14,9 @@
         @click="playSound">播放音频</Button>
       <Upload
         name="file"
+        accept="audio/*"
         :beforeUpload="handleUpload"
+        action=""
         class="inline">
           <Button icon="ios-microphone">上传音频</Button>
       </Upload>
@@ -24,15 +26,15 @@
       <Button @click="selectArea"> 选择对应区域 </Button>
       <div>
         <p class="inline">x1&nbsp;</p>
-        <Input readonly v-model="sentence.x1" class="coordinate"/>
+        <Input readonly v-model="x1" class="coordinate"/>
         <p class="inline">y1&nbsp;</p>
-        <Input readonly v-model="sentence.y1" class="coordinate"/>
+        <Input readonly v-model="y1" class="coordinate"/>
       </div>
       <div>
         <p class="inline">x2&nbsp;</p>
-        <Input readonly v-model="sentence.x2" class="coordinate"/>
+        <Input readonly v-model="x2" class="coordinate"/>
         <p class="inline">y2&nbsp;</p>
-        <Input readonly v-model="sentence.y2" class="coordinate"/>
+        <Input readonly v-model="y2" class="coordinate"/>
       </div>
     </FormItem>
 
@@ -47,16 +49,27 @@ import upload from '@/api/upload'
 import baseURL from '_conf/url'
 export default {
   props: ['sentence'],
+  data () {
+    return {
+      scale: 10000
+    }
+  },
+  computed: {
+    x1: function () {
+      return Math.round(this.sentence.x1 * 400 / this.scale)
+    },
+    y1: function () {
+      return Math.round(this.sentence.y1 * 400 / this.scale)
+    },
+    x2: function () {
+      return Math.round(this.sentence.x2 * 400 / this.scale)
+    },
+    y2: function () {
+      return Math.round(this.sentence.y2 * 400 / this.scale)
+    }
+  },
   watch: {
     sentence () {
-      // let xleft = Math.min(this.sentence.x1, this.sentence.x2)
-      // let ytop = Math.min(this.sentence.y1, this.sentence.y2)
-      // let xright = Math.max(this.sentence.x1, this.sentence.x2)
-      // let ybottom = Math.max(this.sentence.y1, this.sentence.y2)
-      // this.sentence.x1 = xleft
-      // this.sentence.y1 = ytop
-      // this.sentence.x2 = xright
-      // this.sentence.y2 = ybottom
     }
   },
   methods: {
@@ -76,11 +89,12 @@ export default {
         .then((res) => {
           let savepath = res.savepath
           that.sentence.audio = baseURL + savepath
-          alert('上传音频成功！')
+          this.$Message.info('音频上传成功')
         })
         .catch((err) => {
           console.log(err)
         })
+      return false
     }
   }
 }
