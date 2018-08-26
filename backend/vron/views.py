@@ -346,26 +346,27 @@ class BookEbook(APIView):
         old_pages = Page.objects.filter(book=book)
         if old_pages.exists():
             old_pages.delete()
-        number = get_or_raise(postdata, 'number')
-        picture = get_or_raise(postdata, 'picture')
-        sentences = postdata.get('sentences')
-        page = Page.objects.get_or_create(book=book,
-                                        number=number,
-                                        picture=picture)[0]
-        if Sentence.objects.filter(page=page).exists():
-            Sentence.objects.filter(page=page).delete()
-        if sentences:
-            for sentence_info in sentences:
-                Sentence.objects.create(
-                    page=page,
-                    content=get_or_raise(sentence_info, 'content'),
-                    audio=get_or_raise(sentence_info, 'audio'),
-                    translated=get_or_raise(sentence_info, 'translated'),
-                    x1=get_or_raise(sentence_info, 'x1'),
-                    y1=get_or_raise(sentence_info, 'y1'),
-                    x2=get_or_raise(sentence_info, 'x2'),
-                    y2=get_or_raise(sentence_info, 'y2')
-                )
+        for page in postdata:
+            number = get_or_raise(page, 'number')
+            picture = get_or_raise(page, 'picture')
+            sentences = page.get('sentences')
+            newpage = Page.objects.get_or_create(book=book,
+                                            number=number,
+                                            picture=picture)[0]
+            if Sentence.objects.filter(page=newpage).exists():
+                Sentence.objects.filter(page=newpage).delete()
+            if sentences:
+                for sentence_info in sentences:
+                    Sentence.objects.create(
+                        page=newpage,
+                        content=get_or_raise(sentence_info, 'content'),
+                        audio=get_or_raise(sentence_info, 'audio'),
+                        translated=get_or_raise(sentence_info, 'translated'),
+                        x1=get_or_raise(sentence_info, 'x1'),
+                        y1=get_or_raise(sentence_info, 'y1'),
+                        x2=get_or_raise(sentence_info, 'x2'),
+                        y2=get_or_raise(sentence_info, 'y2')
+                    )
         return Response(status=201)
 
 
