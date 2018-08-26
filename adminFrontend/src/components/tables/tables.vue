@@ -9,7 +9,7 @@
     </div>
     <Table
       ref="tablesMain"
-      :data="insideTableData"
+      :data="currentPageData"
       :columns="insideColumns"
       :stripe="stripe"
       :border="border"
@@ -38,6 +38,11 @@
       <slot name="footer" slot="footer"></slot>
       <slot name="loading" slot="loading"></slot>
     </Table>
+    <Page
+        :total="insideTableData.length"
+        :page-size="pageSize"
+        :current.sync ="currentPage"
+        show-total/>
     <div v-if="searchable && searchPlace === 'bottom'" class="search-con search-con-top">
       <Select v-model="searchKey" class="search-col">
         <Option v-for="item in columns" v-if="item.key !== 'handle'" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
@@ -56,6 +61,10 @@ import './index.less'
 export default {
   name: 'Tables',
   props: {
+    pageSize: {
+      type: Number,
+      default: 10
+    },
     value: {
       type: Array,
       default () {
@@ -148,7 +157,8 @@ export default {
       edittingCellId: '',
       edittingText: '',
       searchValue: '',
-      searchKey: ''
+      searchKey: '',
+      currentPage: 1
     }
   },
   methods: {
@@ -273,6 +283,13 @@ export default {
     this.handleColumns(this.columns)
     this.setDefaultSearchKey()
     this.handleTableData()
+  },
+  computed: {
+    currentPageData () {
+      let start = this.pageSize * (this.currentPage - 1)
+      let end = this.pageSize * this.currentPage
+      return this.insideTableData.slice(start, end)
+    }
   }
 }
 </script>
