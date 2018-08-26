@@ -45,10 +45,11 @@ class BookTestCase(TestCase):
         self.token = 'Token ' + Token.objects.get(user=self.user).key
         self.test_client.force_authenticate(user=self.user)
         stu = Student.objects.create(
-            user=self.user, level=1, avatar="", score=0)
+            user=self.user, level=1, accept_level=1, avatar="", score=0)
         Student.objects.create(
             user=self.user_err_level,
             level=-1,
+            accept_level=0,
             avatar="",
             score=0
         )

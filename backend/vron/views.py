@@ -16,6 +16,16 @@ from .serializers import BookSerializer
 STUDENTNOTEXIST = {'msg': 'This user have not related to a student.'}
 BOOKNOTFOUND = {'msg': 'Book not found'}
 
+def bit_to_num(bit):
+    return 1 << (bit-1)
+
+def num_to_bit(num):
+    bit_array = []
+    for i in range(32):
+        if num%2:
+            bit_array.append(i+1)
+        num = num >> 1
+    return bit_array
 
 def manager_required(func):
     '''
@@ -78,6 +88,16 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
 
+def update_student_score(stu):
+    score = 0
+    progresses = Progress.objects.filter(user=stu)
+    if progresses:
+        for progress in progresses:
+            score += progress.current_page * 10
+            if progress.punched == True:
+                score += progress.current_page * 3
+    stu.score = score
+    stu.save()
 
 class BookList(APIView):
     def get(self, request):
@@ -251,7 +271,9 @@ class BookHomework(APIView):
         postdata = json.loads(request.body)
         if not is_admin(request.user):
             student = Student.objects.get(user=request.user)
-
+            progress = Progress.objects.get_or_create(user=student, book=book)[0]
+            progress.punched = True
+            progress.save()
             try:
                 homework = Homework.objects.get(book=book, author=student)
             except ObjectDoesNotExist:
@@ -285,6 +307,7 @@ class BookProgress(APIView):
             progress.save()
         except ObjectDoesNotExist:
             Progress.objects.create(user=student, book=book, current_page=postdata.get('current_page',0))
+        update_student_score(student)
         return Response(status=201)
 
 class BookEbook(APIView):
@@ -318,6 +341,11 @@ class BookEbook(APIView):
     def post(self, request, book_id):
         book = get_book(id=book_id)[0]
         postdata = json.loads(request.body)
+        book.pages_num = len(postdata)
+        book.save()
+        old_pages = Page.objects.filter(book=book)
+        if old_pages.exists():
+            old_pages.delete()
         number = get_or_raise(postdata, 'number')
         picture = get_or_raise(postdata, 'picture')
         sentences = postdata.get('sentences')
@@ -373,6 +401,23 @@ class CommunityGroup(APIView):
                 community_message['comment_count'] = len(Comment.objects.filter(target=moment))
                 community_info.append(community_message)
         return Response(community_info)
+
+    @stu_required
+    def post(self, request):
+        postdata = json.loads(request.body)
+        book_id = get_or_raise(postdata, 'book')
+        book = get_book(id=book_id)[0]
+        student = Student.objects.get(user=request.user)
+        homework_query = Homework.objects.filter(author=student, book=book)
+        if not homework_query.exists():
+            raise NotFound('Homework for book(id={}) not found.'.format(book_id))
+        homework = homework_query[0]
+        level = student.level
+        moment_query = Moment.objects.filter(homework=homework, level=level)
+        if moment_query.exists():
+            return Response({'msg': 'Cannot punch more than once.'}, status=403)
+        Moment.objects.create(homework=homework, level=level)
+        return Response(status=201)
 
 class UploadFile(APIView):
     def post(self, request):
@@ -510,6 +555,59 @@ class KeyGenerator(APIView):
         alphas = string.ascii_uppercase + string.ascii_lowercase
         return ''.join(random.choice(alphas) for _ in range(size))
 
+class RankList(APIView):
+
+    @stu_required
+    def get(self, request):
+        level = Student.objects.get(user=request.user).level
+        students = Student.objects.filter(level=level).order_by('-score')
+        rank_list = []
+        for stu in students:
+            stu_info = {
+                'nickname': stu.nickname,
+                'avatar': stu.avatar,
+                'score': stu.score
+            }
+            if not stu_info['nickname']:
+                stu_info['nickname'] = stu.user.username
+            rank_list.append(stu_info)
+        return Response(rank_list)
+
+class UserLevel(APIView):
+
+    @stu_required
+    def get(self, request):
+        stu = Student.objects.get(user=request.user)
+        return Response(num_to_bit(stu.accept_level))
+
+    @stu_required
+    def post(self, request):
+        stu = Student.objects.get(user=request.user)
+        postdata = json.loads(request.body)
+        level = get_or_raise(postdata, 'level')
+        accept_level = stu.accept_level
+        if bit_to_num(level)&accept_level:
+            stu.level = level
+            stu.save()
+            return Response(status=200)
+        else:
+            return Response({'msg': '没有当前级别的权限'}, status=401)
+
+class UserLevelUpdate(APIView):
+
+    @stu_required
+    def post(self, request):
+        stu = Student.objects.get(user=request.user)
+        postdata = json.loads(request.body)
+        key = get_or_raise(postdata, 'code')
+        key_query = ActiveKey.objects.filter(key=key)
+        if not key_query.exists():
+            return Response({'msg': '激活码无效'}, status=400)
+        new_level = key_query[0].level
+        stu.accept_level |= bit_to_num(new_level)
+        stu.save()
+        key_query.delete()
+        return Response({'level': new_level})
 
 @csrf_exempt
 def register_view(request):
@@ -527,5 +625,5 @@ def register_view(request):
     level = key_query[0].level
     key_query.delete()
     user = User.objects.create_user(username=username, password=password)
-    Student.objects.create(user=user, level=level, avatar='')
+    Student.objects.create(user=user, level=level, accept_level=bit_to_num(level), avatar='')
     return JsonResponse({'msg': '注册成功'}, status=201)

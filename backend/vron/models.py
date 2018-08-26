@@ -16,6 +16,7 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=24, default='')
     level = models.IntegerField()
+    accept_level = models.IntegerField()
     avatar = models.CharField(max_length=255, default='static/upload/default_avatar.jpg')
     score = models.FloatField(default=0)
 
@@ -37,7 +38,7 @@ class Progress(models.Model):
     user = models.ForeignKey(Student, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     punched = models.BooleanField(default=False)
-    current_page = models.IntegerField()
+    current_page = models.IntegerField(default=0)
     latest_read_time = models.DateTimeField(default=timezone.now)
 
 
