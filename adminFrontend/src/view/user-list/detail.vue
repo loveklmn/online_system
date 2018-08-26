@@ -28,14 +28,14 @@
         <h1>本周学习时长</h1>
         <Divider />
           <Card shadow>
-            <chart-pie style="height: 300px;" :value="pieData" text="各模块学习时长"></chart-pie>
+            <chart-pie class="pie" :value="pieData" text="各模块学习时长"></chart-pie>
           </Card>
         </i-col>
         <i-col span="16">
           <h1>阅读进度统计</h1>
           <Divider />
           <Card shadow>
-            <chart-bar style="height: 300px;" :value="barData" text="各书目阅读统计"/>
+            <chart-bar class="bar" :value="barData" text="各书目阅读统计"/>
           </Card>
         </i-col>
     </Row>
@@ -213,7 +213,13 @@ export default {
 .third-part {
   margin-top: 2%;
 }
-e-title {
+.e-title {
   margin: 2%;
+}
+.pie {
+  height: 300px;
+}
+.bar {
+  height: 300px;
 }
 </style>
