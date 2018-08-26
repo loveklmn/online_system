@@ -262,7 +262,7 @@ class BookHomework(APIView):
         if not is_admin(request.user):
             student = Student.objects.get(user=request.user)
             progress = Progress.objects.get_or_create(user=student, book=book)
-            progress.punched = True;
+            progress.punched = True
             progress.save()
             try:
                 homework = Homework.objects.get(book=book, author=student)
