@@ -271,7 +271,7 @@ class BookHomework(APIView):
         postdata = json.loads(request.body)
         if not is_admin(request.user):
             student = Student.objects.get(user=request.user)
-            progress = Progress.objects.get_or_create(user=student, book=book)
+            progress = Progress.objects.get_or_create(user=student, book=book)[0]
             progress.punched = True
             progress.save()
             try:
