@@ -329,6 +329,11 @@ class BookEbook(APIView):
     def post(self, request, book_id):
         book = get_book(id=book_id)[0]
         postdata = json.loads(request.body)
+        book.pages_num = len(postdata)
+        book.save()
+        old_pages = Page.objects.filter(book=book)
+        if old_pages.exists():
+            old_pages.delete()
         number = get_or_raise(postdata, 'number')
         picture = get_or_raise(postdata, 'picture')
         sentences = postdata.get('sentences')
