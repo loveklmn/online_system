@@ -137,6 +137,64 @@ export default [
     ]
   },
   {
+    path: '/student',
+    name: 'students',
+    meta: {
+      icon: 'md-contacts',
+      title: '学生管理',
+    },
+    component: Main,
+    children: [
+      {
+        path: 'userlist',
+        name: 'userlist',
+        meta: {
+          icon: 'md-contacts',
+          title: '学生列表'
+        },
+        component: () => import('@/view/user-list/index.vue')
+      },
+      {
+        path: ':id',
+        name: 'user-detail',
+        meta: {
+          hideInMenu: true,
+          title: '学生详细信息'
+        },
+        component: () => import('@/view/user-list/detail.vue')
+      }
+    ]
+  },
+  {
+    path: '/notice',
+    name: 'notices',
+    meta: {
+      icon: 'md-contacts',
+      title: '消息管理',
+    },
+    component: Main,
+    children: [
+      {
+        path: 'noticelist',
+        name: 'noticelist',
+        meta: {
+          icon: 'md-contacts',
+          title: '消息列表'
+        },
+        component: () => import('@/view/notice/notice-table.vue')
+      },
+      {
+        path: 'sendnotice',
+        name: 'sendnotice',
+        meta: {
+          hideInMenu: true,
+          title: '发布消息'
+        },
+        component: () => import('@/view/notice/send-notice.vue')
+      }
+    ]
+  },
+  {
     path: 'student_statistics',
     name: 'student_statistics',
     meta: {
