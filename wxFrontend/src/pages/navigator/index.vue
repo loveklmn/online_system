@@ -1,16 +1,16 @@
 <template>
-<div class="container">
-  <image class="main-bg" src="../../static/images/main-bg.png"/>
-  <image class="weui-grid__icon" :src="cover" />
-  <div class="weui-grid__label"> {{title}} </div>
-  <div @click="punch" v-if="punched==='false'">
-    <label class="punch" >打<br>卡</label>
+  <div class="container">
+    <image class="main-bg" src="../../static/images/main-bg.png"/>
+    <image class="weui-grid__icon" :src="cover" />
+    <div class="weui-grid__label"> {{title}} </div>
+    <div @click="punch" v-if="punched==='false'">
+      <label class="punch" >打<br>卡</label>
+    </div>
+    <i-button @click="navToReadGuide" shape="circle" type="primary">亲子阅读指导</i-button>
+    <i-button @click="navToEBook" shape="circle" type="primary">E-book</i-button>
+    <i-button @click="navToPractice" shape="circle" type="primary">课后练习</i-button>
+    <i-button @click="navToFurtherRead" shape="circle" type="primary">阅读拓展</i-button>
   </div>
-  <i-button @click="navToReadGuide" shape="circle" type="primary">亲子阅读指导</i-button>
-  <i-button @click="navToEBook" shape="circle" type="primary">E-book</i-button>
-  <i-button @click="navToPractice" shape="circle" type="primary">课后练习</i-button>
-  <i-button @click="navToFurtherRead" shape="circle" type="primary">阅读拓展</i-button>
-</div>
 </template>
 
 <script>
@@ -77,6 +77,7 @@ export default {
   padding-top: 100rpx;
   padding-bottom: 100rpx;
 }
+
 .weui-grid__icon {
   display: block;
   width: 170rpx;
@@ -94,6 +95,7 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
 .punch {
   position: fixed;
   left: 690rpx;

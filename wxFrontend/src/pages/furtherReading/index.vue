@@ -1,41 +1,41 @@
 <template>
   <div class="weui-article">
     <div>
-      <wxParse :content="assignment" />
+        <wxParse :content="assignment" />
     </div>
-    <div v-if="!submitted"  class="weui-uploader__title">编辑作业</div>
+    <div v-if="!submitted" class="weui-uploader__title">编辑作业</div>
     <div v-else class="weui-uploader__title">已提交作业</div>
     <textarea v-if="!submitted" v-model.lazy="homework.content" :disabled="submitted" placeholder="请输入作业内容" />
     <div class="submitted_homework">
-      <text v-if="submitted">{{homework.content}}</text>
+        <text v-if="submitted">{{homework.content}}</text>
     </div>
     <div class="weui-uploader">
-      <div class="weui-uploader__hd" v-if="!submitted">
-        <div class="weui-uploader__title">图片上传</div>
-        <div class="weui-uploader__info">{{homework.attachments.image.length}}/9</div>
-      </div>
-      <div class="weui-uploader__bd">
-        <div class="weui-uploader__files" id="uploaderFiles">
-          <div v-for="item in previewImages" :key="item">
-            <div class="weui-uploader__file">
-              <image class="weui-uploader__img" :src="item" mode="aspectFill" @click="predivImage" :id="item" />
-              <div class="delete-icon" v-if="!submitted" @click="deleteImg" :id="item"></div>
+        <div class="weui-uploader__hd" v-if="!submitted">
+            <div class="weui-uploader__title">图片上传</div>
+            <div class="weui-uploader__info">{{homework.attachments.image.length}}/9</div>
+        </div>
+        <div class="weui-uploader__bd">
+            <div class="weui-uploader__files" id="uploaderFiles">
+                <div v-for="item in previewImages" :key="item">
+                    <div class="weui-uploader__file">
+                        <image class="weui-uploader__img" :src="item" mode="aspectFill" @click="predivImage" :id="item" />
+                        <div class="delete-icon" v-if="!submitted" @click="deleteImg" :id="item"></div>
+                    </div>
+                </div>
             </div>
-          </div>
+            <div v-if="!submitted" class="weui-uploader__input-box">
+                <div class="weui-uploader__input" @click="chooseImage"></div>
+            </div>
         </div>
-        <div v-if="!submitted" class="weui-uploader__input-box">
-          <div class="weui-uploader__input" @click="chooseImage"></div>
-        </div>
-      </div>
     </div>
     <div class="submit-button" v-if="!submitted">
-      <i-alert type="error" v-if="full === true">
-        已经不能再上传了哦
-        <view slot="desc">您最多上传9张图片</view>
-      </i-alert>
-      <i-button type="success" @click="submit" long="true">提交</i-button>
+        <i-alert type="error" v-if="full === true">
+            已经不能再上传了哦
+            <view slot="desc">您最多上传9张图片</view>
+        </i-alert>
+        <i-button type="success" @click="submit" long="true">提交</i-button>
     </div>
-  </div>
+</div>
 </template>
 
 <script>

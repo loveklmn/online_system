@@ -221,6 +221,7 @@ page {
   width: 100%;
   height: 100%;
 }
+
 .gameboard {
   display: flex;
   flex-direction: row;

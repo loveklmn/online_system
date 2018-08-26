@@ -1,14 +1,16 @@
 <template>
   <div>
-     <div class="container">
-  <div class="userinfo">
-    <block >
-      <image @click="changeAvatar" class="userinfo-avatar" :src="avatarurl" background-size="cover"/>
-      <div class="usermotto">
-      <input @blur="changeName" class="user-motto" :placeholder="nickname" />
-     </div>
-    </block>
-  </div></div></div>
+    <div class="container">
+      <div class="userinfo">
+        <block >
+          <image @click="changeAvatar" class="userinfo-avatar" :src="avatarurl" background-size="cover"/>
+          <div class="usermotto">
+            <input @blur="changeName" class="user-motto" :placeholder="nickname" />
+          </div>
+        </block>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
