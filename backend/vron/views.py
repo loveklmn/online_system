@@ -534,6 +534,18 @@ class NoticeInfo(APIView):
             'id': notice.id
         }, status=201)
 
+class NoticeAction(APIView):
+    @manager_required
+    def delete(self, request, notice_id):
+        notice_query = Notice.objects.filter(id=notice_id)
+        if notice_query.exists():
+            notice_query.delete()
+            return Response(status=200)
+        else:
+            return Response({
+                'msg': 'Notice(id={}) not found.'.format(notice_id)
+            }, status=404)
+
 
 class MarkNotice(APIView):
 

@@ -35,6 +35,8 @@ urlpatterns = [
         views.NoticeInfo.as_view(), name='notice_info'),
     url(r'^notices/readed/$',
         views.MarkNotice.as_view(), name='notice_readed'),
+    url(r'^notices/(\d+)/$',
+        views.NoticeAction.as_view()),
     url(r'^students/$',
         views.StudentList.as_view(), name='student_list'),
     url(r'^generatekey/$',
