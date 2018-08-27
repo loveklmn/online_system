@@ -854,7 +854,7 @@ class ClozeGameView(APIView):
         if len(games) == 1:
             return Response({
                 'sentence': games[0].sentence,
-                'corerct_word': games[0].correct_word,
+                'correct_word': games[0].correct_word,
                 'wrong_word_1': games[0].wrong_word_1,
                 'wrong_word_2': games[0].wrong_word_2,
                 'wrong_word_3': games[0].wrong_word_3,
@@ -872,7 +872,7 @@ class ClozeGameView(APIView):
         ClozeGame.objects.create(
             book=book,
             sentence=get_or_raise(data, 'sentence'),
-            correct_word=get_or_raise(data, 'corerct_word'),
+            correct_word=get_or_raise(data, 'correct_word'),
             wrong_word_1=get_or_raise(data, 'wrong_word_1'),
             wrong_word_2=get_or_raise(data, 'wrong_word_2'),
             wrong_word_3=get_or_raise(data, 'wrong_word_3'),
