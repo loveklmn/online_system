@@ -16,8 +16,8 @@ import noticeTable from './notice-table.vue'
 export default {
   data () {
     return {
-      pageOne: false,
-      pageTwo: true
+      pageOne: true,
+      pageTwo: false
     }
   },
   components: {

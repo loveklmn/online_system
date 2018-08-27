@@ -2,13 +2,12 @@
 <div>
   <Divider class="first-divider" orientation="left"><h1>发布新消息</h1></Divider>
   <div class="new-messsage">
-    <Input class="new-input" v-model="newNotice" type="textarea" :rows="4" placeholder="输入你的消息..." />
+    <Input class="new-input"
+    v-model="newNotice"
+    type="textarea"
+    :rows="4"
+    placeholder="输入你的消息..." />
     <Card class="new-card">
-      <p class="send-tip">发布范围：</p>
-      <Select v-model="sendLevel" class="send-level">
-        <Option v-for="item in levelList" :value="item" :key="item">{{ item }}</Option>
-      </Select>
-      <Divider type="vertical"/>
       <Button type="primary" class="send-btn" @click="handleSubmit">发布</Button>
     </Card>
   </div>
@@ -16,8 +15,7 @@
   <div
     class="single-message"
     v-for="notice in noticeList"
-    :key="notice">
-    <img class="avatar-btn"/>
+    :key="notice.id">
     <Card :title="notice.created_time" class="message-card">
       <p class="notice-content">{{ notice.content }}</p>
     </Card>
@@ -26,61 +24,50 @@
 </div>
 </template>
 <script>
+import axios from '@/libs/api.request'
 export default {
   name: 'sendNotice',
   data () {
     return {
-      sendLevel: 'k1',
-      levelList: [
-        'k1', 'k2', 'k3', 'k4'
-      ],
       newNotice: '',
-      noticeList: [
-        {
-          imgsrc: 'a',
-          content: 'hello',
-          created_time: '2018/18/18'
-        },
-        {
-          imgsrc: 'b',
-          content: 'nice',
-          created_time: '2018/20/20'
-        },
-        {
-          imgsrc: 'b',
-          content: 'nice',
-          created_time: '2018/20/20'
-        },
-        {
-          imgsrc: 'b',
-          content: 'nice',
-          created_time: '2018/20/20'
-        },
-        {
-          imgsrc: 'b',
-          content: 'nice',
-          created_time: '2018/20/20'
-        },
-        {
-          imgsrc: 'b',
-          content: 'nice',
-          created_time: '2018/20/20'
-        },
-        {
-          imgsrc: 'b',
-          content: 'nice',
-          created_time: '2018/20/20'
-        }
-      ]
+      noticeList: []
     }
   },
   created () {
-    // get notice list
-    // get the avatar of the current manager
+    axios.request({
+      url: 'notices',
+      method: 'get'
+    }).then(data => {
+      data.sort(function (a, b) {
+        let d1 = new Date(a.created_time)
+        let d2 = new Date(b.created_time)
+        return d1 < d2 ? 1 : -1
+      })
+      this.noticeList.push.apply(this.noticeList, data)
+      this.noticeList = this.noticeList.map(notice => {
+        let time = new Date(notice.created_time)
+        let year = time.getFullYear()
+        let month = time.getMonth()
+        let date = time.getDate()
+        notice.created_time = `${year}年${month + 1}月${date}日`
+        return notice
+      })
+    }).catch(error => {
+      console.log(error)
+    })
   },
   methods: {
     handleSubmit () {
-      // sendNotice(sendLevel, notice)
+      console.log(this.newNotice)
+      axios.request({
+        data: {
+          content: this.newNotice
+        },
+        url: 'notices/',
+        method: 'post'
+      }).then((data) => {
+        this.$Message.success('上传成功')
+      })
     }
   }
 }
@@ -100,9 +87,8 @@ export default {
   margin-right: 10%;
 }
 .single-message {
-  display: flex;
-  flex-direction: row;
   margin-top: 3%;
+  margin-left: 4.5%;
 }
 .notice-content {
   display: inline-block;
@@ -136,11 +122,6 @@ export default {
 }
 .second-divider {
   margin-top: 5%;
-}
-.send-level {
-  display: inline-block;
-  width: 10%;
-  text-align-last: center;
 }
 .send-tip {
   display: inline-block;

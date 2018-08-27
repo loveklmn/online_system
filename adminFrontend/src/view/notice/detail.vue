@@ -85,7 +85,6 @@ export default {
   data () {
     return {
       condition: {},
-      userId: '',
       student: {
         username: 'song',
         nickname: 'elsa',
@@ -108,7 +107,6 @@ export default {
         book6: 0.90,
         book7: 0.51
       },
-      allBooksData: [],
       columns: [
         {
           title: '书名',
@@ -197,20 +195,6 @@ export default {
     ChartPie,
     ChartBar,
     FilterTable
-  },
-  mounted () {
-    this.userId = this.$route.params.id
-    axios.request({
-      url: '',
-      method: 'get',
-      data: {
-        id: this.userId
-      }
-    }).then(data => {
-
-      this.currentBook = data
-      this.newBook = Object.assign({}, this.currentBook)
-    })
   }
 }
 </script>
