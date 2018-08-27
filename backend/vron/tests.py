@@ -297,7 +297,7 @@ class BookTestCase(TestCase):
     def test_book_ebook3(self):
         client = APIClient()
         client.force_authenticate(user=self.admin)
-        data = {
+        data = [{
             'number': 5,
             'picture': "http://a/x",
             'sentences': [
@@ -320,7 +320,7 @@ class BookTestCase(TestCase):
                     'y2': 50
                 }
             ]
-        }
+        }]
         response = client.post('/vron/books/4/ebook/',
                                json.dumps(data), content_type="application/json")
         self.assertEqual(response.status_code, 201)
