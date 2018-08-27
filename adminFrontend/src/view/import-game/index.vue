@@ -2,19 +2,19 @@
   <div>
     <Tabs type="card">
         <TabPane label="连线游戏">
-          <matchingGame>
+          <matchingGame :bookid="bookid">
           </matchingGame>
         </TabPane>
         <TabPane label="拼图游戏">
-          <jigsawGame>
+          <jigsawGame :bookid="bookid">
           </jigsawGame>
         </TabPane>
         <TabPane label="单词识别">
-          <recognitionGame>
+          <recognitionGame :bookid="bookid">
           </recognitionGame>
         </TabPane>
         <TabPane label="选词填空">
-          <clozeGame>
+          <clozeGame :bookid="bookid">
           </clozeGame>
         </TabPane>
     </Tabs>
@@ -33,7 +33,8 @@ export default {
       tab1: 'matchingGame',
       tab2: 'jigsawGame',
       tab3: 'recognitionGame',
-      tab4: 'clozeGame'
+      tab4: 'clozeGame',
+      bookid: -1
     }
   },
   components: {
@@ -43,6 +44,9 @@ export default {
     clozeGame
   },
   methods: {
+  },
+  created () {
+    this.bookid = this.$route.params.id
   }
 }
 </script>

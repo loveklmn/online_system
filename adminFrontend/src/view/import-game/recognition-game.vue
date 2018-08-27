@@ -21,10 +21,10 @@ export default {
       img: null,
       correct_word: null,
       wrong_word_1: null,
-      wrong_word_2: null,
-      bookid: -1
+      wrong_word_2: null
     }
   },
+  props: ['bookid'],
   components: {
     imgComp
   },
@@ -48,7 +48,7 @@ export default {
         return
       }
       axios.request({
-        url: `books/${this.bookid}/MatchingGame/`,
+        url: `books/${this.bookid}/RecognitionGame/`,
         data: {
           img: this.img,
           correct_word: this.correct_word,

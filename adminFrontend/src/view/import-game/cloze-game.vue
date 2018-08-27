@@ -16,6 +16,7 @@
 </div>
 </template>
 <script>
+import axios from '@/libs/api.request'
 export default {
   data () {
     return {
@@ -26,14 +27,44 @@ export default {
       wrong_word_3: null
     }
   },
+  props: ['bookid'],
   components: {
   },
   methods: {
+    haveNull () {
+      if (this.sentence === null) {
+        return true
+      }
+      if (this.correct_word === null) {
+        return true
+      }
+      if (this.wrong_word_1 === null) {
+        return true
+      }
+      if (this.wrong_word_2 === null) {
+        return true
+      }
+      if (this.wrong_word_3 === null) {
+        return true
+      }
+    },
     uploadGame () {
       if (this.haveNull()) {
-        // return
+        return
       }
-      // to be added
+      axios.request({
+        url: `books/${this.bookid}/ClozeGame/`,
+        data: {
+          sentence: this.sentence,
+          correct_word: this.correct_word,
+          wrong_word_1: this.wrong_word_1,
+          wrong_word_2: this.wrong_word_2,
+          wrong_word_3: this.wrong_word_3
+        },
+        method: 'post'
+      }).then(data => {
+        this.$Message.info(`上传成功！`)
+      })
     },
     insertLine () {
       if (this.sentence === null) {

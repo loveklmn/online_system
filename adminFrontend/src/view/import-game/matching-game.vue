@@ -25,10 +25,10 @@ export default {
         {img: null, word: null},
         {img: null, word: null},
         {img: null, word: null}
-      ],
-      bookid: -1
+      ]
     }
   },
+  props: ['bookid'],
   components: {
     matchingPic
   },
@@ -59,8 +59,15 @@ export default {
       })
     }
   },
-  created () {
-    this.bookid = this.$route.params.id
+  mounted () {
+    console.log('mounted!')
+    axios.request({
+      url: `books/${this.bookid}/MatchingGame/`,
+      method: 'get'
+    }).then(data => {
+      console.log(data)
+      this.pairs = data
+    })
   }
 }
 </script>
