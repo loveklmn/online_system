@@ -39,6 +39,8 @@ urlpatterns = [
         views.NoticeAction.as_view()),
     url(r'^students/$',
         views.StudentList.as_view(), name='student_list'),
+    url(r'^statistic/$',
+        views.UserData.as_view(), name='data'),
     url(r'^generatekey/$',
         views.KeyGenerator.as_view(), name='key_generator'),
     #manager
