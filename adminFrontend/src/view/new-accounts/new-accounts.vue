@@ -46,12 +46,6 @@ export default {
       amount: this.accountAmount
     }
   },
-  // created () {
-  //   if (this.$route.query) {
-  //     this.level = this.$route.query.level || this.level
-  //     this.amount = this.$route.query.amount || this.amount
-  //   }
-  // },
   methods: {
     nextStep () {
       if (!isNaN(this.level) && !isNaN(this.amount)) {
