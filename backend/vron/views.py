@@ -346,6 +346,25 @@ class UserProgress(APIView):
             progress_infos.append(progress_info)
         return Response(progress_infos)
 
+class UserHomework(APIView):
+    @manager_required
+    def get(self, request, homework_id):
+        homework_query = Homework.objects.filter(id=homework_id)
+        if not homework_query.exists():
+            return Response({
+                'msg': 'Homework(id={}) not found'.format(homework_id)
+            }, status=404)
+        homework = homework_query[0]
+        return Response({
+            'content': homework.content,
+            'attachments': {
+                'image': homework.images.split(),
+                'video': homework.videos.split(),
+                'audio': homework.audios.split(),
+            }
+        })
+
+
 class BookEbook(APIView):
 
     def get(self, request, book_id):
