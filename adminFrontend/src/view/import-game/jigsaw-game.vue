@@ -1,16 +1,7 @@
 <template>
   <div>
     <p>请点击下方按钮上传图片，不需要裁切</p>
-    <p v-if="img === null">现在还没有上传图片哦</p>
-    <img v-else class="img-preview" :src="img"></img>
-    <Upload
-      class="upload-button"
-      name="file"
-      :beforeUpload="handleUpload"
-      action=""
-    >
-        <Button icon="ios-cloud-upload-outline">上传图片</Button>
-    </Upload>
+    <imgComp :img.sync="img"></imgComp>
     <Button
       class="upload-button"
       type="primary"
@@ -18,11 +9,15 @@
   </div>
 </template>
 <script>
+import imgComp from './img'
 export default {
   data () {
     return {
       img: null
     }
+  },
+  components: {
+    imgComp
   },
   methods: {
     handleUpload (file) {

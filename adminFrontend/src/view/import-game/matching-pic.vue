@@ -1,25 +1,18 @@
 <template>
   <div>
-    <p v-if="pair.img === null">还没上传图片哦</p>
-    <img v-else class="img-preview" :src="pair.img"> </img>
-    <Upload
-      class="upload-button"
-      name="file"
-      :beforeUpload="handleUpload"
-      action=""
-    >
-        <Button icon="ios-cloud-upload-outline">上传图片</Button>
-    </Upload>
+    <imgComp :img.sync="pair.img"></imgComp>
     <Input v-model="pair.word"/>
   </div>
 </template>
 <script>
-import upload from '@/api/upload'
-import baseURL from '_conf/url'
+import imgComp from './img'
 export default {
   data () {
     return {
     }
+  },
+  components: {
+    imgComp
   },
   props: ['pair'],
   methods: {

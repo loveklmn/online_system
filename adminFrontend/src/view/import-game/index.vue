@@ -9,7 +9,10 @@
           <jigsawGame>
           </jigsawGame>
         </TabPane>
-        <TabPane label="单词识别">标签三的内容</TabPane>
+        <TabPane label="单词识别">
+          <recognitionGame>
+          </recognitionGame>
+        </TabPane>
         <TabPane label="选词填空">标签四的内容</TabPane>
     </Tabs>
   </div>
@@ -18,6 +21,7 @@
 <script>
 import matchingGame from './matching-game'
 import jigsawGame from './jigsaw-game'
+import recognitionGame from './recognition-game'
 export default {
   data () {
     return {
@@ -30,7 +34,8 @@ export default {
   },
   components: {
     matchingGame,
-    jigsawGame
+    jigsawGame,
+    recognitionGame
   },
   methods: {
   }
