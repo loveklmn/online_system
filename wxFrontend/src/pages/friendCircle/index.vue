@@ -1,7 +1,6 @@
 <template>
     <div class="container">
     <div class="swiper-content">
-        <image class="main-bg" src="../../static/images/main-bg.png" />
         <div class="tab">
             <div @click="tabPage" :class="'tab-item '+(currentNumber==0?'tab-item-current':'') " data-index="0">朋友圈</div>
             <div @click="tabPage" :class="'tab-item tab-item2 ' + (currentNumber==1 ? 'tab-item-current' : '')" data-index="1">排行榜</div>
@@ -25,7 +24,7 @@
                             <div class="user-challenge-success-times">
                                 <div>获得</div>
                                 <rich-text>
-                                    <i style="font-size: 36rpx;color: #ffde00;font-style:italic;">{{item.score}}</i>
+                                    <i style="font-size: 36rpx;color: red;font-style:italic;">{{item.score}}</i>
                                     分</rich-text>
                             </div>
                         </div>
@@ -111,7 +110,6 @@ export default {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: #00a7fe;
     width: 660rpx;
     height: 100rpx;
     border-radius: 50rpx;
@@ -130,12 +128,12 @@ export default {
 
 .tab-item {
     font-size: 30rpx;
-    width: 320rpx;
+    width: 340rpx;
     height: 80rpx;
     line-height: 80rpx;
     text-align: center;
     position: absolute;
-    left: 10rpx;
+    left: -10rpx;
     top: 10rpx;
 }
 
@@ -144,7 +142,7 @@ export default {
 }
 
 .tab-item-current {
-    background-color: #ff7686;
+    background-color: #00a7fe;
     border-radius: 40rpx;
     font-weight: bold;
     color: #fff;
@@ -214,7 +212,7 @@ export default {
 }
 
 .scroll-views {
-    height: 88%;
+    height: 100%;
 }
 
 .rank-footer {
@@ -226,7 +224,7 @@ page {
     width: 100%;
     background-color: #91ccf0;
     color: white;
-    height: 98.3%;
+    height: 100%;
 }
 
 .container {
