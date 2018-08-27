@@ -732,8 +732,8 @@ class MatchingGameView(APIView):
         for data in postdata:
             MatchingGame.objects.create(
                 book=book,
-                img=get_or_raise(postdata, 'img'),
-                word=get_or_raise(postdata, 'word')
+                img=get_or_raise(data, 'img'),
+                word=get_or_raise(data, 'word')
             )
         return Response(status=201)
 
@@ -758,7 +758,7 @@ class JigsawGameView(APIView):
         for data in postdata:
             MatchingGame.objects.create(
                 book=book,
-                img=get_or_raise(postdata, 'img'),
+                img=get_or_raise(data, 'img'),
             )
         return Response(status=201)
 
@@ -785,10 +785,10 @@ class RecognitionGameView(APIView):
         for data in postdata:
             MatchingGame.objects.create(
                 book=book,
-                img=get_or_raise(postdata, 'img'),
-                correct_word=get_or_raise(postdata, 'correct_word'),
-                wrong_word_1=get_or_raise(postdata, 'wrong_word_1'),
-                wrong_word_2=get_or_raise(postdata, 'wrong_word_2'),
+                img=get_or_raise(data, 'img'),
+                correct_word=get_or_raise(data, 'correct_word'),
+                wrong_word_1=get_or_raise(data, 'wrong_word_1'),
+                wrong_word_2=get_or_raise(data, 'wrong_word_2'),
             )
         return Response(status=201)
 
@@ -816,11 +816,11 @@ class ClozeGameView(APIView):
         for data in postdata:
             MatchingGame.objects.create(
                 book=book,
-                sentence=get_or_raise(postdata, 'sentence'),
-                corerct_word=get_or_raise(postdata, 'corerct_word'),
-                wrong_word_1=get_or_raise(postdata, 'wrong_word_1'),
-                wrong_word_2=get_or_raise(postdata, 'wrong_word_2'),
-                wrong_word_3=get_or_raise(postdata, 'wrong_word_3'),
+                sentence=get_or_raise(data, 'sentence'),
+                corerct_word=get_or_raise(data, 'corerct_word'),
+                wrong_word_1=get_or_raise(data, 'wrong_word_1'),
+                wrong_word_2=get_or_raise(data, 'wrong_word_2'),
+                wrong_word_3=get_or_raise(data, 'wrong_word_3'),
             )
         return Response(status=201)
 

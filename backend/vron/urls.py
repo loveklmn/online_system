@@ -46,6 +46,15 @@ urlpatterns = [
         views.UserProgress.as_view()),
     url(r'^homework/(\d+)/$',
         views.UserHomework.as_view()),
+    #games
+    url(r'^books/(\d+)/MatchingGame/$',
+        views.MatchingGameView.as_view()),
+    url(r'^books/(\d+)/JigsawGame/$',
+        views.JigsawGameView.as_view()),
+    url(r'^books/(\d+)/RecognitionGame/$',
+        views.RecognitionGameView.as_view()),
+    url(r'^books/(\d+)/ClozeGame/$',
+        views.ClozeGameView.as_view()),
     #auth
     url(r'^register/$',
         views.register_view, name='register'),
