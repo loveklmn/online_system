@@ -386,9 +386,15 @@ class BookTestCase(TestCase):
 
     def test_notice_info3(self):
         client = APIClient()
-        client.force_authenticate(user=self.user)
-        response = client.post('/vron/notices/')
-        self.assertEqual(405, response.status_code)
+        client.force_authenticate(user=self.admin)
+        data = {
+            'content': 'notice content'
+        }
+        response = client.post('/vron/notices/',
+                               json.dumps(data), content_type="application/json")
+
+        self.assertIn('id', response.data)
+        self.assertEqual(201, response.status_code)
 
     def test_notice_mark1(self):
         client = APIClient()

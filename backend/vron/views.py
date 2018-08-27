@@ -525,6 +525,16 @@ class NoticeInfo(APIView):
 
         return Response(notice_infos)
 
+    @manager_required
+    def post(self, request):
+        postdata = json.loads(request.body)
+        content = get_or_raise(postdata, 'content')
+        notice = Notice.objects.create(content=content)
+        return Response({
+            'id': notice.id
+        }, status=201)
+
+
 class MarkNotice(APIView):
 
     @stu_required
