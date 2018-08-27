@@ -379,8 +379,10 @@ class BookTestCase(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.admin)
         response = client.get('/vron/notices/')
-        self.assertIn('msg', response.data)
-        self.assertEqual(403, response.status_code)
+        attrs = ['id', 'content', 'created_time']
+        for attr in attrs:
+            self.assertIn(attr, response.data[0])
+        self.assertEqual(200, response.status_code)
 
     def test_notice_info3(self):
         client = APIClient()

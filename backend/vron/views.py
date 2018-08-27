@@ -508,10 +508,9 @@ class ChangePassword(APIView):
 
 class NoticeInfo(APIView):
 
-    @stu_required
     def get(self, request):
-
-        student = Student.objects.get(user=request.user)
+        if not is_admin(request.user):
+            student = Student.objects.get(user=request.user)
         notice_infos = []
         notices = Notice.objects.all()
         if notices.exists():
@@ -519,7 +518,8 @@ class NoticeInfo(APIView):
                 notice_info = {}
                 notice_info['id'] = notice.id
                 notice_info['content'] = notice.content
-                notice_info['have_read'] = IsNoticeReaded.objects.filter(notice=notice, student=student).exists()
+                if not is_admin(request.user):
+                    notice_info['have_read'] = IsNoticeReaded.objects.filter(notice=notice, student=student).exists()
                 notice_info['created_time'] = notice.created_time
                 notice_infos.append(notice_info)
 
