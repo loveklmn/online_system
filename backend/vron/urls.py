@@ -17,6 +17,8 @@ urlpatterns = [
         views.BookHomework.as_view(), name='homework'),
     url(r'^community/$',
         views.CommunityGroup.as_view(), name='community_group'),
+    url(r'^community/(\d+)/like/$',
+        views.LikeAction.as_view(), name='like'),
     url(r'^upload/$',
         views.UploadFile.as_view(), name='upload'),
     url(r'^userinfo/$',

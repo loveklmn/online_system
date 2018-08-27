@@ -440,6 +440,28 @@ class UploadFile(APIView):
         return Response(response, status=201)
 
 
+class LikeAction(APIView):
+    @stu_required
+    def post(self, request, moment_id):
+        stu = Student.objects.get(user=request.user)
+        moment_query = Moment.objects.filter(id=moment_id)
+        if not moment_query.exists():
+            return Response({
+                'msg': 'Moment(id={}) not found.'.format(moment_id)
+            }, status=404)
+        moment = moment_query[0]
+        like_query = Like.objects.filter(actor=stu, target=moment)
+        if not like_query.exists():
+            Like.objects.create(actor=stu, target=moment)
+            moment.vote_count += 1
+        else:
+            moment.vote_count -= len(like_query)
+            like_query.delete()
+        moment.save()
+        return Response({
+            'vote_count': moment.vote_count
+        })
+
 class UserInfo(APIView):
 
     @stu_required
