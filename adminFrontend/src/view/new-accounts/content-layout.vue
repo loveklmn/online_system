@@ -3,7 +3,7 @@
         <Layout>
             <Layout>
                 <Header class="layout-header-bar">{{ pageTitle }}</Header>
-                <Content :style="{margin: '20px', background: '#fff', minHeight: '220px'}">
+                <Content class="content-model">
                   <slot name="content"></slot>
                 </Content>
             </Layout>
@@ -37,5 +37,10 @@ export default {
     .layout-header-bar{
         background: #fff;
         box-shadow: 0 1px 1px rgba(0,0,0,.1);
+    }
+    .content-model {
+      margin: '20px';
+      background-color: '#fff';
+      min-height: '220px';
     }
 </style>
