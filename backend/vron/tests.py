@@ -207,7 +207,7 @@ class BookTestCase(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.user)
         response = client.get('/vron/community/')
-        attrs = ['author', 'action', 'book', 'created_time', 'content',
+        attrs = ['id', 'author', 'action', 'book', 'created_time', 'content',
                  'attactments', 'vote_count', 'comment_count']
         for attr in attrs:
             self.assertIn(attr, response.data[0])
@@ -379,14 +379,22 @@ class BookTestCase(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.admin)
         response = client.get('/vron/notices/')
-        self.assertIn('msg', response.data)
-        self.assertEqual(403, response.status_code)
+        attrs = ['id', 'content', 'created_time']
+        for attr in attrs:
+            self.assertIn(attr, response.data[0])
+        self.assertEqual(200, response.status_code)
 
     def test_notice_info3(self):
         client = APIClient()
-        client.force_authenticate(user=self.user)
-        response = client.post('/vron/notices/')
-        self.assertEqual(405, response.status_code)
+        client.force_authenticate(user=self.admin)
+        data = {
+            'content': 'notice content'
+        }
+        response = client.post('/vron/notices/',
+                               json.dumps(data), content_type="application/json")
+
+        self.assertIn('id', response.data)
+        self.assertEqual(201, response.status_code)
 
     def test_notice_mark1(self):
         client = APIClient()
@@ -412,7 +420,7 @@ class BookTestCase(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.admin)
         response = client.get('/vron/students/')
-        attrs = ['username', 'level', 'nickname', 'score']
+        attrs = ['id', 'username', 'level', 'nickname', 'score']
         for attr in attrs:
             self.assertIn(attr, response.data[0])
 

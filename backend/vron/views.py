@@ -1,5 +1,6 @@
-from vron.models import Notice, IsNoticeReaded, Student, Book, Progress, Word, Page, Sentence, Moment, Like, Comment, Homework, ActiveKey
+from vron.models import Notice, IsNoticeReaded, Student, Book, Progress, Word, Page, Sentence, Moment, Like, Comment, Homework, ActiveKey, MatchingGame, JigsawGame, RecognitionGame, ClozeGame
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework.views import exception_handler, APIView
 from rest_framework.exceptions import NotFound, PermissionDenied, ParseError
@@ -310,6 +311,60 @@ class BookProgress(APIView):
         update_student_score(student)
         return Response(status=201)
 
+
+class UserProgress(APIView):
+    @manager_required
+    def get(self, request, user_id):
+        stu_query = Student.objects.filter(id=user_id)
+        if not stu_query.exists():
+            return Response({
+                'msg': 'Student(id={}) mot exists.'.format(user_id)
+            }, status=404)
+        stu = stu_query[0]
+        progress_infos = []
+        progress_query = Progress.objects.filter(user=stu)
+        for progress in progress_query:
+            homework_id = -1
+            homework_query = Homework.objects.filter(author=stu,
+                                                    book=progress.book)
+            if homework_query.exists():
+                homework_id = homework_query[0].id
+            progress_info = {
+
+                'id': progress.id,
+                'level': progress.book.level,
+                'cover': progress.book.title,
+                'pages_num': progress.book.pages_num,
+                'homework': homework_id,
+                'progress': {
+                    'current_page': progress.current_page,
+                    'punched': progress.punched,
+                    'latest_read_time': progress.latest_read_time
+                },
+                'type': progress.book.read_type,
+            }
+            progress_infos.append(progress_info)
+        return Response(progress_infos)
+
+class UserHomework(APIView):
+    @manager_required
+    def get(self, request, homework_id):
+        homework_query = Homework.objects.filter(id=homework_id)
+        if not homework_query.exists():
+            return Response({
+                'msg': 'Homework(id={}) not found'.format(homework_id)
+            }, status=404)
+        homework = homework_query[0]
+        return Response({
+            'content': homework.content,
+            'attachments': {
+                'image': homework.images.split(),
+                'video': homework.videos.split(),
+                'audio': homework.audios.split(),
+            }
+        })
+
+
 class BookEbook(APIView):
 
     def get(self, request, book_id):
@@ -382,6 +437,7 @@ class CommunityGroup(APIView):
             for moment in moments:
                 community_message = {}
                 homework = moment.homework
+                community_message['id'] = moment.id
                 community_message['author'] = {}
                 community_message['author']['username'] = homework.author.nickname
                 community_message['author']['avatar'] = homework.author.avatar
@@ -438,6 +494,28 @@ class UploadFile(APIView):
         return Response(response, status=201)
 
 
+class LikeAction(APIView):
+    @stu_required
+    def post(self, request, moment_id):
+        stu = Student.objects.get(user=request.user)
+        moment_query = Moment.objects.filter(id=moment_id)
+        if not moment_query.exists():
+            return Response({
+                'msg': 'Moment(id={}) not found.'.format(moment_id)
+            }, status=404)
+        moment = moment_query[0]
+        like_query = Like.objects.filter(actor=stu, target=moment)
+        if not like_query.exists():
+            Like.objects.create(actor=stu, target=moment)
+            moment.vote_count += 1
+        else:
+            moment.vote_count -= len(like_query)
+            like_query.delete()
+        moment.save()
+        return Response({
+            'vote_count': moment.vote_count
+        })
+
 class UserInfo(APIView):
 
     @stu_required
@@ -484,10 +562,9 @@ class ChangePassword(APIView):
 
 class NoticeInfo(APIView):
 
-    @stu_required
     def get(self, request):
-
-        student = Student.objects.get(user=request.user)
+        if not is_admin(request.user):
+            student = Student.objects.get(user=request.user)
         notice_infos = []
         notices = Notice.objects.all()
         if notices.exists():
@@ -495,11 +572,34 @@ class NoticeInfo(APIView):
                 notice_info = {}
                 notice_info['id'] = notice.id
                 notice_info['content'] = notice.content
-                notice_info['have_read'] = IsNoticeReaded.objects.filter(notice=notice, student=student).exists()
+                if not is_admin(request.user):
+                    notice_info['have_read'] = IsNoticeReaded.objects.filter(notice=notice, student=student).exists()
                 notice_info['created_time'] = notice.created_time
                 notice_infos.append(notice_info)
 
         return Response(notice_infos)
+
+    @manager_required
+    def post(self, request):
+        postdata = json.loads(request.body)
+        content = get_or_raise(postdata, 'content')
+        notice = Notice.objects.create(content=content)
+        return Response({
+            'id': notice.id
+        }, status=201)
+
+class NoticeAction(APIView):
+    @manager_required
+    def delete(self, request, notice_id):
+        notice_query = Notice.objects.filter(id=notice_id)
+        if notice_query.exists():
+            notice_query.delete()
+            return Response(status=200)
+        else:
+            return Response({
+                'msg': 'Notice(id={}) not found.'.format(notice_id)
+            }, status=404)
+
 
 class MarkNotice(APIView):
 
@@ -526,6 +626,7 @@ class StudentList(APIView):
         if students_query.exists():
             for student in students_query:
                 info = {}
+                info['id'] = student.id
                 info['username'] = student.user.username
                 info['level'] = student.level
                 info['nickname'] = student.nickname
@@ -610,6 +711,119 @@ class UserLevelUpdate(APIView):
         key_query.delete()
         return Response({'level': new_level})
 
+
+class MatchingGameView(APIView):
+    def get(self, request, book_id):
+        book = get_book(id=book_id)
+        game_datas = MatchingGame.objects.filter(book=book)
+        response_data = []
+        for data in game_datas:
+            response_data.append({
+                'img': data.img,
+                'word': data.word
+            })
+        return Response(response_data)
+
+    @manager_required
+    def post(self, request, book_id):
+        book = get_book(id=book_id)
+        postdata = json.loads(request.body)
+        MatchingGame.objects.filter(book=book).delete()
+        for data in postdata:
+            MatchingGame.objects.create(
+                book=book,
+                img=get_or_raise(data, 'img'),
+                word=get_or_raise(data, 'word')
+            )
+        return Response(status=201)
+
+
+
+class JigsawGameView(APIView):
+    def get(self, request, book_id):
+        book = get_book(id=book_id)
+        game_datas = JigsawGame.objects.filter(book=book)
+        response_data = []
+        for data in game_datas:
+            response_data.append({
+                'img': data.img,
+            })
+        return Response(response_data)
+
+    @manager_required
+    def post(self, request, book_id):
+        book = get_book(id=book_id)
+        postdata = json.loads(request.body)
+        JigsawGame.objects.filter(book=book).delete()
+        for data in postdata:
+            MatchingGame.objects.create(
+                book=book,
+                img=get_or_raise(data, 'img'),
+            )
+        return Response(status=201)
+
+
+class RecognitionGameView(APIView):
+    def get(self, request, book_id):
+        book = get_book(id=book_id)
+        game_datas = RecognitionGame.objects.filter(book=book)
+        response_data = []
+        for data in game_datas:
+            response_data.append({
+                'img': data.img,
+                'correct_word': data.correct_word,
+                'wrong_word_1': data.wrong_word_1,
+                'wrong_word_2': data.wrong_word_2,
+            })
+        return Response(response_data)
+
+    @manager_required
+    def post(self, request, book_id):
+        book = get_book(id=book_id)
+        postdata = json.loads(request.body)
+        RecognitionGame.objects.filter(book=book).delete()
+        for data in postdata:
+            MatchingGame.objects.create(
+                book=book,
+                img=get_or_raise(data, 'img'),
+                correct_word=get_or_raise(data, 'correct_word'),
+                wrong_word_1=get_or_raise(data, 'wrong_word_1'),
+                wrong_word_2=get_or_raise(data, 'wrong_word_2'),
+            )
+        return Response(status=201)
+
+
+class ClozeGameView(APIView):
+    def get(self, request, book_id):
+        book = get_book(id=book_id)
+        game_datas = ClozeGame.objects.filter(book=book)
+        response_data = []
+        for data in game_datas:
+            response_data.append({
+                'sentence': data.sentence,
+                'corerct_word': data.corerct_word,
+                'wrong_word_1': data.wrong_word_1,
+                'wrong_word_2': data.wrong_word_2,
+                'wrong_word_3': data.wrong_word_3,
+            })
+        return Response(response_data)
+
+    @manager_required
+    def post(self, request, book_id):
+        book = get_book(id=book_id)
+        postdata = json.loads(request.body)
+        ClozeGame.objects.filter(book=book).delete()
+        for data in postdata:
+            MatchingGame.objects.create(
+                book=book,
+                sentence=get_or_raise(data, 'sentence'),
+                corerct_word=get_or_raise(data, 'corerct_word'),
+                wrong_word_1=get_or_raise(data, 'wrong_word_1'),
+                wrong_word_2=get_or_raise(data, 'wrong_word_2'),
+                wrong_word_3=get_or_raise(data, 'wrong_word_3'),
+            )
+        return Response(status=201)
+
 @csrf_exempt
 def register_view(request):
     if request.method == 'GET':
@@ -628,3 +842,23 @@ def register_view(request):
     user = User.objects.create_user(username=username, password=password)
     Student.objects.create(user=user, level=level, accept_level=bit_to_num(level), avatar='')
     return JsonResponse({'msg': '注册成功'}, status=201)
+
+@csrf_exempt
+def manager_token(request):
+    if request.method=='GET':
+        return JsonResponse({'msg': 'Method "GET" not allowed.'}, status=405)
+    postdata = json.loads(request.body)
+    username = get_or_raise(postdata, 'username')
+    password = get_or_raise(postdata, 'password')
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if is_admin(user):
+            return JsonResponse({
+                'token': Token.objects.get(user=user).key
+            })
+        else:
+            return JsonResponse({
+                'msg': 'You are not a manager.'
+            }, status=403)
+    else:
+        return JsonResponse({'msg': 'Username or password incorrect.'}, status=403)
