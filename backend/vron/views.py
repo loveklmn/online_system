@@ -8,7 +8,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.response import Response
 import os
 from backend import settings
-from datetime import datetime
+from datetime import timedelta
+from django.utils import timezone
 import json, random, string
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -304,7 +305,7 @@ class BookProgress(APIView):
         try:
             progress = Progress.objects.get(user=student, book=book)
             progress.current_page = postdata.get('current_page', progress.current_page)
-            progress.latest_read_time = datetime.now()
+            progress.latest_read_time = timezone.now()
             progress.save()
         except ObjectDoesNotExist:
             Progress.objects.create(user=student, book=book, current_page=postdata.get('current_page',0))
@@ -694,6 +695,50 @@ class UserLevel(APIView):
             return Response(status=200)
         else:
             return Response({'msg': '没有当前级别的权限'}, status=401)
+
+
+class UserData(APIView):
+    def activity(self):
+        time_list = [(x.user.id, x.latest_read_time)
+                     for x in Progress.objects.all()]
+        student_activity = {}
+        for (user, time) in time_list:
+            if user not in student_activity:
+                student_activity[user] = time
+            else:
+                if student_activity[user] > time:
+                    student_activity[user] = time
+        data = list(student_activity.values())
+        result = {}
+        now = timezone.now()
+        last_day = now - timedelta(days=1)
+        last_week = now - timedelta(days=7)
+        last_month = now - timedelta(days=30)
+        result['day'] = len(list(filter(lambda time: time > last_day, data)))
+        result['week'] = len(list(filter(lambda time: time > last_week, data)))
+        result['month'] = len(list(filter(lambda time: time > last_month, data)))
+        return result
+
+    def level(self):
+        result = {}
+        for level in range(1, 10):
+            result[level] = len(Student.objects.filter(level=level))
+        return result
+
+    def book(self):
+        result = {}
+        for level in range(1, 10):
+            result[level] = len(Book.objects.filter(level=level))
+        return result
+
+    def get(self, request):
+        result = {}
+        result['all_user'] = len(Student.objects.all())
+        result['activity_user'] = self.activity()
+        result['level_user'] = self.level()
+        result['level_book'] = self.book()
+        return Response(result)
+
 
 class UserLevelUpdate(APIView):
 
