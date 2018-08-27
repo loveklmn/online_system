@@ -762,7 +762,6 @@ class MatchingGameView(APIView):
         book = get_book(id=book_id)
         game_datas = MatchingGame.objects.filter(book=book)
         response_data = []
-        print('asdf')
         for data in game_datas:
             response_data.append({
                 'img': data.img,
