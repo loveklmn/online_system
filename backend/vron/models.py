@@ -114,6 +114,7 @@ class MatchingGame(models.Model):
 
 class JigsawGame(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    num = models.IntegerField()
     img = models.CharField(max_length=256)
 
 class RecognitionGame(models.Model):

@@ -14,6 +14,7 @@ import json, random, string
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .serializers import BookSerializer
+from rest_framework import status
 
 STUDENTNOTEXIST = {'msg': 'This user have not related to a student.'}
 BOOKNOTFOUND = {'msg': 'Book not found'}
@@ -759,22 +760,26 @@ class UserLevelUpdate(APIView):
 
 class MatchingGameView(APIView):
     def get(self, request, book_id):
-        book = get_book(id=book_id)
-        game_datas = MatchingGame.objects.filter(book=book)
-        response_data = []
-        for data in game_datas:
-            response_data.append({
-                'img': data.img,
-                'word': data.word
-            })
-        return Response(response_data)
+        book = get_book(id=book_id)[0]
+        games = MatchingGame.objects.filter(book=book)
+        if len(games) == 0:
+            content = {'msg': '当前游戏未导入'}
+            return Response(content, status=status.HTTP_404_NOT_FOUND)
+        else:
+            response_data = []
+            for data in games:
+                response_data.append({
+                    'img': data.img,
+                    'word': data.word
+                })
+            return Response(response_data)
 
     @manager_required
     def post(self, request, book_id):
-        book = get_book(id=book_id)
-        postdata = json.loads(request.body)
+        book = get_book(id=book_id)[0]
+        post_data = json.loads(request.body)
         MatchingGame.objects.filter(book=book).delete()
-        for data in postdata:
+        for data in post_data:
             MatchingGame.objects.create(
                 book=book,
                 img=get_or_raise(data, 'img'),
@@ -783,90 +788,95 @@ class MatchingGameView(APIView):
         return Response(status=201)
 
 
-
 class JigsawGameView(APIView):
     def get(self, request, book_id):
-        book = get_book(id=book_id)
-        game_datas = JigsawGame.objects.filter(book=book)
-        response_data = []
-        for data in game_datas:
-            response_data.append({
-                'img': data.img,
-            })
+        book = get_book(id=book_id)[0]
+        games = JigsawGame.objects.filter(book=book)
+        if len(games) == 1:
+            content = {'msg': '当前游戏未导入'}
+            return Response(content, status=status.HTTP_404_NOT_FOUND)
+        response_data = {}
+        for data in games:
+            response_data[data.num] = data.img
         return Response(response_data)
 
     @manager_required
     def post(self, request, book_id):
-        book = get_book(id=book_id)
-        postdata = json.loads(request.body)
+        book = get_book(id=book_id)[0]
+        post_data = json.loads(request.body)
         JigsawGame.objects.filter(book=book).delete()
-        for data in postdata:
-            MatchingGame.objects.create(
-                book=book,
-                img=get_or_raise(data, 'img'),
-            )
+        for num in range(1,10):
+            if num in post_data:
+                MatchingGame.objects.create(
+                    book=book,
+                    num=num,
+                    img=get_or_raise(post_data, num)
+                )
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=201)
 
 
 class RecognitionGameView(APIView):
     def get(self, request, book_id):
-        book = get_book(id=book_id)
-        game_datas = RecognitionGame.objects.filter(book=book)
-        response_data = []
-        for data in game_datas:
-            response_data.append({
-                'img': data.img,
-                'correct_word': data.correct_word,
-                'wrong_word_1': data.wrong_word_1,
-                'wrong_word_2': data.wrong_word_2,
+        book = get_book(id=book_id)[0]
+        games = RecognitionGame.objects.filter(book=book)
+        if len(games) == 1:
+            return Response({
+                'img': games[0].img,
+                'correct_word': games[0].correct_word,
+                'wrong_word_1': games[0].wrong_word_1,
+                'wrong_word_2': games[0].wrong_word_2,
             })
-        return Response(response_data)
+        else:
+            content = {'msg': '当前游戏未导入'}
+            return Response(content, status=status.HTTP_404_NOT_FOUND)
 
     @manager_required
     def post(self, request, book_id):
-        book = get_book(id=book_id)
-        postdata = json.loads(request.body)
+        book = get_book(id=book_id)[0]
+        data = json.loads(request.body)
         RecognitionGame.objects.filter(book=book).delete()
-        for data in postdata:
-            MatchingGame.objects.create(
-                book=book,
-                img=get_or_raise(data, 'img'),
-                correct_word=get_or_raise(data, 'correct_word'),
-                wrong_word_1=get_or_raise(data, 'wrong_word_1'),
-                wrong_word_2=get_or_raise(data, 'wrong_word_2'),
-            )
+        RecognitionGame.objects.create(
+            book=book,
+            img=get_or_raise(data, 'img'),
+            correct_word=get_or_raise(data, 'correct_word'),
+            wrong_word_1=get_or_raise(data, 'wrong_word_1'),
+            wrong_word_2=get_or_raise(data, 'wrong_word_2'),
+        )
         return Response(status=201)
 
 
 class ClozeGameView(APIView):
     def get(self, request, book_id):
-        book = get_book(id=book_id)
-        game_datas = ClozeGame.objects.filter(book=book)
-        response_data = []
-        for data in game_datas:
-            response_data.append({
-                'sentence': data.sentence,
-                'corerct_word': data.corerct_word,
-                'wrong_word_1': data.wrong_word_1,
-                'wrong_word_2': data.wrong_word_2,
-                'wrong_word_3': data.wrong_word_3,
+        book = get_book(id=book_id)[0]
+        games = ClozeGame.objects.filter(book=book)
+        if len(games) == 1:
+            return Response({
+                'sentence': games[0].sentence,
+                'correct_word': games[0].correct_word,
+                'wrong_word_1': games[0].wrong_word_1,
+                'wrong_word_2': games[0].wrong_word_2,
+                'wrong_word_3': games[0].wrong_word_3,
             })
-        return Response(response_data)
+        else:
+            content = {'msg': '当前游戏未导入'}
+            return Response(content, status=status.HTTP_404_NOT_FOUND)
+
 
     @manager_required
     def post(self, request, book_id):
-        book = get_book(id=book_id)
-        postdata = json.loads(request.body)
+        book = get_book(id=book_id)[0]
+        data = json.loads(request.body)
         ClozeGame.objects.filter(book=book).delete()
-        for data in postdata:
-            MatchingGame.objects.create(
-                book=book,
-                sentence=get_or_raise(data, 'sentence'),
-                corerct_word=get_or_raise(data, 'corerct_word'),
-                wrong_word_1=get_or_raise(data, 'wrong_word_1'),
-                wrong_word_2=get_or_raise(data, 'wrong_word_2'),
-                wrong_word_3=get_or_raise(data, 'wrong_word_3'),
-            )
+        ClozeGame.objects.create(
+            book=book,
+            sentence=get_or_raise(data, 'sentence'),
+            correct_word=get_or_raise(data, 'correct_word'),
+            wrong_word_1=get_or_raise(data, 'wrong_word_1'),
+            wrong_word_2=get_or_raise(data, 'wrong_word_2'),
+            wrong_word_3=get_or_raise(data, 'wrong_word_3'),
+        )
         return Response(status=201)
 
 @csrf_exempt
