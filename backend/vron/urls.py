@@ -42,5 +42,7 @@ urlpatterns = [
         views.register_view, name='register'),
     url(r'^get-token/$',
         token_views.obtain_auth_token),
+    url(r'^manager-token/$',
+        views.manager_token),
 ] + static(settings.MEDIA_URL,
              document_root=settings.MEDIA_ROOT)

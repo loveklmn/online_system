@@ -1,5 +1,6 @@
 from vron.models import Notice, IsNoticeReaded, Student, Book, Progress, Word, Page, Sentence, Moment, Like, Comment, Homework, ActiveKey
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework.views import exception_handler, APIView
 from rest_framework.exceptions import NotFound, PermissionDenied, ParseError
@@ -629,3 +630,23 @@ def register_view(request):
     user = User.objects.create_user(username=username, password=password)
     Student.objects.create(user=user, level=level, accept_level=bit_to_num(level), avatar='')
     return JsonResponse({'msg': '注册成功'}, status=201)
+
+@csrf_exempt
+def manager_token(request):
+    if request.method=='GET':
+        return JsonResponse({'msg': 'Method "GET" not allowed.'}, status=405)
+    postdata = json.loads(request.body)
+    username = get_or_raise(postdata, 'username')
+    password = get_or_raise(postdata, 'password')
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if is_admin(user):
+            return JsonResponse({
+                'token': Token.objects.get(user=user).key
+            })
+        else:
+            return JsonResponse({
+                'msg': 'You are not a manager.'
+            }, status=403)
+    else:
+        return JsonResponse({'msg': 'Username or password incorrect.'}, status=403)
