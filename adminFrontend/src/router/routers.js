@@ -181,16 +181,7 @@ export default [
           icon: 'md-contacts',
           title: '消息列表'
         },
-        component: () => import('@/view/notice/notice-table.vue')
-      },
-      {
-        path: 'sendnotice',
-        name: 'sendnotice',
-        meta: {
-          hideInMenu: true,
-          title: '发布消息'
-        },
-        component: () => import('@/view/notice/send-notice.vue')
+        component: () => import('@/view/notice/index.vue')
       }
     ]
   },
