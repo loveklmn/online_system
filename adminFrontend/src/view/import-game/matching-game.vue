@@ -12,7 +12,7 @@
     <Button
       class="upload-button"
       type="primary"
-      @click="upload">确认上传</Button>
+      @click="uploadGame">确认上传</Button>
   </div>
 </template>
 <script>
@@ -32,12 +32,6 @@ export default {
     matchingPic
   },
   methods: {
-    upload () {
-      if (this.haveNull()) {
-        return
-      }
-      // to be added
-    },
     haveNull () {
       for (let i = 0; i < 3; i += 1) {
         if (this.pairs[i].img === null) {
@@ -50,12 +44,16 @@ export default {
         }
       }
       return false
+    },
+    uploadGame () {
+      if (this.haveNull()) {
+        // return
+      }
+      // to be added
     }
   }
 }
 </script>
 <style>
-.upload-button {
-  margin-top: 50px;
-}
+@import "./common.css";
 </style>
