@@ -550,6 +550,7 @@ class StudentList(APIView):
         if students_query.exists():
             for student in students_query:
                 info = {}
+                info['id'] = student.id
                 info['username'] = student.user.username
                 info['level'] = student.level
                 info['nickname'] = student.nickname

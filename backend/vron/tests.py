@@ -412,7 +412,7 @@ class BookTestCase(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.admin)
         response = client.get('/vron/students/')
-        attrs = ['username', 'level', 'nickname', 'score']
+        attrs = ['id', 'username', 'level', 'nickname', 'score']
         for attr in attrs:
             self.assertIn(attr, response.data[0])
 
