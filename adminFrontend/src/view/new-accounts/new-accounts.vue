@@ -19,7 +19,7 @@
         <InputNumber :max="500" :min="1" v-model="amount"></InputNumber>
       </div>
       <div>
-        <Button type="primary" class="next-step-btn" @click="nextPage">下一步</Button>
+        <Button type="primary" class="next-step-btn" @click="nextStep">下一步</Button>
         <Button type="warning" class="next-step-btn" @click="reset">返回首页</Button>
       </div>
     </Card>
@@ -29,36 +29,39 @@
 <script>
 import './format.less'
 export default {
+  name: 'firstStep',
+  props: {
+    accountLevel: {
+      type: Number,
+      default: 1
+    },
+    accountAmount: {
+      type: Number,
+      default: 1
+    }
+  },
   data () {
     return {
-      level: 1,
-      amount: 1
+      level: this.accountLevel,
+      amount: this.accountAmount
     }
   },
-  created () {
-    if (this.$route.query) {
-      this.level = this.$route.query.level || this.level
-      this.amount = this.$route.query.amount || this.amount
-    }
-  },
+  // created () {
+  //   if (this.$route.query) {
+  //     this.level = this.$route.query.level || this.level
+  //     this.amount = this.$route.query.amount || this.amount
+  //   }
+  // },
   methods: {
-    nextPage () {
-      if (this.level === null) {
-        this.$Message.error('级别值不能是空')
-      } else if (this.amount === null) {
-        this.$Message.error('生成账号数量不能为空')
+    nextStep () {
+      if (!isNaN(this.level) && !isNaN(this.amount)) {
+        this.$emit('firstDone', {'level': this.level, 'amount': this.amount})
       } else {
-        this.$router.push({
-          name: 'generate',
-          query: {
-            level: this.level,
-            amount: this.amount
-          }
-        })
+        this.$Message.error('请检查输入数据的正确性')
       }
     },
     reset () {
-      this.$router.push({
+      this.$router.replace({
         path: '/home'
       })
     }

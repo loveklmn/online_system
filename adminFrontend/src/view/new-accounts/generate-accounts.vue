@@ -30,16 +30,23 @@
 <script>
 import './format.less'
 export default {
-  data () {
-    return {
-      level: '',
-      amount: '',
-      loadingStatus: false
+  name: 'secondStep',
+  props: {
+    accountLevel: {
+      type: Number,
+      default: 2
+    },
+    accountAmount: {
+      type: Number,
+      default: 2
     }
   },
-  created () {
-    this.level = this.$route.query.level
-    this.amount = this.$route.query.amount
+  data () {
+    return {
+      level: this.accountLevel,
+      amount: this.accountAmount,
+      loadingStatus: false
+    }
   },
   methods: {
     handleSubmit () {
@@ -47,22 +54,10 @@ export default {
       setTimeout(() => {
         this.loadingStatus = false
       }, 20000)
-      this.$router.push({
-        name: 'generate_result',
-        query: {
-          level: this.level,
-          amount: this.amount
-        }
-      })
+      this.$emit('secondDone', {'level': this.level, 'amount': this.amount})
     },
     returnLast () {
-      this.$router.replace({
-        name: 'fill_generate_info',
-        query: {
-          level: this.level,
-          amount: this.amount
-        }
-      })
+      this.$emit('secondBack', {'level': this.level, 'amount': this.amount})
     }
   }
 }
