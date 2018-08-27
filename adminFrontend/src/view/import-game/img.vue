@@ -7,6 +7,7 @@
       name="file"
       :beforeUpload="handleUpload"
       action=""
+      accept="image/*"
     >
         <Button icon="ios-cloud-upload-outline">上传图片</Button>
     </Upload>
@@ -17,13 +18,15 @@ import upload from '@/api/upload'
 import baseURL from '_conf/url'
 export default {
   props: ['img'],
+  watch: {
+  },
   methods: {
     handleUpload (file) {
-      let that = this
+      // let that = this
       upload(file)
         .then((res) => {
           let savepath = res.savepath
-          that.img = baseURL + savepath
+          this.$emit('update:img', baseURL + savepath)
         })
         .catch((err) => {
           console.log(err)

@@ -26,11 +26,13 @@ export default {
   components: {
     imgComp
   },
-  uploadGame () {
-    if (this.haveNull()) {
-      // return
+  methods: {
+    uploadGame () {
+      if (this.haveNull()) {
+        // return
+      }
+      // to be added
     }
-    // to be added
   }
 }
 </script>
