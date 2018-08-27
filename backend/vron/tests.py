@@ -207,7 +207,7 @@ class BookTestCase(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.user)
         response = client.get('/vron/community/')
-        attrs = ['author', 'action', 'book', 'created_time', 'content',
+        attrs = ['id', 'author', 'action', 'book', 'created_time', 'content',
                  'attactments', 'vote_count', 'comment_count']
         for attr in attrs:
             self.assertIn(attr, response.data[0])

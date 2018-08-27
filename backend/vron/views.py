@@ -382,6 +382,7 @@ class CommunityGroup(APIView):
             for moment in moments:
                 community_message = {}
                 homework = moment.homework
+                community_message['id'] = moment.id
                 community_message['author'] = {}
                 community_message['author']['username'] = homework.author.nickname
                 community_message['author']['avatar'] = homework.author.avatar
