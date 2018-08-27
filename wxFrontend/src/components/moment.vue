@@ -4,13 +4,13 @@
     <div class="list-header">
       <img class="avatar" v-if="x.author" :src="serverLink + x.author.avatar">
       <div class="user-info">
-        <h3 class="user-name" v-if="x.author">{{x.author.username}}</h3>
+        <p class="user-name" v-if="x.author">{{x.author.username}}</p>
       </div>
       <span class="user-time">{{getTime}}</span>
     </div>
 
     <div class="list-header">
-      <h3 class="book-name">Ta读了：《{{x.book.title}}》</h3>
+      <p class="book-name">Ta读了：《{{x.book.title}}》</p>
     </div>
 
     <div class="list-content">
@@ -34,12 +34,8 @@
 
     <div class="list-footer">
       <div class="footer-tag">
-        <img class="footer-icon" :src="getIconSrc"></img>
+        <img class="footer-icon" :src="getIconSrc" @click="praise"></img>
         <span class="tag-style">{{x.vote_count}}</span>
-      </div>
-      <div class="footer-tag">
-        <img class="footer-icon" src="/static/images/friendCircle/comment.png"></img>
-        <span class="tag-style">{{x.comment_count}}</span>
       </div>
     </div>
     <view class='line'> </view>
@@ -96,6 +92,16 @@ export default {
         current: e.currentTarget.id, // 当前显示图片的http链接
         urls: this.previewImages // 需要预览的图片http链接列表
       })
+    },
+    praise () {
+      this.x.action.liked = !this.x.action.liked
+      if (this.x.action.liked) {
+        this.x.vote_count += 1
+      } else {
+        this.x.vote_count -= 1
+      }
+      let url = 'community/' + this.x.id + '/like/'
+      request.post(url, {id: this.x.id})
     }
   },
   mounted () {
@@ -107,6 +113,10 @@ export default {
 </script>
 
 <style>
+p {
+  font-size: 14px;
+}
+
 a {
     color: #007AFF;
 }
@@ -123,7 +133,7 @@ a {
 }
 
 .content .list-footer {
-    width: 40%;
+    width: 29%;
     margin-bottom: 35rpx;
     color: #cdcdcd;
     display: flex;
@@ -185,7 +195,7 @@ a {
 }
 
 .content .list-content .content-text {
-    font-size: 40rpx;
+    font-size: 15px;
     line-height: 50rpx;
 }
 
@@ -214,7 +224,7 @@ a {
 
 .content-img .content-img-ul .img-li-one {
     width: 52%;
-    padding-bottom: 52%;
+    padding-bottom: 35%;
 }
 
 .content-img .content-img-ul .img-li-two {
@@ -249,7 +259,7 @@ a {
 }
 
 .content .list-content .content-re-content .re-content-text {
-    font-size: 65rpx;
+    font-size: 14px;
     line-height: 50rpx;
 }
 

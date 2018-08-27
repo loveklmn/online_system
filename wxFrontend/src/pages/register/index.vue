@@ -132,7 +132,6 @@ page {
   float: right;
   text-align: right;
   margin-right: 22px;
-  margin-top: 11px;
   color: #cccccc;
   font-size: 14px
 }
@@ -168,9 +167,9 @@ page {
 }
 
 .loginBtn {
-  width: 80%;
+  width: 85%;
   margin-top: 35px;
   color: white;
-  background-color:green;
+  background-color: deepskyblue;
 }
 </style>

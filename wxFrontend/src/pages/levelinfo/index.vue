@@ -1,10 +1,11 @@
 
 <template>
-  <div>
+  <div class="container">
     <toast :message="msg" :visible.sync="visible"></toast>
+    <div class="content">
     <i-cell-group>
         <i-panel title="您当前的等级为">
-            <i-cell title="K1" v-if="l1 === true">
+            <i-cell title=" K1" v-if="l1 === true">
                 <i-switch :value="switch1" @click="onChange1" slot="footer"></i-switch>
             </i-cell>
             <i-cell title="K2" v-if="l2">
@@ -13,87 +14,19 @@
             <i-cell title="K3" v-if="l3">
                 <i-switch :value="switch3" @click="onChange3" slot="footer"></i-switch>
             </i-cell>
-            <i-cell title="K4" v-if="l4">
+            <i-cell title=" K4" v-if="l4">
                 <i-switch :value="switch4" @click="onChange4" slot="footer"></i-switch>
             </i-cell>
         </i-panel>
     </i-cell-group>
-     <i-panel title="想解锁新等级?">
-            <input v-if="!(l1 && l2 && l3 && l4)" v-model.trim="code"  placeholder="请输入激活码" />
-            <i-button type="info" @click="activate">确定</i-button>
-     </i-panel>
-    <div class="page">
-        <div class="intro">
-            <div>
-                <div class="intro">
-                    <div class="home_step w1600">
-                        <!--幼儿阶段课程-->
-                        <div class="home_s step_k">
-                            <div class="step_info">
-                                <img alt="3-6岁幼儿英语" src="https://www.vronedu.com/vronedu/images/yzyxart_k.png">
-                                <div class="step_title">
-                                    <h4 class="fsize24"> 3-6岁幼儿英语 </h4>
-                                    <p><span>建立英语思维，开发语言能力！</span></p>
-                                </div>
-                            </div>
-                            <div class="step_mess pt10"><span>适用于3-6岁孩子，在课程设置上重在培养孩子的学习兴趣和基本的语言、阅读、审美能力，并通过数百种专业教具、上千个课堂活动以及3000多个互动教学课件构建英语环境，帮助孩子养成良好的发音习惯和准确语调。</span></div>
-                            <br>
-                            <div class="step_more mt14">
-                            </div>
-                            <!--幼小衔接课程详情-->
-                            <div class="home_s step_o">
-                                <div class="step_info">
-                                    <img alt="6-7岁幼小衔接英语" src="https://www.vronedu.com/vronedu/images/yzyxart_o.png">
-                                    <div class="step_title">
-                                        <h4 class="fsize24">
-                                            6-7岁幼小衔接英语
-                                        </h4>
-                                        <p>
-                                            <span>学习英语拼读，奠定语言基础！</span></p>
-                                    </div>
-                                </div>
-                                <div class="step_mess pt10"><span>适用于步入小学阶段、英语零基础的孩子，帮助这一阶段的孩子奠定语言基础。老师会通过phonics教学法帮助学员熟悉精准的字母拼读等基本功，并通过逐渐的学习与反复练习，全面提高英文的听说读写能力。</span></div>
-                                <br>
-                                <div class="step_more mt14">
-                                </div>
-                                <!--少儿阶段课程-->
-                                <div class="home_s step_u">
-                                    <div class="step_info">
-                                        <img alt="7-13岁少儿英语" src="https://www.vronedu.com/vronedu/images/yzyxart_u.png">
-                                        <div class="step_title">
-                                            <h4 class="fsize24">
-                                                7-13岁少儿英语
-                                            </h4>
-                                            <p>
-                                                <span>培养英语习惯，促成灵活运用！</span></p>
-                                        </div>
-                                    </div>
-                                    <div class="step_mess pt10"><span>适用于7-13岁孩子，重在培养孩子英语运用能力。以浸入式学习环境结合主题情景式教学方式培养孩子的英语思维，并通过科学的“预讲演练”闭环式教学体系和个性化在线学习工具帮助孩子完成知识积累，实现灵活运用。</span></div>
-                                    <br>
-                                    <div class="step_more mt14">
-                                    </div>
-                                    <!--青少年阶段课程-->
-                                    <div class="home_s step_i">
-                                        <div class="step_info">
-                                            <img alt="13-18岁青少年英语" src="https://www.vronedu.com/vronedu/images/yzyxart_i.png">
-                                            <div class="step_title">
-                                                <h4 class="fsize24">
-                                                    11-18岁青少年英语</h4>
-                                                <p>
-                                                    <span>提高综合能力，体验学习乐趣！</span></p>
-                                            </div>
-                                        </div>
-                                        <div class="step_mess pt10"><span>弗恩英语青少年阶段课程设置更注重技能的学习。课程中除了会采用先进国际化的教材之外，弗恩英语老师还会结合公立学校教材知识的重难点进行知识讲授，让孩子在轻松愉快的学习氛围中全面提高英语综合能力，体验英语学习乐趣。</span></div><br>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
+     <i-panel title="想解锁新等级?">
+            <input v-if="!(l1 && l2 && l3 && l4)" v-model.trim="code" placeholder="请输入激活码" />
+            <i-button type="info" @click="activate">确定</i-button>
+            <p>想要了解<a href="../level/main">等级</a>?</p>
+     </i-panel>
+
+
   </div>
 </template>
 <script>
@@ -203,14 +136,34 @@ export default {
 }
 </script>
 <style>
-.page {
-  padding-bottom: 200rpx;
+page {
+  padding-top: 60rpx;
+}
+
+.content {
+  padding-bottom: 60rpx;
 }
 
 input {
-  padding-left: 40rpx;
+  padding-left: 20rpx;
+  margin-left: 10rpx;
+  padding-top: 10rpx;
+  padding-bottom: 10rpx;
+  font-size: 14px;
 }
 
+p {
+  font-size: 14px;
+  display: flex;
+  padding-left: 30rpx;
+  line-height:1;
+  color:#1c2438;
+  padding-bottom: 1167rpx;
+}
+
+p>a {
+  color: red;
+}
 img {
   width: 40%;
   height: 80%;
@@ -218,28 +171,29 @@ img {
 
 .intro{
   font-family: -apple-system-font,Helvetica Neue,Helvetica,sans-serif;
-  padding-right: 40rpx
+  text-align:justify;
 }
 
 .home_step{
   clear:both;
   margin-top:40rpx;
+  padding-bottom: 100rpx;
 }
 
 .fsize24{
   text-align: right;
-  padding-right: 40rpx;
 }
 
 .step_k{
-  margin-left: 44px
+  margin-left: 30px;
+  margin-right: 30px;
 }
 
 .step_info{
-  border-radius:6px;
-  height:122px;
-  position:relative;
-  width:280px;
+  border-radius: 6px;
+  height: 250rpx;
+  position: relative;
+  width: 650rpx;
 }
 
 .step_k .step_info,.step_k .step_more span{
@@ -278,7 +232,7 @@ img {
   font-size:15px;
   color:#222;
   line-height:27px;
-  height:120px;
+  height: 240rpx;
 }
 
 .step_more{
@@ -289,7 +243,6 @@ img {
 
 .step_more span{
   border-radius:6px;
-  padding:6px 12px;
   color:#fff;
   font-size:14px;
 }

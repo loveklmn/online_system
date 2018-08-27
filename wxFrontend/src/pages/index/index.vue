@@ -15,10 +15,12 @@
                                 <block v-for="book in intensiveReading" :key="book.id">
                                     <div @click="navToNavigator(book)" class="weui-grid">
                                         <image class="weui-grid__icon" :src="book.rcover" />
-                                        <div class="weui-grid__label" v-if="book.progress.punched === false">{{book.title}}</div>
-                                        <div class="weui-grid__label_punched" v-else>{{book.title}}</div>
-                                        <i-progress v-if="book.percent === 100" :percent="book.percent" status="success"></i-progress>
-                                        <i-progress v-else :percent="book.percent"></i-progress>
+                                        <div class="weui-grid__label" >
+                                          {{book.title}}<br>
+                                          <i-progress v-if="book.percent === 100" :percent="book.percent" status="success" hide-info></i-progress>
+                                          <i-progress v-else :percent="book.percent" hide-info></i-progress>
+                                        </div>
+
                                     </div>
                                 </block>
                             </div>
@@ -33,10 +35,11 @@
                             <block v-for="book in extensiveReading" :key="book.id">
                                 <div @click="navToNavigator(book)" class="weui-grid">
                                     <image class="weui-grid__icon" :src="book.rcover" />
-                                    <div class="weui-grid__label" v-if="book.progress.punched === false">{{book.title}}</div>
-                                    <div class="weui-grid__label_punched" v-else>{{book.title}}</div>
-                                    <i-progress v-if="book.percent === 100" :percent="book.percent" status="success"></i-progress>
-                                    <i-progress v-else :percent="book.percent"></i-progress>
+                                    <div class="weui-grid__label" >
+                                        {{book.title}}<br>
+                                        <i-progress v-if="book.percent === 100" :percent="book.percent" status="success" hide-info></i-progress>
+                                        <i-progress v-else :percent="book.percent" hide-info></i-progress>
+                                      </div>
                                 </div>
                             </block>
                         </div>
@@ -155,6 +158,8 @@ swiper {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  margin-left: 10px;
+  margin-right:10px;
 }
 
 .weui-grid__label_punched {
@@ -220,12 +225,12 @@ swiper {
 
 .tab-item {
     font-size: 30rpx;
-    width: 320rpx;
+    width: 340rpx;
     height: 80rpx;
     line-height: 80rpx;
     text-align: center;
     position: absolute;
-    left: 10rpx;
+    left: -10rpx;
     top: 10rpx;
 }
 
