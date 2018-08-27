@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>请点击下方按钮上传图片，不需要裁切</p>
+    <p>上传的图片不需要裁切</p>
     <imgComp :img.sync="img"></imgComp>
     <Button
       class="upload-button"

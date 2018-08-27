@@ -1,7 +1,8 @@
 <template>
   <div>
     <imgComp :img.sync="pair.img"></imgComp>
-    <Input v-model="pair.word"/>
+    <p>请在下方输入图片对应的单词</p>
+    <Input v-model="pair.word" placeholder="word"/>
   </div>
 </template>
 <script>
