@@ -57,27 +57,9 @@ export default [
         name: 'create_user',
         meta: {
           icon: 'md-trending-up',
-          title: '激活码生成'
+          title: '生成激活码'
         },
-        component: () => import('@/view/new-accounts/new-accounts.vue')
-      },
-      {
-        path: 'modify_user_page',
-        name: 'modify_user',
-        meta: {
-          icon: 'md-pause',
-          title: '修改账户权限'
-        },
-        component: () => import('@/view/components/tables/tables.vue')
-      },
-      {
-        path: 'modify_password_page',
-        name: 'modify_password',
-        meta: {
-          icon: 'logo-markdown',
-          title: '修改账户密码'
-        },
-        component: () => import('@/view/components/editor/editor.vue')
+        component: () => import('@/view/new-accounts')
       }
     ]
   },
@@ -162,75 +144,6 @@ export default [
           title: '学生详细信息'
         },
         component: () => import('@/view/user-list/detail.vue')
-      }
-    ]
-  },
-  {
-    path: '/notice',
-    name: 'notices',
-    meta: {
-      icon: 'md-contacts',
-      title: '消息管理',
-    },
-    component: Main,
-    children: [
-      {
-        path: 'noticelist',
-        name: 'noticelist',
-        meta: {
-          icon: 'md-contacts',
-          title: '消息列表'
-        },
-        component: () => import('@/view/notice/index.vue')
-      }
-    ]
-  },
-  {
-    path: 'student_statistics',
-    name: 'student_statistics',
-    meta: {
-      icon: 'md-clipboard',
-      title: '学生数据统计'
-    },
-    component: Main,
-    children: [
-      {
-        path: 'progress',
-        name: 'progress',
-        meta: {
-          icon: 'md-add',
-          title: '学习进度统计'
-        },
-        component: () => import('@/view/excel/upload-excel.vue')
-      }
-    ]
-  },
-  {
-    path: 'manage_message',
-    name: 'manage_message',
-    meta: {
-      icon: 'md-clipboard',
-      title: '社群消息管理'
-    },
-    component: Main,
-    children: [
-      {
-        path: 'send_new_message',
-        name: 'send_new_message',
-        meta: {
-          icon: 'md-add',
-          title: '发布新消息'
-        },
-        component: () => import('@/view/excel/upload-excel.vue')
-      },
-      {
-        path: 'check_message',
-        name: 'check_message',
-        meta: {
-          icon: 'md-download',
-          title: '审核历史消息'
-        },
-        component: () => import('@/view/excel/export-excel.vue')
       }
     ]
   },
