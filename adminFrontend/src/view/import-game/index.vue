@@ -13,7 +13,10 @@
           <recognitionGame>
           </recognitionGame>
         </TabPane>
-        <TabPane label="选词填空">标签四的内容</TabPane>
+        <TabPane label="选词填空">
+          <clozeGame>
+          </clozeGame>
+        </TabPane>
     </Tabs>
   </div>
 </template>
@@ -22,6 +25,7 @@
 import matchingGame from './matching-game'
 import jigsawGame from './jigsaw-game'
 import recognitionGame from './recognition-game'
+import clozeGame from './cloze-game'
 export default {
   data () {
     return {
@@ -35,7 +39,8 @@ export default {
   components: {
     matchingGame,
     jigsawGame,
-    recognitionGame
+    recognitionGame,
+    clozeGame
   },
   methods: {
   }
