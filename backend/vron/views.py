@@ -1,4 +1,4 @@
-from vron.models import Notice, IsNoticeReaded, Student, Book, Progress, Word, Page, Sentence, Moment, Like, Comment, Homework, ActiveKey
+from vron.models import Notice, IsNoticeReaded, Student, Book, Progress, Word, Page, Sentence, Moment, Like, Comment, Homework, ActiveKey, MatchingGame, JigsawGame, RecognitionGame, ClozeGame
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
@@ -710,6 +710,119 @@ class UserLevelUpdate(APIView):
         stu.save()
         key_query.delete()
         return Response({'level': new_level})
+
+
+class MatchingGameView(APIView):
+    def get(self, request, book_id):
+        book = get_book(id=book_id)
+        game_datas = MatchingGame.objects.filter(book=book)
+        response_data = []
+        for data in game_datas:
+            response_data.append({
+                'img': data.img,
+                'word': data.word
+            })
+        return Response(response_data)
+
+    @manager_required
+    def post(self, request, book_id):
+        book = get_book(id=book_id)
+        postdata = json.loads(request.body)
+        MatchingGame.objects.filter(book=book).delete()
+        for data in postdata:
+            MatchingGame.objects.create(
+                book=book,
+                img=get_or_raise(postdata, 'img'),
+                word=get_or_raise(postdata, 'word')
+            )
+        return Response(status=201)
+
+
+
+class JigsawGameView(APIView):
+    def get(self, request, book_id):
+        book = get_book(id=book_id)
+        game_datas = JigsawGame.objects.filter(book=book)
+        response_data = []
+        for data in game_datas:
+            response_data.append({
+                'img': data.img,
+            })
+        return Response(response_data)
+
+    @manager_required
+    def post(self, request, book_id):
+        book = get_book(id=book_id)
+        postdata = json.loads(request.body)
+        JigsawGame.objects.filter(book=book).delete()
+        for data in postdata:
+            MatchingGame.objects.create(
+                book=book,
+                img=get_or_raise(postdata, 'img'),
+            )
+        return Response(status=201)
+
+
+class RecognitionGameView(APIView):
+    def get(self, request, book_id):
+        book = get_book(id=book_id)
+        game_datas = RecognitionGame.objects.filter(book=book)
+        response_data = []
+        for data in game_datas:
+            response_data.append({
+                'img': data.img,
+                'correct_word': data.correct_word,
+                'wrong_word_1': data.wrong_word_1,
+                'wrong_word_2': data.wrong_word_2,
+            })
+        return Response(response_data)
+
+    @manager_required
+    def post(self, request, book_id):
+        book = get_book(id=book_id)
+        postdata = json.loads(request.body)
+        RecognitionGame.objects.filter(book=book).delete()
+        for data in postdata:
+            MatchingGame.objects.create(
+                book=book,
+                img=get_or_raise(postdata, 'img'),
+                correct_word=get_or_raise(postdata, 'correct_word'),
+                wrong_word_1=get_or_raise(postdata, 'wrong_word_1'),
+                wrong_word_2=get_or_raise(postdata, 'wrong_word_2'),
+            )
+        return Response(status=201)
+
+
+class ClozeGameView(APIView):
+    def get(self, request, book_id):
+        book = get_book(id=book_id)
+        game_datas = ClozeGame.objects.filter(book=book)
+        response_data = []
+        for data in game_datas:
+            response_data.append({
+                'sentence': data.sentence,
+                'corerct_word': data.corerct_word,
+                'wrong_word_1': data.wrong_word_1,
+                'wrong_word_2': data.wrong_word_2,
+                'wrong_word_3': data.wrong_word_3,
+            })
+        return Response(response_data)
+
+    @manager_required
+    def post(self, request, book_id):
+        book = get_book(id=book_id)
+        postdata = json.loads(request.body)
+        ClozeGame.objects.filter(book=book).delete()
+        for data in postdata:
+            MatchingGame.objects.create(
+                book=book,
+                sentence=get_or_raise(postdata, 'sentence'),
+                corerct_word=get_or_raise(postdata, 'corerct_word'),
+                wrong_word_1=get_or_raise(postdata, 'wrong_word_1'),
+                wrong_word_2=get_or_raise(postdata, 'wrong_word_2'),
+                wrong_word_3=get_or_raise(postdata, 'wrong_word_3'),
+            )
+        return Response(status=201)
 
 @csrf_exempt
 def register_view(request):

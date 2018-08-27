@@ -106,3 +106,28 @@ class IsNoticeReaded(models.Model):
 class ActiveKey(models.Model):
     level = models.IntegerField()
     key = models.CharField(max_length=18)
+
+class MatchingGame(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    img = models.CharField(max_length=256)
+    word = models.CharField(max_length=64)
+
+class JigsawGame(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    img = models.CharField(max_length=256)
+
+class RecognitionGame(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    img = models.CharField(max_length=256)
+    correct_word = models.CharField(max_length=64)
+    wrong_word_1 = models.CharField(max_length=64)
+    wrong_word_2 = models.CharField(max_length=64)
+
+class ClozeGame(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    sentence = models.CharField(max_length=256)
+    correct_word = models.CharField(max_length=64)
+    wrong_word_1 = models.CharField(max_length=64)
+    wrong_word_2 = models.CharField(max_length=64)
+    wrong_word_3 = models.CharField(max_length=64)
+
