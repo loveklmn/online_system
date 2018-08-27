@@ -41,6 +41,8 @@ urlpatterns = [
         views.StudentList.as_view(), name='student_list'),
     url(r'^generatekey/$',
         views.KeyGenerator.as_view(), name='key_generator'),
+    url(r'^progress/(\d+)/$',
+        views.UserProgress.as_view()),
     #auth
     url(r'^register/$',
         views.register_view, name='register'),

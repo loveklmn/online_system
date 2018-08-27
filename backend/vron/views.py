@@ -311,6 +311,41 @@ class BookProgress(APIView):
         update_student_score(student)
         return Response(status=201)
 
+
+class UserProgress(APIView):
+    @manager_required
+    def get(self, request, user_id):
+        stu_query = Student.objects.filter(id=user_id)
+        if not stu_query.exists():
+            return Response({
+                'msg': 'Student(id={}) mot exists.'.format(user_id)
+            }, status=404)
+        stu = stu_query[0]
+        progress_infos = []
+        progress_query = Progress.objects.filter(user=stu)
+        for progress in progress_query:
+            homework_id = -1
+            homework_query = Homework.objects.filter(author=stu,
+                                                    book=progress.book)
+            if homework_query.exists():
+                homework_id = homework_query[0].id
+            progress_info = {
+
+                'id': progress.id,
+                'level': progress.book.level,
+                'cover': progress.book.title,
+                'pages_num': progress.book.pages_num,
+                'homework': homework_id,
+                'progress': {
+                    'current_page': progress.current_page,
+                    'punched': progress.punched,
+                    'latest_read_time': progress.latest_read_time
+                },
+                'type': progress.book.read_type,
+            }
+            progress_infos.append(progress_info)
+        return Response(progress_infos)
+
 class BookEbook(APIView):
 
     def get(self, request, book_id):
