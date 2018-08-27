@@ -8,9 +8,6 @@ Vue.prototype.$store = store
 const app = new Vue(App)
 app.$mount()
 
-const mpvueTrace = require('mpvue-lint/mpvue-trace')
-mpvueTrace.trace(Vue)
-
 export default {
   // 这个字段走 app.json
   config: {

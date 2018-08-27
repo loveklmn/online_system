@@ -84,12 +84,10 @@ export default {
   },
   methods: {
     countBox: function () {
-      console.log('countBox')
       this.pages.forEach(
         function (page) {
           page.sentences.forEach(
             function (sen) {
-              console.log(sen.x1 / 10000 * 400, sen.y1 / 10000 * 400)
               sen.class = ''
               sen.style = `position:absolute; top:${sen.y1 * 920 / 10000}rpx;
                            left:${sen.x1 * 667 / 10000}rpx; width:${(sen.x2 - sen.x1) * 667 / 10000}rpx;

@@ -19,7 +19,7 @@
         </div>
     </div>
     <div class="instruction">
-        <p>还没有账户?来<a href="/pages/register/main">注册</a>一下~</p>
+        <a href="/pages/register/main">还没有账户?来注册一下~</a>
     </div>
     <button class="loginBtn" @click="login">确定</button>
   </div>
@@ -94,13 +94,14 @@ page {
 }
 
 .nameImage, .keyImage {
+  margin-top: 15px;
   margin-left: 22px;
   width: 14px;
   height: 14px
 }
 
 .loginLab {
-  margin: 15px 15px 15px 10px;
+  margin: 0px 15px 15px 10px;
   color: #545454;
   font-size: 14px
 }
@@ -110,7 +111,6 @@ page {
   float: right;
   text-align: right;
   margin-right: 22px;
-  margin-top: 11px;
   color: #cccccc;
   font-size: 14px
 }
@@ -123,12 +123,6 @@ page {
 }
 
 .instruction a {
-  display:flex;
-  font-size: 20rpx;
-  color: green;
-}
-
-.instruction p {
   display:flex;
   font-size: 20rpx;
   color: gray;
@@ -148,7 +142,7 @@ page {
 }
 
 .loginBtn {
-  width: 80%;
+  width: 90%;
   margin-top: 35px;
   color: white;
   background-color:#f28d01;

@@ -1,19 +1,13 @@
 <template>
   <div>
     <i-card full :title="nickname" @click="navToUserinfo" :thumb="avatarurl"></i-card>
-    <i-panel class="cell-panel-demo" title="账户">
-      <i-cell-group>
         <i-cell title="修改密码" isLink url="/pages/changePassword/main" />
         <i-cell title="消息" isLink url="/pages/notice/main"/>
-      </i-cell-group>
-    </i-panel>
 
-    <i-panel class="cell-panel-demo" title="关于">
       <i-cell title="关于弗恩英语" is-link url="/pages/aboutVron/main" />
-    </i-panel>
 
     <div class="sign-out-button">
-      <i-button  @click="readyToExit" type="error">退出</i-button>
+      <i-button i-class="sign-out-button"  @click="readyToExit" type="error">退出</i-button>
     </div>
   </div>
 </template>
@@ -66,6 +60,7 @@ export default {
 </script>
 <style scoped>
 .sign-out-button {
-  padding-top: 100rpx;
+  padding: 20rpx;
 }
+
 </style>
