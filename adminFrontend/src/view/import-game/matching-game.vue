@@ -17,7 +17,7 @@
 </template>
 <script>
 import matchingPic from './matching-pic'
-// import axios from '@/libs/api.request'
+import axios from '@/libs/api.request'
 export default {
   data () {
     return {
@@ -25,7 +25,8 @@ export default {
         {img: null, word: null},
         {img: null, word: null},
         {img: null, word: null}
-      ]
+      ],
+      bookid: -1
     }
   },
   components: {
@@ -47,10 +48,19 @@ export default {
     },
     uploadGame () {
       if (this.haveNull()) {
-        // return
+        return
       }
-      // to be added
+      axios.request({
+        url: `books/${this.bookid}/MatchingGame/`,
+        data: this.pairs,
+        method: 'post'
+      }).then(data => {
+        this.$Message.info(`上传成功！`)
+      })
     }
+  },
+  created () {
+    this.bookid = this.$route.params.id
   }
 }
 </script>

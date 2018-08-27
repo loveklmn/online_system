@@ -14,25 +14,55 @@
 </template>
 <script>
 import imgComp from './img'
+import axios from '@/libs/api.request'
 export default {
   data () {
     return {
       img: null,
       correct_word: null,
       wrong_word_1: null,
-      wrong_word_2: null
+      wrong_word_2: null,
+      bookid: -1
     }
   },
   components: {
     imgComp
   },
   methods: {
+    haveNull () {
+      if (this.img === null) {
+        return true
+      }
+      if (this.correct_word === null) {
+        return true
+      }
+      if (this.wrong_word_1 === null) {
+        return true
+      }
+      if (this.wrong_word_2 === null) {
+        return true
+      }
+    },
     uploadGame () {
       if (this.haveNull()) {
-        // return
+        return
       }
-      // to be added
+      axios.request({
+        url: `books/${this.bookid}/MatchingGame/`,
+        data: {
+          img: this.img,
+          correct_word: this.correct_word,
+          wrong_word_1: this.wrong_word_1,
+          wrong_word_2: this.wrong_word_2
+        },
+        method: 'post'
+      }).then(data => {
+        this.$Message.info(`上传成功！`)
+      })
     }
+  },
+  created () {
+    this.bookid = this.$route.params.id
   }
 }
 </script>

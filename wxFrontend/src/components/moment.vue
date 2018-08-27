@@ -31,6 +31,10 @@
         </ul>
       </div>
     </div>
+      </div>
+      <!-- <span class="user-time">{{getTime}}</span> -->
+    </div>
+    
 
     <div class="list-footer">
       <div class="footer-tag">
@@ -38,7 +42,6 @@
         <span class="tag-style">{{x.vote_count}}</span>
       </div>
     </div>
-    <view class='line'> </view>
   </div>
 </template>
 
@@ -122,7 +125,7 @@ a {
 }
 
 .content {
-    margin: 40rpx;
+    margin: 30rpx;
 }
 
 .content .list-header {
@@ -156,16 +159,17 @@ a {
 }
 
 .avatar {
-    width: 150rpx;
-    height: 150rpx;
+    width: 80rpx;
+    height: 80rpx;
     border-radius: 50%;
     border: 1rpx solid rgba(0, 0, 0, .05);
 }
 
 .content .user-info {
-    margin-left: 50rpx;
+    margin-left: 20rpx;
     display: flex;
     flex-flow: column;
+    margin-right: 20rpx;
     flex: 1;
 }
 
@@ -197,6 +201,7 @@ a {
 .content .list-content .content-text {
     font-size: 15px;
     line-height: 50rpx;
+    padding-right: 120rpx;
 }
 
 .content .list-content .content-at {
@@ -230,21 +235,21 @@ a {
 .content-img .content-img-ul .img-li-two {
     /* width: 43%;
     padding-bottom: 43%; */
-    width: 200rpx;
-    height: 200rpx;
-    margin: 10rpx;
+    width: 160rpx;
+    height: 160rpx;
+    margin: 5rpx;
 }
 
 .content-img .content-img-ul .img-li-other {
     /* width: 28%; */
-    width: 200rpx;
-    height: 200rpx;
-    margin: 10rpx;
+    width: 160rpx;
+    height: 160rpx;
+    margin: 5rpx;
 }
 
 .content-img .content-img-ul .img-div {
-    width: 200rpx;
-    height: 200rpx;
+    width: 160rpx;
+    height: 160rpx;
     background-position: center;
     background-repeat: no-repeat;
 }
