@@ -49,7 +49,7 @@
     </div>
   </div>
   <div class="bottom-part">
-    <Card title="功能入口">
+    <Card v-if="!modifyMode" title="功能入口">
       <div class="function-entrance">
           <Button :to="`/book/${currentBook.id}/guidance`" shape="circle" class="level-icon" type="primary">
             亲子阅读指导
@@ -88,9 +88,7 @@ export default {
         level: null,
         read_type: '',
         cover: '',
-        pages_num: 0,
-        assignment: '',
-        guidance: ''
+        pages_num: 0
       },
       newBook: {
         id: -1,
@@ -98,18 +96,19 @@ export default {
         level: null,
         read_type: '',
         cover: '',
-        pages_num: 0,
-        assignment: '',
-        guidance: ''
+        pages_num: 0
       }
     }
   },
   beforeRouteEnter (to, from, next) {
-    let id = to.params
+    let id = to.params.id
     if (id !== -1) {
       axios.request({
-        url: `books/${id}/`,
-        method: 'post'
+        url: 'books/',
+        method: 'post',
+        data: {
+          id: id
+        }
       }).then(data => {
         next(vm => {
           vm.currentBook = data
