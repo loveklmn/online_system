@@ -1,42 +1,40 @@
 <template>
-    <div class="container">
+  <div class="container">
     <div class="swiper-content">
-        <div class="tab">
-            <div @click="tabPage" :class="'tab-item '+(currentNumber==0?'tab-item-current':'') " data-index="0">朋友圈</div>
-            <div @click="tabPage" :class="'tab-item tab-item2 ' + (currentNumber==1 ? 'tab-item-current' : '')" data-index="1">排行榜</div>
-        </div>
-        <swiper @change="switchPage" :current="currentIndex">
-            <swiper-item>
-              <scroll-view class="scroll-views" scrollX="false" scrollY="true">
-                <moment v-for="(y,index) in theData" :key="index" :x="y"></moment>
-              </scroll-view>
-            </swiper-item>
-            <swiper-item>
-                <scroll-view class="scroll-views" scrollX="false" scrollY="true">
-                    <div class="rank-list">
-                        <div class="rank-list-item" v-for="(item,index) in aList" :key="index">
-                            <div class="rank-num">
-                                <image :src="'../../static/images/rank-num-' + (index + 1) + '.png'" v-if="index<3" />
-                                <div v-if="index>=3">{{index>=9?index+1:'0' + (index + 1) }}</div>
-                            </div>
-                            <image class="user-head" :src="item.avatarurl" />
-                            <div class="user-name">{{item.nickname}}</div>
-                            <div class="user-challenge-success-times">
-                                <div>获得</div>
-                                <rich-text>
-                                    <i style="font-size: 36rpx;color: red;font-style:italic;">{{item.score}}</i>
-                                    分</rich-text>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="rank-footer"></div>
-                </scroll-view>
-            </swiper-item>
-        </swiper>
-
+      <div class="tab">
+        <div @click="tabPage" :class="'tab-item '+(currentNumber==0?'tab-item-current':'') " data-index="0">朋友圈</div>
+        <div @click="tabPage" :class="'tab-item tab-item2 ' + (currentNumber==1 ? 'tab-item-current' : '')" data-index="1">排行榜</div>
+      </div>
+      <swiper @change="switchPage" :current="currentIndex">
+        <swiper-item>
+          <scroll-view class="scroll-views" scrollX="false" scrollY="true">
+            <moment v-for="(y,index) in theData" :key="index" :x="y"></moment>
+          </scroll-view>
+        </swiper-item>
+        <swiper-item>
+          <scroll-view class="scroll-views" scrollX="false" scrollY="true">
+            <div class="rank-list">
+              <div class="rank-list-item" v-for="(item,index) in aList" :key="index">
+                <div class="rank-num">
+                  <image :src="'../../static/images/rank-num-' + (index + 1) + '.png'" v-if="index<3" />
+                  <div v-if="index>=3">{{index>=9?index+1:'0' + (index + 1) }}</div>
+                </div>
+                <image class="user-head" :src="item.avatarurl" />
+                <div class="user-name">{{item.nickname}}</div>
+                <div class="user-challenge-success-times">
+                  <div>获得</div>
+                  <rich-text>
+                    <i style="font-size: 36rpx;color: red;font-style:italic;">{{item.score}}</i>
+                    分</rich-text>
+                </div>
+              </div>
+            </div>
+            <div class="rank-footer"></div>
+          </scroll-view>
+        </swiper-item>
+      </swiper>
     </div>
-</div>
-
+  </div>
 </template>
 
 <script>

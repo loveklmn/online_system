@@ -1,15 +1,15 @@
 <template>
   <div>
-    <i-card full :title="nickname" @click="navToUserinfo" :thumb="avatarurl"></i-card>
-        <i-cell title="修改密码" isLink url="/pages/changePassword/main" />
-        <i-cell title="消息" isLink url="/pages/notice/main"/>
+  <i-card full :title="nickname" @click="navToUserinfo" :thumb="avatarurl"></i-card>
+  <i-cell title="修改密码" isLink url="/pages/changePassword/main" />
+  <i-cell title="消息" isLink url="/pages/notice/main" />
 
-      <i-cell title="关于弗恩英语" is-link url="/pages/aboutVron/main" />
+  <i-cell title="关于弗恩英语" is-link url="/pages/aboutVron/main" />
 
-    <div class="sign-out-button">
-      <i-button i-class="sign-out-button"  @click="readyToExit" type="error">退出</i-button>
-    </div>
+  <div class="sign-out-button">
+    <i-button i-class="sign-out-button" @click="readyToExit" type="error">退出</i-button>
   </div>
+</div>
 </template>
 
 <script>
@@ -62,5 +62,4 @@ export default {
 .sign-out-button {
   padding: 20rpx;
 }
-
 </style>

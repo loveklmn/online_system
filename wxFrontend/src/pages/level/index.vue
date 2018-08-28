@@ -1,74 +1,74 @@
 
 <template>
   <div>
-            <div>
-                <div class="intro">
-                    <div class="home_step w1600">
-                        <!--幼儿阶段课程-->
-                        <div class="home_s step_k">
-                            <div class="step_info">
-                                <img alt="3-6岁幼儿英语" src="https://www.vronedu.com/vronedu/images/yzyxart_k.png">
-                                <div class="step_title">
-                                    <h4 class="fsize24"> 3-6岁幼儿英语 </h4>
-                                    <p><span>建立英语思维，开发语言能力！</span></p>
-                                </div>
-                            </div>
-                            <div class="step_mess pt10"><span>适用于3-6岁孩子，在课程设置上重在培养孩子的学习兴趣和基本的语言、阅读、审美能力，并通过数百种专业教具、上千个课堂活动以及3000多个互动教学课件构建英语环境，帮助孩子养成良好的发音习惯和准确语调。</span></div>
-                            <br>
-                            <div class="step_more mt14">
-                            </div>
-                            <!--幼小衔接课程详情-->
-                            <div class="home_s step_o">
-                                <div class="step_info">
-                                    <img alt="6-7岁幼小衔接英语" src="https://www.vronedu.com/vronedu/images/yzyxart_o.png">
-                                    <div class="step_title">
-                                        <h4 class="fsize24">
-                                            6-7岁幼小衔接英语
-                                        </h4>
-                                        <p>
-                                            <span>学习英语拼读，奠定语言基础！</span></p>
-                                    </div>
-                                </div>
-                                <div class="step_mess pt10"><span>适用于步入小学阶段、英语零基础的孩子，帮助这一阶段的孩子奠定语言基础。老师会通过phonics教学法帮助学员熟悉精准的字母拼读等基本功，并通过逐渐的学习与反复练习，全面提高英文的听说读写能力。</span></div>
-                                <br>
-                                <div class="step_more mt14">
-                                </div>
-                                <!--少儿阶段课程-->
-                                <div class="home_s step_u">
-                                    <div class="step_info">
-                                        <img alt="7-13岁少儿英语" src="https://www.vronedu.com/vronedu/images/yzyxart_u.png">
-                                        <div class="step_title">
-                                            <h4 class="fsize24">
-                                                7-13岁少儿英语
-                                            </h4>
-                                            <p>
-                                                <span>培养英语习惯，促成灵活运用！</span></p>
-                                        </div>
-                                    </div>
-                                    <div class="step_mess pt10"><span>适用于7-13岁孩子，重在培养孩子英语运用能力。以浸入式学习环境结合主题情景式教学方式培养孩子的英语思维，并通过科学的“预讲演练”闭环式教学体系和个性化在线学习工具帮助孩子完成知识积累，实现灵活运用。</span></div>
-                                    <br>
-                                    <div class="step_more mt14">
-                                    </div>
-                                    <!--青少年阶段课程-->
-                                    <div class="home_s step_i">
-                                        <div class="step_info">
-                                            <img alt="13-18岁青少年英语" src="https://www.vronedu.com/vronedu/images/yzyxart_i.png">
-                                            <div class="step_title">
-                                                <h4 class="fsize24">
-                                                    11-18岁青少年英语</h4>
-                                                <p>
-                                                    <span>提高综合能力，体验学习乐趣！</span></p>
-                                            </div>
-                                        </div>
-                                        <div class="step_mess pt10"><span>弗恩英语青少年阶段课程设置更注重技能的学习。课程中除了会采用先进国际化的教材之外，弗恩英语老师还会结合公立学校教材知识的重难点进行知识讲授，让孩子在轻松愉快的学习氛围中全面提高英语综合能力，体验英语学习乐趣。</span></div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div>
+      <div class="intro">
+        <div class="home_step w1600">
+          <!--幼儿阶段课程-->
+          <div class="home_s step_k">
+            <div class="step_info">
+              <img alt="3-6岁幼儿英语" src="https://www.vronedu.com/vronedu/images/yzyxart_k.png">
+              <div class="step_title">
+                <h4 class="fsize24"> 3-6岁幼儿英语 </h4>
+                <p><span>建立英语思维，开发语言能力！</span></p>
+              </div>
             </div>
+            <div class="step_mess pt10"><span>适用于3-6岁孩子，在课程设置上重在培养孩子的学习兴趣和基本的语言、阅读、审美能力，并通过数百种专业教具、上千个课堂活动以及3000多个互动教学课件构建英语环境，帮助孩子养成良好的发音习惯和准确语调。</span></div>
+            <br>
+            <div class="step_more mt14">
+            </div>
+            <!--幼小衔接课程详情-->
+            <div class="home_s step_o">
+              <div class="step_info">
+                <img alt="6-7岁幼小衔接英语" src="https://www.vronedu.com/vronedu/images/yzyxart_o.png">
+                <div class="step_title">
+                  <h4 class="fsize24">
+                    6-7岁幼小衔接英语
+                  </h4>
+                  <p>
+                    <span>学习英语拼读，奠定语言基础！</span></p>
+                </div>
+              </div>
+              <div class="step_mess pt10"><span>适用于步入小学阶段、英语零基础的孩子，帮助这一阶段的孩子奠定语言基础。老师会通过phonics教学法帮助学员熟悉精准的字母拼读等基本功，并通过逐渐的学习与反复练习，全面提高英文的听说读写能力。</span></div>
+              <br>
+              <div class="step_more mt14">
+              </div>
+              <!--少儿阶段课程-->
+              <div class="home_s step_u">
+                <div class="step_info">
+                  <img alt="7-13岁少儿英语" src="https://www.vronedu.com/vronedu/images/yzyxart_u.png">
+                  <div class="step_title">
+                    <h4 class="fsize24">
+                      7-13岁少儿英语
+                    </h4>
+                    <p>
+                      <span>培养英语习惯，促成灵活运用！</span></p>
+                  </div>
+                </div>
+                <div class="step_mess pt10"><span>适用于7-13岁孩子，重在培养孩子英语运用能力。以浸入式学习环境结合主题情景式教学方式培养孩子的英语思维，并通过科学的“预讲演练”闭环式教学体系和个性化在线学习工具帮助孩子完成知识积累，实现灵活运用。</span></div>
+                <br>
+                <div class="step_more mt14">
+                </div>
+                <!--青少年阶段课程-->
+                <div class="home_s step_i">
+                  <div class="step_info">
+                    <img alt="13-18岁青少年英语" src="https://www.vronedu.com/vronedu/images/yzyxart_i.png">
+                    <div class="step_title">
+                      <h4 class="fsize24">
+                        11-18岁青少年英语</h4>
+                      <p>
+                        <span>提高综合能力，体验学习乐趣！</span></p>
+                    </div>
+                  </div>
+                  <div class="step_mess pt10"><span>弗恩英语青少年阶段课程设置更注重技能的学习。课程中除了会采用先进国际化的教材之外，弗恩英语老师还会结合公立学校教材知识的重难点进行知识讲授，让孩子在轻松愉快的学习氛围中全面提高英语综合能力，体验英语学习乐趣。</span></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>

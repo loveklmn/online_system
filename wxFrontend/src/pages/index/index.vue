@@ -1,54 +1,53 @@
 <template>
- <div class="container">
+  <div class="container">
     <div class="swiper-content">
-        <label class="change_level" @click="NavToLevel">等<br>级</label>
-        <div class="tab">
-            <div @click="tabPage" :class="'tab-item '+(currentNumber==0?'tab-item-current':'') " data-index="0">精读</div>
-            <div @click="tabPage" :class="'tab-item tab-item2 ' + (currentNumber==1 ? 'tab-item-current' : '')" data-index="1">泛读</div>
-        </div>
-        <swiper @change="switchPage" :current="currentIndex">
-            <swiper-item>
-                <div class="weui-tab__content" :hidden="activeIndex != 0">
-                    <div class="page">
-                        <div class="page__bd">
-                            <div class="weui-grids">
-                                <block v-for="book in intensiveReading" :key="book.id">
-                                    <div @click="navToNavigator(book)" class="weui-grid">
-                                        <image class="weui-grid__icon" :src="book.rcover" />
-                                        <div class="weui-grid__label" >
-                                          {{book.title}}<br>
-                                          <i-progress v-if="book.percent === 100" :percent="book.percent" status="success" hide-info></i-progress>
-                                          <i-progress v-else :percent="book.percent" hide-info></i-progress>
-                                        </div>
-
-                                    </div>
-                                </block>
-                            </div>
-                        </div>
+      <label class="change_level" @click="NavToLevel">等<br>级</label>
+      <div class="tab">
+        <div @click="tabPage" :class="'tab-item '+(currentNumber==0?'tab-item-current':'') " data-index="0">精读</div>
+        <div @click="tabPage" :class="'tab-item tab-item2 ' + (currentNumber==1 ? 'tab-item-current' : '')" data-index="1">泛读</div>
+      </div>
+      <swiper @change="switchPage" :current="currentIndex">
+        <swiper-item>
+          <div class="weui-tab__content" :hidden="activeIndex != 0">
+            <div class="page">
+              <div class="page__bd">
+                <div class="weui-grids">
+                  <block v-for="book in intensiveReading" :key="book.id">
+                    <div @click="navToNavigator(book)" class="weui-grid">
+                      <image class="weui-grid__icon" :src="book.rcover" />
+                      <div class="weui-grid__label">
+                        {{book.title}}<br>
+                        <i-progress v-if="book.percent === 100" :percent="book.percent" status="success" hide-info></i-progress>
+                        <i-progress v-else :percent="book.percent" hide-info></i-progress>
+                      </div>
                     </div>
+                  </block>
                 </div>
-            </swiper-item>
-            <swiper-item>
-                <scroll-view bindscrolltolower="lower" class="scroll-views" scrollX="false" scrollY="true">
-                    <div class="page__bd">
-                        <div class="weui-grids">
-                            <block v-for="book in extensiveReading" :key="book.id">
-                                <div @click="navToNavigator(book)" class="weui-grid">
-                                    <image class="weui-grid__icon" :src="book.rcover" />
-                                    <div class="weui-grid__label" >
-                                        {{book.title}}<br>
-                                        <i-progress v-if="book.percent === 100" :percent="book.percent" status="success" hide-info></i-progress>
-                                        <i-progress v-else :percent="book.percent" hide-info></i-progress>
-                                      </div>
-                                </div>
-                            </block>
-                        </div>
+              </div>
+            </div>
+          </div>
+        </swiper-item>
+        <swiper-item>
+          <scroll-view bindscrolltolower="lower" class="scroll-views" scrollX="false" scrollY="true">
+            <div class="page__bd">
+              <div class="weui-grids">
+                <block v-for="book in extensiveReading" :key="book.id">
+                  <div @click="navToNavigator(book)" class="weui-grid">
+                    <image class="weui-grid__icon" :src="book.rcover" />
+                    <div class="weui-grid__label">
+                      {{book.title}}<br>
+                      <i-progress v-if="book.percent === 100" :percent="book.percent" status="success" hide-info></i-progress>
+                      <i-progress v-else :percent="book.percent" hide-info></i-progress>
                     </div>
-                </scroll-view>
-            </swiper-item>
-        </swiper>
+                  </div>
+                </block>
+              </div>
+            </div>
+          </scroll-view>
+        </swiper-item>
+      </swiper>
     </div>
-</div>
+  </div>
 </template>
 
 <script>

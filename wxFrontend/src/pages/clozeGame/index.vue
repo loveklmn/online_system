@@ -1,12 +1,12 @@
 <template>
   <div>
     <view class="answer">
-    <toast :message="msg" :visible.sync="visible"></toast>
-    <view class="word">
-      {{sentence}}
-    </view>
-    <view class="btn_group">
-        <view class="btn_container" >
+      <toast :message="msg" :visible.sync="visible"></toast>
+      <view class="word">
+        {{sentence}}
+      </view>
+      <view class="btn_group">
+        <view class="btn_container">
           <button @click="right" class="answer word" v-if="rand === 0">
             A.　　{{correct_word}}
           </button>
@@ -29,9 +29,8 @@
             D.　　{{correct_word}}
           </button>
         </view>
+      </view>
     </view>
-</view>
-
   </div>
 </template>
 

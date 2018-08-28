@@ -5,14 +5,13 @@
         <wxParse :content="guidance" />
       </div>
     </i-cell-group>
-
-      <i-panel title="词汇表" v-if="vocabulary.length" >
+    <i-panel title="词汇表" v-if="vocabulary.length">
       <i-cell-group>
         <block v-for="(item,index) in vocabulary" :key="index">
           <i-cell :title="'　'+item.word" :label="'　'+item.meaning" @click="play(item.word)"></i-cell>
         </block>
       </i-cell-group>
-       </i-panel>
+    </i-panel>
   </div>
 </template>
 
