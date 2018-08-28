@@ -1,20 +1,24 @@
 <template>
-  <div>
-    <filter-table @load="loadData"
-                :data="selectedBooks"
-                :columns="columns"
-                :search="condition"
-                :pageSize="10">
+<content-layout
+  title="图书列表">
+  <div slot="content">
+    <filter-table
+      @load="loadData"
+      :data="selectedBooks"
+      :columns="columns"
+      :search="condition"
+      :pageSize="10">
     </filter-table>
     <Divider />
     <Button type="primary" :loading="loading" @click="newBook" class="new-book-btn">导入新书</Button>
   </div>
+</content-layout>
 </template>
 
 <script>
 import FilterTable from '_c/filter-table'
 import axios from '@/libs/api.request'
-
+import contentLayout from '_c/content-layout'
 const typeStatus = {
   0: {
     value: '',
@@ -55,7 +59,8 @@ const levelList = {
 
 export default {
   components: {
-    FilterTable
+    FilterTable,
+    contentLayout
   },
   data () {
     return {

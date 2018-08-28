@@ -22,12 +22,28 @@
 <script>
 export default {
   name: 'FilterTable',
-  props: [
-    'columns',
-    'data',
-    'search',
-    'pageSize'
-  ],
+  props: {
+    columns: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    data: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    search: {
+      type: Object,
+      default: null
+    },
+    pageSize: {
+      type: Number,
+      default: 10
+    }
+  },
   data () {
     return {
       currentPage: 1,

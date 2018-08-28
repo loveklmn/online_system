@@ -156,6 +156,26 @@ export default [
     ]
   },
   {
+    path: '/notice',
+    name: 'notices',
+    meta: {
+      icon: 'md-contacts',
+      title: '消息管理',
+    },
+    component: Main,
+    children: [
+      {
+        path: 'noticelist',
+        name: 'noticelist',
+        meta: {
+          icon: 'md-contacts',
+          title: '消息列表'
+        },
+        component: () => import('@/view/notice/index.vue')
+      }
+    ]
+  },
+  {
     path: '/401',
     name: 'error_401',
     meta: {

@@ -13,6 +13,7 @@
 </template>
 <script>
 import FilterTable from '_c/filter-table'
+import axios from '@/libs/api.request'
 const timeList = {
   0: {
     value: '0',
@@ -37,6 +38,13 @@ export default {
     return {
       condition: {},
       columns: [
+        {
+          title: '序号',
+          key: 'id',
+          filter: {
+            type: 'Input'
+          }
+        },
         {
           title: '消息内容',
           key: 'content',
@@ -66,40 +74,53 @@ export default {
               },
               on: {
                 click: () => {
-                  this.handleDelete()
+                  this.handleDelete(params)
                 }
               }
             }, '删除消息')
           }
         }
       ],
-      noticeList: [
-        {
-          content: '完了完了',
-          created_time: '2018/18/18'
-        }
-      ]
+      noticeList: []
     }
   },
   components: {
     FilterTable
   },
   created () {
-    // get notice list
-    // get the avatar of the current manager
+    axios.request({
+      url: 'notices',
+      method: 'get'
+    }).then(data => {
+      this.noticeList.push.apply(this.noticeList, data)
+      this.noticeList = this.noticeList.map(notice => {
+        let time = new Date(notice.created_time)
+        let year = time.getFullYear()
+        let month = time.getMonth()
+        let date = time.getDate()
+        notice.created_time = `${year}年${month + 1}月${date}日`
+        return notice
+      })
+    }).catch(error => {
+      this.$Message.error(error)
+    })
   },
   methods: {
     handleDelete (params) {
-      // 删除对应消息
+      axios.request({
+        url: `notices/${params.row.id}/`,
+        method: 'get'
+      }).then(() => {
+        this.$Message.suceed('删除成功！')
+      }).catch(msg => {
+        this.$Message.error('msg')
+      })
     },
     loadData () {
       this.selectedNotice = this.allNotice.filter(this.isSelected)
     },
     isSelected (currentStudent) {
       if (this.condition.id && currentStudent.id !== parseInt(this.condition.id)) {
-        return false
-      }
-      if (this.condition.level && currentStudent.level !== this.condition.level) {
         return false
       }
       if (this.condition.title && currentStudent.title.indexOf(this.condition.title) === -1) {
