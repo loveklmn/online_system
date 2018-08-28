@@ -100,15 +100,18 @@ export default {
     Editor,
     Tables
   },
-  created () {
-    this.id = this.$route.params.id
+  beforeRouteEnter (to, from, next) {
+    let id = to.params.id
     axios.request({
-      url: `books/${this.id}/guidance`,
+      url: `books/${id}/guidance`,
       method: 'get'
     }).then(data => {
-      this.guidance = data.guidance
-      this.$refs.editor.setValue(data.guidance)
-      this.words = data.words
+      next(vm => {
+        vm.id = id
+        vm.guidance = data.guidance
+        vm.$refs.editor.setValue(data.guidance)
+        vm.words = data.words
+      })
     })
   },
   methods: {

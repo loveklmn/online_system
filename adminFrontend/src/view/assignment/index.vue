@@ -32,17 +32,20 @@ export default {
       loading: false
     }
   },
-  created () {
-    this.id = this.$route.params.id
+  beforeRouteEnter (to, from, next) {
+    let id = to.params.id
     axios.request({
       data: {
-        id: this.id
+        id: id
       },
       url: 'books/',
       method: 'post'
-    }).then((data) => {
-      this.newAssignment = this.currentAssignment = data.assignment
-      this.$refs.editor.setValue(this.newAssignment)
+    }).then(data => {
+      next(vm => {
+        vm.id = id
+        vm.newAssignment = vm.currentAssignment = data.assignment
+        vm.$refs.editor.setValue(vm.newAssignment)
+      })
     })
   },
   methods: {
