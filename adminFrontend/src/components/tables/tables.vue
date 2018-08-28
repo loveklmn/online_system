@@ -239,7 +239,12 @@ export default {
       })
     },
     exportCsv (params) {
-      this.$refs.tablesMain.exportCsv(params)
+      let defaultParams = {
+        columns: this.insideColumns,
+        data: this.insideTableData
+      }
+      let newParams = Object.assign(params, defaultParams)
+      this.$refs.tablesMain.exportCsv(newParams)
     },
     clearCurrentRow () {
       this.$refs.talbesMain.clearCurrentRow()
