@@ -6,6 +6,6 @@ app.$mount()
 
 export default {
   config: {
-    'navigationBarTitleText': '电子书'
+    'navigationBarTitleText': '单词识别游戏'
   }
 }
