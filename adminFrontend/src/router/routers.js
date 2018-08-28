@@ -223,5 +223,5 @@ export default [
     meta: {
       hideInMenu: true
     }
+  }
 ]
-
