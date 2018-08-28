@@ -189,7 +189,6 @@ export default {
     request.get(url)
       .then(res => {
         let vt = res.data
-        console.log(vt['3'])
         vm.card1.src = request.baseURL + vt['3']
         vm.card2.src = request.baseURL + vt['7']
         vm.card3.src = request.baseURL + vt['5']
