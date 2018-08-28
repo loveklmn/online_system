@@ -956,9 +956,9 @@ def register_view(request):
     user = User.objects.create_user(username=username, password=password)
     Student.objects.create(
         user=user,
+        nickname=username,
         level=level,
-        accept_level=bit_to_num(level),
-        avatar='')
+        accept_level=bit_to_num(level))
     return JsonResponse({'msg': '注册成功'}, status=201)
 
 @csrf_exempt
