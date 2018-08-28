@@ -827,20 +827,16 @@ class JigsawGameView(APIView):
             response_data[data.num] = data.img
         return Response(response_data)
 
-    @manager_required
     def post(self, request, book_id):
         book = get_book(id=book_id)[0]
         post_data = json.loads(request.body)
         JigsawGame.objects.filter(book=book).delete()
-        for num in range(1,10):
-            if num in post_data:
-                MatchingGame.objects.create(
-                    book=book,
-                    num=num,
-                    img=get_or_raise(post_data, num)
-                )
-            else:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
+        for num in [str(x) for x in range(1,10)]:
+            JigsawGame.objects.create(
+                book=book,
+                num=int(num),
+                img=get_or_raise(post_data, num)
+            )
         return Response(status=201)
 
 
