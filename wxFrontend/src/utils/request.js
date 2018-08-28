@@ -124,7 +124,7 @@ class Request {
 }
 
 export default new Request({
-  baseURL: 'http://101.200.62.189:8000/vron/',
+  baseURL: 'http://starriest.top:8000/vron/',
   withBaseURL: true,
   header: {
     'content-type': 'application/json'
