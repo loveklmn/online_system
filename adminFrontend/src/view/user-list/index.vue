@@ -140,10 +140,10 @@ export default {
       if (this.condition.nickname && student.nickname.indexOf(this.condition.nickname) === -1) {
         return false
       }
-      if (this.condition.score && student.score !== this.condition.score) {
+      if (this.condition.score && student.score !== parseInt(this.condition.score)) {
         return false
       }
-      if (this.condition.level && student.level !== this.condition.level) {
+      if (this.condition.level && student.level !== parseInt(this.condition.level)) {
         return false
       }
       return true

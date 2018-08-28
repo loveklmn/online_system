@@ -44,19 +44,19 @@ export default [
     ]
   },
   {
-    path: '/manage_user_page',
+    path: '/new-accounts',
     name: 'manage_user',
     meta: {
-      icon: 'logo-buffer',
+      icon: 'md-people',
       title: '用户权限管理'
     },
     component: Main,
     children: [
       {
-        path: 'create_user_page',
+        path: 'generate',
         name: 'create_user',
         meta: {
-          icon: 'md-trending-up',
+          icon: 'md-person-add',
           title: '生成激活码'
         },
         component: () => import('@/view/new-accounts')
@@ -67,7 +67,7 @@ export default [
     path: '/book',
     name: 'books',
     meta: {
-      icon: 'md-cloud-upload',
+      icon: 'ios-book-outline',
       title: '图书管理'
     },
     component: Main,
@@ -76,7 +76,7 @@ export default [
         path: 'list',
         name: 'booklist',
         meta: {
-          icon: 'ios-document',
+          icon: 'md-list',
           title: '图书列表'
         },
         component: () => import('@/view/booklist')
@@ -86,7 +86,8 @@ export default [
         name: 'book',
         meta: {
           hideInMenu: true,
-          title: '图书信息'
+          icon: 'ios-information-circle-outline',
+          title: '图书详情'
         },
         component: () =>
           import ('@/view/book-info')
@@ -95,8 +96,9 @@ export default [
         path: ':id/ebook',
         name: 'ebook',
         meta: {
+          icon: 'ios-bookmarks',
           hideInMenu: true,
-          title: '图书信息'
+          title: 'E-book'
         },
         component: () => import('@/view/E-book')
       },
@@ -104,7 +106,9 @@ export default [
         path: ':id/guidance',
         name: 'guidance',
         meta: {
+          icon: 'md-bookmarks',
           hideInMenu: true,
+          title: '阅读指导'
         },
         component: () => import('@/view/guidance')
       },
@@ -112,7 +116,9 @@ export default [
         path: ':id/assignment',
         name: 'assignment',
         meta: {
-          hideInMenu: true
+          icon: 'md-book',
+          hideInMenu: true,
+          title: '阅读拓展'
         },
         component: () => import('@/view/assignment')
       },
@@ -120,7 +126,9 @@ export default [
         path: ':id/game',
         name: 'game',
         meta: {
-          hideInMenu: true
+          icon: 'md-aperture',
+          hideInMenu: true,
+          title: '练习游戏'
         },
         component: () => import('@/view/import-game')
       }
@@ -139,7 +147,7 @@ export default [
         path: 'userlist',
         name: 'userlist',
         meta: {
-          icon: 'md-contacts',
+          icon: 'md-list',
           title: '学生列表'
         },
         component: () => import('@/view/user-list/index.vue')
@@ -148,6 +156,7 @@ export default [
         path: ':id',
         name: 'user-detail',
         meta: {
+          icon: 'md-information-circle',
           hideInMenu: true,
           title: '学生详细信息'
         },
@@ -159,7 +168,7 @@ export default [
     path: '/notice',
     name: 'notices',
     meta: {
-      icon: 'md-contacts',
+      icon: 'md-chatbubbles',
       title: '消息管理',
     },
     component: Main,
@@ -168,7 +177,7 @@ export default [
         path: 'noticelist',
         name: 'noticelist',
         meta: {
-          icon: 'md-contacts',
+          icon: 'md-list',
           title: '消息列表'
         },
         component: () => import('@/view/notice/index.vue')
@@ -213,33 +222,6 @@ export default [
     component: Main,
     meta: {
       hideInMenu: true
-    },
-    children: [
-      {
-        path: 'fill_generate_info',
-        name: 'fill_generate_info',
-        meta: {
-          title: '完善信息',
-        },
-        component: () => import('@/view/new-accounts/new-accounts.vue')
-      },
-      {
-        path: 'generate_accounts',
-        name: 'generate',
-        meta: {
-          title: '确认生成'
-        },
-        component: () => import('@/view/new-accounts/generate-accounts.vue')
-      },
-      {
-        path: 'generate_result',
-        name: 'generate_result',
-        meta: {
-          title: '生成结果'
-        },
-        component: () => import('@/view/new-accounts/generate-result.vue')
-      }
-    ]
-  }
+    }
 ]
 
