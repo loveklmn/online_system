@@ -53,21 +53,24 @@ export default {
         return notice
       })
     }).catch(error => {
-      console.log(error)
+      this.$Message.error(error)
     })
   },
   methods: {
     handleSubmit () {
-      console.log(this.newNotice)
-      axios.request({
-        data: {
-          content: this.newNotice
-        },
-        url: 'notices/',
-        method: 'post'
-      }).then((data) => {
-        this.$Message.success('上传成功')
-      })
+      if (this.newNotice.length > 0) {
+        axios.request({
+          data: {
+            content: this.newNotice
+          },
+          url: 'notices/',
+          method: 'post'
+        }).then((data) => {
+          this.$Message.success('上传成功')
+        })
+      } else {
+        this.$Message.error('发布消息不能为空！')
+      }
     }
   }
 }

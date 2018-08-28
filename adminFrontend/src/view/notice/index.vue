@@ -1,5 +1,7 @@
 <template>
-  <Card title="消息管理">
+<content-layout
+  title="消息管理">
+  <Card slot="content">
     <div class="top-menu">
       <Button class="top-menu-btn" @click="sendNewMessage">发布新消息</Button>
       <Button class="top-menu-btn" @click="queryHistory">历史消息管理</Button>
@@ -9,10 +11,12 @@
       <notice-table v-if="pageTwo" />
     </div>
   </Card>
+</content-layout>
 </template>
 <script>
 import sendNotice from './send-notice.vue'
 import noticeTable from './notice-table.vue'
+import contentLayout from '_c/content-layout'
 export default {
   data () {
     return {
@@ -22,7 +26,8 @@ export default {
   },
   components: {
     sendNotice,
-    noticeTable
+    noticeTable,
+    contentLayout
   },
   methods: {
     queryHistory () {

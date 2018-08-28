@@ -102,7 +102,7 @@ export default {
         return notice
       })
     }).catch(error => {
-      console.log(error)
+      this.$Message.error(error)
     })
   },
   methods: {

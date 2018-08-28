@@ -27,8 +27,8 @@
               searchable
               search-place="top"
               v-model="words"
-              border="true"
-              stripe="true"
+              :border="true"
+              :stripe="true"
               :columns="columns"/>
           </Card>
         </div>
