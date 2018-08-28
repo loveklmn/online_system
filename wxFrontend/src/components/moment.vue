@@ -26,7 +26,7 @@
       </div>
       <span class="user-time">{{getTime}}</span>
     </div>
-    
+
 
     <div class="list-footer">
       <div class="footer-tag">
@@ -82,7 +82,6 @@ export default {
       return request.baseURL + y
     },
     predivImage (e) {
-      console.log(e)
       wx.previewImage({
         current: e.currentTarget.id, // 当前显示图片的http链接
         urls: this.previewImages // 需要预览的图片http链接列表
