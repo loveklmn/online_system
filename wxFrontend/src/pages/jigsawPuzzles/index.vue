@@ -2,63 +2,64 @@
   <div>
     <image class="main-bg" src="../../static/images/main-bg.png" />
     <div class="container">
-        <div class="pintu-wrap">
-            <div class="pintu-line">
-                <div class="pintu-item-wrap">
-                    <image class="pintu-item" type="primary" :src="cards.card1.src" :hidden="cards.card1.hidden" @click="card1" />
-                </div>
-                <div class="pintu-item-wrap">
-                    <image class="pintu-item" type="primary" :src="cards.card2.src" :hidden="cards.card2.hidden" @click="card2" />
-                </div>
-                <div class="pintu-item-wrap">
-                    <image class="pintu-item" type="primary" :src="cards.card3.src" :hidden="cards.card3.hidden" @click="card3" />
-                </div>
-            </div>
-            <div class="pintu-line">
-                <div class="pintu-item-wrap">
-                    <image class="pintu-item" type="primary" :src="cards.card4.src" :hidden="cards.card4.hidden" @click="card4" />
-                </div>
-                <div class="pintu-item-wrap">
-                    <image class="pintu-item" type="primary" :src="cards.card5.src" :hidden="cards.card5.hidden" @click="card5" />
-                </div>
-                <div class="pintu-item-wrap">
-                    <image class="pintu-item" type="primary" :src="cards.card6.src" :hidden="cards.card6.hidden" @click="card6" />
-                </div>
-            </div>
-            <div class="pintu-line">
-                <div class="pintu-item-wrap">
-                    <image class="pintu-item" type="primary" :src="cards.card7.src" :hidden="cards.card7.hidden" @click="card7" />
-                </div>
-                <div class="pintu-item-wrap">
-                    <image class="pintu-item" type="primary" :src="cards.card8.src" :hidden="cards.card8.hidden" @click="card8" />
-                </div>
-                <div class="pintu-item-wrap">
-                    <image class="pintu-item" type="primary" :src="cards.card9.src" :hidden="cards.card9.hidden" @click="card9" />
-                </div>
-            </div>
+      <div class="pintu-wrap">
+        <div class="pintu-line">
+          <div class="pintu-item-wrap">
+            <image class="pintu-item" type="primary" :src="cards.card1.src" :hidden="cards.card1.hidden" @click="card1" />
+          </div>
+          <div class="pintu-item-wrap">
+            <image class="pintu-item" type="primary" :src="cards.card2.src" :hidden="cards.card2.hidden" @click="card2" />
+          </div>
+          <div class="pintu-item-wrap">
+            <image class="pintu-item" type="primary" :src="cards.card3.src" :hidden="cards.card3.hidden" @click="card3" />
+          </div>
         </div>
-        <div class="btn-wrap">
-            <button type="warn" @click="initGame">重新开始</button>
+        <div class="pintu-line">
+          <div class="pintu-item-wrap">
+            <image class="pintu-item" type="primary" :src="cards.card4.src" :hidden="cards.card4.hidden" @click="card4" />
+          </div>
+          <div class="pintu-item-wrap">
+            <image class="pintu-item" type="primary" :src="cards.card5.src" :hidden="cards.card5.hidden" @click="card5" />
+          </div>
+          <div class="pintu-item-wrap">
+            <image class="pintu-item" type="primary" :src="cards.card6.src" :hidden="cards.card6.hidden" @click="card6" />
+          </div>
         </div>
+        <div class="pintu-line">
+          <div class="pintu-item-wrap">
+            <image class="pintu-item" type="primary" :src="cards.card7.src" :hidden="cards.card7.hidden" @click="card7" />
+          </div>
+          <div class="pintu-item-wrap">
+            <image class="pintu-item" type="primary" :src="cards.card8.src" :hidden="cards.card8.hidden" @click="card8" />
+          </div>
+          <div class="pintu-item-wrap">
+            <image class="pintu-item" type="primary" :src="cards.card9.src" :hidden="cards.card9.hidden" @click="card9" />
+          </div>
+        </div>
+      </div>
+      <div class="btn-wrap">
+        <button type="warn" @click="initGame">重新开始</button>
+      </div>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
+import request from '@/utils/request'
 export default {
   data () {
     return {
       word: 'It is a lucky cat.',
       cards: {
-        card1: {num: 3, hidden: false, src: 'https://i.loli.net/2018/08/15/5b744aef8183b.jpg'},
-        card2: {num: 7, hidden: false, src: 'https://i.loli.net/2018/08/15/5b744ae8bb097.jpg'},
-        card3: {num: 5, hidden: false, src: 'https://i.loli.net/2018/08/15/5b744ae679f2c.jpg'},
-        card4: {num: '', hidden: true, src: 'https://i.loli.net/2018/08/15/5b744ae453d4f.jpg'},
-        card5: {num: 4, hidden: false, src: 'https://i.loli.net/2018/08/15/5b744ae274208.jpg'},
-        card6: {num: 6, hidden: false, src: 'https://i.loli.net/2018/08/15/5b744add508b0.jpg'},
-        card7: {num: 2, hidden: false, src: 'https://i.loli.net/2018/08/15/5b744ad901dab.jpg'},
-        card8: {num: 8, hidden: false, src: 'https://i.loli.net/2018/08/15/5b744ad4b1fb6.jpg'},
-        card9: {num: 1, hidden: false, src: 'https://i.loli.net/2018/08/15/5b744ad026a65.png'}
+        card1: {num: 3, hidden: false, src: ''},
+        card2: {num: 7, hidden: false, src: ''},
+        card3: {num: 5, hidden: false, src: ''},
+        card4: {num: '', hidden: true, src: ''},
+        card5: {num: 4, hidden: false, src: ''},
+        card6: {num: 6, hidden: false, src: ''},
+        card7: {num: 2, hidden: false, src: ''},
+        card8: {num: 8, hidden: false, src: ''},
+        card9: {num: 1, hidden: false, src: ''}
       }
     }
   },
@@ -106,17 +107,39 @@ export default {
       this.moveCard('9', '8')
     },
     initGame () {
-      this.cards = {
-        card1: {num: 3, hidden: false, src: 'https://i.loli.net/2018/08/15/5b744aef8183b.jpg'},
-        card2: {num: 7, hidden: false, src: 'https://i.loli.net/2018/08/15/5b744ae8bb097.jpg'},
-        card3: {num: 5, hidden: false, src: 'https://i.loli.net/2018/08/15/5b744ae679f2c.jpg'},
-        card4: {num: '', hidden: true, src: 'https://i.loli.net/2018/08/15/5b744ae453d4f.jpg'},
-        card5: {num: 4, hidden: false, src: 'https://i.loli.net/2018/08/15/5b744ae274208.jpg'},
-        card6: {num: 6, hidden: false, src: 'https://i.loli.net/2018/08/15/5b744add508b0.jpg'},
-        card7: {num: 2, hidden: false, src: 'https://i.loli.net/2018/08/15/5b744ad901dab.jpg'},
-        card8: {num: 8, hidden: false, src: 'https://i.loli.net/2018/08/15/5b744ad4b1fb6.jpg'},
-        card9: {num: 1, hidden: false, src: 'https://i.loli.net/2018/08/15/5b744ad026a65.png'}
-      }
+      let vm = this.cards
+      let url = 'books/' + this.id + '/JigsawGame/'
+      request.get(url)
+        .then(res => {
+          let vt = res.data
+          vm.card1.src = request.baseURL + vt['3']
+          vm.card1.num = 3
+          vm.card1.hidden = false
+          vm.card2.src = request.baseURL + vt['7']
+          vm.card2.num = 7
+          vm.card2.hidden = false
+          vm.card3.src = request.baseURL + vt['5']
+          vm.card3.num = 5
+          vm.card3.hidden = false
+          vm.card4.src = request.baseURL + vt['9']
+          vm.card4.num = ''
+          vm.card4.hidden = true
+          vm.card5.src = request.baseURL + vt['4']
+          vm.card5.num = 4
+          vm.card5.hidden = false
+          vm.card6.src = request.baseURL + vt['6']
+          vm.card6.num = 6
+          vm.card6.hidden = false
+          vm.card7.src = request.baseURL + vt['2']
+          vm.card7.num = 2
+          vm.card7.hidden = false
+          vm.card8.src = request.baseURL + vt['8']
+          vm.card8.num = 8
+          vm.card8.hidden = false
+          vm.card9.src = request.baseURL + vt['1']
+          vm.card9.num = 1
+          vm.card9.hidden = false
+        })
     },
     moveCard (n1, n2) {
       let cards = this.cards
@@ -145,6 +168,7 @@ export default {
         if (isGameOver) {
           cards.card9.num = 9
           cards.card9.hidden = false
+          cards.card9.hidden = false
         }
         this.cards = cards
 
@@ -157,6 +181,25 @@ export default {
         }
       }
     }
+  },
+  onLoad (options) {
+    let vm = this.cards
+    this.id = options.id
+    let url = 'books/' + options.id + '/JigsawGame/'
+    request.get(url)
+      .then(res => {
+        let vt = res.data
+        console.log(vt['3'])
+        vm.card1.src = request.baseURL + vt['3']
+        vm.card2.src = request.baseURL + vt['7']
+        vm.card3.src = request.baseURL + vt['5']
+        vm.card4.src = request.baseURL + vt['9']
+        vm.card5.src = request.baseURL + vt['4']
+        vm.card6.src = request.baseURL + vt['6']
+        vm.card7.src = request.baseURL + vt['2']
+        vm.card8.src = request.baseURL + vt['8']
+        vm.card9.src = request.baseURL + vt['1']
+      })
   }
 }
 </script>

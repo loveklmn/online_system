@@ -2,37 +2,32 @@
   <div>
     <toast :message="msg" :visible.sync="visible"></toast>
     <div class="login-icon"></div>
-
     <div class="login-from">
       <div class="inputView">
         <label class="loginLab">账号</label>
         <input class="inputText" v-model='username' type="text" placeholder="请输入用户名" />
       </div>
     </div>
-
     <div class="login-from">
       <div class="inputView">
         <label class="loginLab">密码</label>
         <input class="inputText" v-model='password' type="password" placeholder="请输入密码" />
       </div>
     </div>
-
     <div class="login-from">
       <div class="inputView">
         <label class="loginLab">密码</label>
         <input class="inputText" v-model='Rpassword' type="password" placeholder="再次输入密码" />
       </div>
     </div>
-
     <div class="login-from">
       <div class="inputView">
         <label class="loginLab">Key</label>
         <input class="inputText" v-model='key' type="text" placeholder="请输入key" />
       </div>
     </div>
-
-  <button class="loginBtn" @click="check">确定</button>
- </div>
+    <button class="loginBtn" @click="check">确定</button>
+  </div>
 </template>
 
 <script>

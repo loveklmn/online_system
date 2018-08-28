@@ -43,7 +43,6 @@ export default {
     change () {
       let url = 'userinfo/change-password/'
       request.post(url, {password: this.password}).then((res) => {
-        console.log(res)
         if (res.statusCode === 200) {
           wx.redirectTo({url: '../../pages/login/main'})
         } else {

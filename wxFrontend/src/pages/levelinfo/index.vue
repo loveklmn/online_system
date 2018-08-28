@@ -3,30 +3,28 @@
   <div class="container">
     <toast :message="msg" :visible.sync="visible"></toast>
     <div class="content">
-    <i-cell-group>
+      <i-cell-group>
         <i-panel title="您当前的等级为">
-            <i-cell title=" K1" v-if="l1 === true">
-                <i-switch :value="switch1" @click="onChange1" slot="footer"></i-switch>
-            </i-cell>
-            <i-cell title="K2" v-if="l2">
-                <i-switch :value="switch2" @click="onChange2" slot="footer"></i-switch>
-            </i-cell>
-            <i-cell title="K3" v-if="l3">
-                <i-switch :value="switch3" @click="onChange3" slot="footer"></i-switch>
-            </i-cell>
-            <i-cell title=" K4" v-if="l4">
-                <i-switch :value="switch4" @click="onChange4" slot="footer"></i-switch>
-            </i-cell>
+          <i-cell title=" K1" v-if="l1 === true">
+            <i-switch :value="switch1" @click="onChange1" slot="footer"></i-switch>
+          </i-cell>
+          <i-cell title="K2" v-if="l2">
+            <i-switch :value="switch2" @click="onChange2" slot="footer"></i-switch>
+          </i-cell>
+          <i-cell title="K3" v-if="l3">
+            <i-switch :value="switch3" @click="onChange3" slot="footer"></i-switch>
+          </i-cell>
+          <i-cell title=" K4" v-if="l4">
+            <i-switch :value="switch4" @click="onChange4" slot="footer"></i-switch>
+          </i-cell>
         </i-panel>
-    </i-cell-group>
+      </i-cell-group>
     </div>
-     <i-panel title="想解锁新等级?">
-            <input v-if="!(l1 && l2 && l3 && l4)" v-model.trim="code" placeholder="请输入激活码" />
-            <i-button type="info" @click="activate">确定</i-button>
-            <p>想要了解<a href="../level/main">等级</a>?</p>
-     </i-panel>
-
-
+    <i-panel title="想解锁新等级?">
+      <input v-if="!(l1 && l2 && l3 && l4)" v-model.trim="code" placeholder="请输入激活码" />
+      <i-button type="info" @click="activate">确定</i-button>
+      <p>想要了解<a href="../level/main">等级</a>?</p>
+    </i-panel>
   </div>
 </template>
 <script>
@@ -106,7 +104,6 @@ export default {
         request
           .post(url, {code: this.code})
           .then(res => {
-            console.log(res)
             if (res.data.level) {
               vm.msg = '你解锁了L' + res.data.level + '!'
               vm.setVisible()
@@ -126,7 +123,6 @@ export default {
       request
         .get(url)
         .then(res => {
-          console.log(res.data)
           if (res.data.length > 0) {
             this.level = res.data
           }

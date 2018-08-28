@@ -1,32 +1,32 @@
 <template>
   <div class="container">
     <div class="main">
-        <div class="translate-warp" v-if="isTranslate&&translate!==''">{{translate}}</div>
-        <swiper :current="currentPage" class="cont" duration="100" skip-hidden-item-layout="true" @change="changePage">
-            <swiper-item v-for="page in pages" :key="page.number">
-                <div class="item" v-for="(sen,index1) in page.sentences" :key="index1">
-                    <img class="slide-image" :src="page.picture" />
-                    <!-- inline style cannot be avoided. No criticism will be accepted.-->
-                    <label @click="activate(sen)" :class="sen.class" :style="sen.style"></label>
-                </div>
-            </swiper-item>
-        </swiper>
-        <div class="footer">
-            <div class="item min foot_item">
-                <image @click="refresh" class="btn-min" :src="refreshIconSrc" />
-                <div class="text">刷新</div>
-            </div>
-            <div class="item foot_item">
-                <image @click="record" class="play-btn" :src="playIconSrc" />
-                <div class="text">录音</div>
-            </div>
-            <div class="item min">
-                <image @click="setTranslate" class="btn-min" :src="translateIcon" />
-                <div class="text">翻译</div>
-            </div>
+      <div class="translate-warp" v-if="isTranslate&&translate!==''">{{translate}}</div>
+      <swiper :current="currentPage" class="cont" duration="100" skip-hidden-item-layout="true" @change="changePage">
+        <swiper-item v-for="page in pages" :key="page.number">
+          <div class="item" v-for="(sen,index1) in page.sentences" :key="index1">
+            <img class="slide-image" :src="page.picture" />
+            <!-- inline style cannot be avoided. No criticism will be accepted.-->
+            <label @click="activate(sen)" :class="sen.class" :style="sen.style"></label>
+          </div>
+        </swiper-item>
+      </swiper>
+      <div class="footer">
+        <div class="item min foot_item">
+          <image @click="refresh" class="btn-min" :src="refreshIconSrc" />
+          <div class="text">刷新</div>
         </div>
+        <div class="item foot_item">
+          <image @click="record" class="play-btn" :src="playIconSrc" />
+          <div class="text">录音</div>
+        </div>
+        <div class="item min">
+          <image @click="setTranslate" class="btn-min" :src="translateIcon" />
+          <div class="text">翻译</div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 </template>
 <script>
 import request from '@/utils/request'
@@ -89,9 +89,7 @@ export default {
           page.sentences.forEach(
             function (sen) {
               sen.class = ''
-              sen.style = `position:absolute; top:${sen.y1 * 920 / 10000}rpx;
-                           left:${sen.x1 * 667 / 10000}rpx; width:${(sen.x2 - sen.x1) * 667 / 10000}rpx;
-                                           height:${(sen.y2 - sen.y1) * 920 / 10000}rpx`
+              sen.style = `position:absolute; top:${sen.y1 * 920 / 10000}rpx;left:${sen.x1 * 667 / 10000}rpx; width:${(sen.x2 - sen.x1) * 667 / 10000}rpx;height:${(sen.y2 - sen.y1) * 920 / 10000}rpx`
             })
         })
     },
@@ -100,7 +98,7 @@ export default {
     },
     activate (sen) {
       let vm = this
-      let url = 'https://sp0.baidu.com/-rM1hT4a2gU2pMbgoY3K/gettts?lan=uk&text=' + sen.content.replace(/ /g, '%20') + '&spd=2&source=alading'
+      let url = sen.audio
       wx.playBackgroundAudio({dataUrl: url})
       this.pages.forEach(
         function (page) {

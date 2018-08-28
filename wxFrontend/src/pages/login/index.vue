@@ -2,24 +2,24 @@
   <div>
     <toast :message="msg" :visible.sync="visible"></toast>
     <div class="login-icon">
-        <image class="login-img" src="../../static/images/loginLog.jpg" />
+      <image class="login-img" src="../../static/images/loginLog.jpg" />
     </div>
     <div class="login-from">
-        <div class="inputView">
-            <image class="nameImage" src="../../static/images/name.png" />
-            <label class="loginLab">账号</label>
-            <input class="inputText" v-model='username' type="text" placeholder="请输入用户名" />
-        </div>
+      <div class="inputView">
+        <image class="nameImage" src="../../static/images/name.png" />
+        <label class="loginLab">账号</label>
+        <input class="inputText" v-model='username' type="text" placeholder="请输入用户名" />
+      </div>
     </div>
     <div class="login-from">
-        <div class="inputView">
-            <image class="keyImage" src="../../static/images/password.png" />
-            <label class="loginLab">密码</label>
-            <input class="inputText" v-model='password' type="password" placeholder="请输入密码" />
-        </div>
+      <div class="inputView">
+        <image class="keyImage" src="../../static/images/password.png" />
+        <label class="loginLab">密码</label>
+        <input class="inputText" v-model='password' type="password" placeholder="请输入密码" />
+      </div>
     </div>
     <div class="instruction">
-        <a href="/pages/register/main">还没有账户?来注册一下~</a>
+      <a href="/pages/register/main">还没有账户?来注册一下~</a>
     </div>
     <button class="loginBtn" @click="login">确定</button>
   </div>
