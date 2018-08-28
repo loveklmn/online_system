@@ -103,10 +103,12 @@ export default {
 .card {
   margin: 10px;
 }
+
 .coordinate {
   width: 30%;
   margin-right: 10px;
 }
+
 .inline {
   display: inline;
 }

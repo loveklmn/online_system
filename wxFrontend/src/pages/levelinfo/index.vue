@@ -141,20 +141,20 @@ page {
 }
 
 input {
-  padding-left: 20rpx;
-  margin-left: 10rpx;
   padding-top: 10rpx;
   padding-bottom: 10rpx;
+  padding-left: 20rpx;
+  margin-left: 10rpx;
   font-size: 14px;
 }
 
 p {
-  font-size: 14px;
   display: flex;
+  padding-bottom: 1167rpx;
   padding-left: 30rpx;
+  font-size: 14px;
   line-height:1;
   color:#1c2438;
-  padding-bottom: 1167rpx;
 }
 
 p>a {
@@ -171,9 +171,9 @@ img {
 }
 
 .home_step{
-  clear:both;
-  margin-top:40rpx;
   padding-bottom: 100rpx;
+  margin-top:40rpx;
+  clear:both;
 }
 
 .fsize24{
@@ -181,15 +181,15 @@ img {
 }
 
 .step_k{
-  margin-left: 30px;
   margin-right: 30px;
+  margin-left: 30px;
 }
 
 .step_info{
-  border-radius: 6px;
-  height: 250rpx;
   position: relative;
   width: 650rpx;
+  height: 250rpx;
+  border-radius: 6px;
 }
 
 .step_k .step_info,.step_k .step_more span{
@@ -215,20 +215,20 @@ img {
 }
 
 .step_info .step_title{
-  color:#fff;
   position:absolute;
-  width:100%;
   top:46%;
-  text-align:center;
+  width:100%;
   font-size:17px;
   line-height:31px;
+  color:#fff;
+  text-align:center;
 }
 
 .step_mess{
-  font-size:15px;
-  color:#222;
-  line-height:27px;
   height: 240rpx;
+  font-size:15px;
+  line-height:27px;
+  color:#222;
 }
 
 .step_more{
@@ -238,8 +238,8 @@ img {
 }
 
 .step_more span{
-  border-radius:6px;
-  color:#fff;
   font-size:14px;
+  color:#fff;
+  border-radius:6px;
 }
 </style>

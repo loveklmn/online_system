@@ -61,17 +61,19 @@ export default {
 </script>
 
 <style lang="less">
-.update-paste{
-  &-con{
+.update-paste {
+  &-con {
     height: 350px;
   }
-  &-btn-con{
+
+  &-btn-con {
     box-sizing: content-box;
     height: 30px;
     padding: 15px 0 5px;
   }
 }
-.paste-tip{
+
+.paste-tip {
   color: #19be6b;
 }
 </style>

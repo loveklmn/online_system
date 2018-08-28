@@ -57,11 +57,11 @@ export default {
 
 <style scoped>
 .card {
+    position: relative;
+    margin: 20rpx;
+    background-color: #ffffff;
     border: 2rpx solid #ffffff;
     border-radius: 15rpx;
-    background-color: #ffffff;
     box-shadow: 8rpx 2rpx 2rpx #cccccc;
-    margin: 20rpx;
-    position: relative;
 }
 </style>

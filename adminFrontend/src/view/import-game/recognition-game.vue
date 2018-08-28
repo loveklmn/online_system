@@ -68,6 +68,7 @@ export default {
 </script>
 <style>
 @import "./common.css";
+
 .word-input {
   display: block;
   width: 50%;

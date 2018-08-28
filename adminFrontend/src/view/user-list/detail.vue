@@ -146,22 +146,28 @@ export default {
   margin-top: 2%;
   margin-left: 2%;
 }
+
 .first-part {
-  margin-top: 2%;
   width: 40%;
+  margin-top: 2%;
 }
+
 .second-part {
   margin-top: 2%;
 }
+
 .third-part {
   margin-top: 2%;
 }
+
 .e-title {
   margin: 2%;
 }
+
 .pie {
   height: 300px;
 }
+
 .bar {
   height: 300px;
 }

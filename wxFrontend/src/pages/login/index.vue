@@ -67,10 +67,10 @@ page {
 }
 
 .container {
-  height: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
+  height: 100%;
   background-color: #f2f2f2
 }
 
@@ -83,42 +83,42 @@ page {
 }
 
 .login-from {
-  margin-top: 20px;
   flex: auto;
   height:100%;
+  margin-top: 20px;
 }
 
 .inputView {
-  background-color: #fff;
   line-height: 44px;
+  background-color: #fff;
 }
 
 .nameImage, .keyImage {
-  margin-top: 15px;
-  margin-left: 22px;
   width: 14px;
-  height: 14px
+  height: 14px;
+  margin-top: 15px;
+  margin-left: 22px
 }
 
 .loginLab {
   margin: 0px 15px 15px 10px;
-  color: #545454;
-  font-size: 14px
+  font-size: 14px;
+  color: #545454
 }
 
 .inputText {
   flex: block;
   float: right;
-  text-align: right;
   margin-right: 22px;
+  font-size: 14px;
   color: #cccccc;
-  font-size: 14px
+  text-align: right
 }
 
 .instruction {
-  padding-left: 40rpx;
-  padding-top: 20rpx;
   display:flex;
+  padding-top: 20rpx;
+  padding-left: 40rpx;
   font-size: 20rpx;
 }
 
@@ -131,8 +131,8 @@ page {
 .line {
   width: 100%;
   height: 1px;
-  background-color: #cccccc;
   margin-top: 1px;
+  background-color: #cccccc;
 }
 
 .loginBtnView {

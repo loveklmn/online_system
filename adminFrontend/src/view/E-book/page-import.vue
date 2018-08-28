@@ -242,12 +242,15 @@ export default {
 .layout {
   flex-direction: row;
 }
+
 .pic-content {
   flex: 2;
 }
+
 .pic-holder {
   position: absolute;
 }
+
 .sentence-content {
   flex: 1;
   max-height: 560px;
@@ -257,17 +260,21 @@ export default {
   width: 400px;
   height: 400px;
 }
+
 .add-sentence-button {
   margin: auto;
 }
+
 #select-box {
-    border: 2px solid red;
-    position: absolute;
+  position: absolute;
+  border: 2px solid red;
 }
+
 .upload-button {
   position: absolute;
   top: 423px;
 }
+
 .delete-button {
   position: absolute;
   top: 460px;

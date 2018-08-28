@@ -209,26 +209,26 @@ input{
   padding: 20rpx
 }
 .container {
-  height: 100%;
+  box-sizing: border-box;
   display: flex;
-  padding-top: 200rpx;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  box-sizing: border-box;
+  height: 100%;
+  padding-top: 200rpx;
   color: #4e4b4b;
 }
 
 .btn-wrap {
   width: 80%;
   padding: 20px 0;
-  text-align: center;
   margin: auto;
+  text-align: center;
 }
 
 .pintu-wrap {
-  width: 100%;
   align-items: center;
+  width: 100%;
   padding-left: 60rpx;
 }
 
@@ -237,13 +237,13 @@ input{
 }
 
 .pintu-item-wrap {
-  height: 100px;
   width: 30%;
+  height: 100px;
 }
 
 .pintu-item {
-  line-height: 100px;
-  height: 100%;
   width: 100%;
+  height: 100%;
+  line-height: 100px;
 }
 </style>

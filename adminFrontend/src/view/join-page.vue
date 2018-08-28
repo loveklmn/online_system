@@ -24,12 +24,13 @@ export default {
 </script>
 
 <style>
-.qq-group-img{
+.qq-group-img {
   display: block;
-  margin: 0 auto;
   width: 240px;
+  margin: 0 auto;
 }
-.qq-group-intro{
+
+.qq-group-intro {
   padding: 20px;
   font-size: 16px;
 }

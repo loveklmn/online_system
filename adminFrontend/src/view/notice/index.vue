@@ -45,16 +45,18 @@ export default {
 .top-menu {
   margin-top: 2%;
 }
+
 .top-menu-btn {
   display: inline-block;
   width: 15%;
   height: 13%;
+  margin-right: 0;
+  margin-left: 0;
   background-color: #4693db;
-  margin-left: 0px;
-  margin-right: 0px;
 }
+
 .top-menu-divider {
-  margin: 0px;
+  margin: 0;
   background-color: #b4babf;
 }
 </style>

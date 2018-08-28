@@ -115,44 +115,44 @@ page {
 .auth {
     position: absolute;
     top: 0;
-    left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.2);
+    left: 0;
     z-index: 20;
+    background: rgba(0,0,0,0.2);
 }
 
 .auth .modal_IOS {
-    width: 620rpx;
-    height: 516rpx;
-    background: #fff;
-    border-radius: 10rpx;
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-left: -310rpx;
-    margin-top: -358rpx;
     display: -webkit-box;
     display: -webkit-flex;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 620rpx;
+    height: 516rpx;
+    margin-top: -358rpx;
+    margin-left: -310rpx;
+    background: #fff;
+    border-radius: 10rpx;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    flex-direction: column;
     -webkit-box-pack: justify;
-    justify-content: space-between;
     -webkit-box-align: center;
-    align-items: center;
 }
 
 .auth .modal_IOS .title {
-    font-weight: bold;
-    height: 98rpx;
-    line-height: 98rpx;
-    width: 100%;
-    text-align: center;
-    font-size: 36rpx;
-    color: #000;
     box-sizing: border-box;
+    width: 100%;
+    height: 98rpx;
+    font-size: 36rpx;
+    font-weight: bold;
+    line-height: 98rpx;
+    color: #000;
+    text-align: center;
     letter-spacing: 1.8rpx;
     border-bottom: 1rpx solid #C7C6C8;
 }
@@ -164,107 +164,107 @@ page {
 }
 
 .auth .modal_IOS .des {
-    width: 500rpx;
-    font-size: 30rpx;
-    color: #000;
-    line-height: 97rpx;
     box-sizing: border-box;
+    width: 500rpx;
     height: 97rpx;
+    font-size: 30rpx;
+    line-height: 97rpx;
+    color: #000;
     border-bottom: 1rpx solid #DADADA;
 }
 
 .auth .modal_IOS .con {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    flex: 1;
     width: 500rpx;
+    margin-top: 35rpx;
     font-size: 28rpx;
     color: #888888;
     text-align: center;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: flex;
-    margin-top: 35rpx;
     -webkit-box-flex: 1;
-    flex: 1;
 }
 
 .auth .modal_IOS .con::before {
-    content: '';
     display: block;
     width: 10rpx;
     height: 10rpx;
+    margin: 14rpx 19rpx 0 0;
+    content: '';
     background: #888;
     border-radius: 50%;
-    margin: 14rpx 19rpx 0 0;
 }
 
 .auth .modal_IOS .operator {
-    width: 100%;
-    height: 88rpx;
-    font-size: 34rpx;
-    color: #000;
     box-sizing: border-box;
-    border-top: 1rpx solid #CAC9CB;
-    margin-bottom: 0;
     display: -webkit-box;
     display: -webkit-flex;
     display: flex;
+    width: 100%;
+    height: 88rpx;
+    margin-bottom: 0;
+    font-size: 34rpx;
+    color: #000;
+    border-top: 1rpx solid #CAC9CB;
 }
 
 .auth .modal_IOS .operator .refuse {
-    text-align: center;
-    -webkit-box-flex: 1;
     flex: 1;
     height: 100%;
     line-height: 86rpx;
+    text-align: center;
+    -webkit-box-flex: 1;
 }
 
 .auth .modal_IOS .operator .agree {
-    text-align: center;
-    -webkit-box-flex: 1;
-    flex: 1;
     box-sizing: border-box;
-    border-left: 1rpx solid #CAC9CB;
-    color: #2FB922;
-    line-height: 86rpx;
+    flex: 1;
     height: 100%;
+    line-height: 86rpx;
+    color: #2FB922;
+    text-align: center;
+    border-left: 1rpx solid #CAC9CB;
+    -webkit-box-flex: 1;
 }
 
 .auth .modal {
-    padding: 60rpx 50rpx 50rpx 50rpx;
-    width: 550rpx;
-    height: 490rpx;
-    background: #fff;
-    box-sizing: border-box;
-    border-radius: 3rpx;
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-left: -285rpx;
-    margin-top: -245rpx;
+    box-sizing: border-box;
     display: -webkit-box;
     display: -webkit-flex;
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 550rpx;
+    height: 490rpx;
+    padding: 60rpx 50rpx 50rpx 50rpx;
+    margin-top: -245rpx;
+    margin-left: -285rpx;
+    background: #fff;
+    border-radius: 3rpx;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    flex-direction: column;
     -webkit-box-pack: justify;
-    justify-content: space-between;
 }
 
 .auth .modal .title {
     font-size: 38rpx;
-    color: #353535;
     font-weight: bold;
+    color: #353535;
 }
 
 .auth .modal .wrap {
+    box-sizing: border-box;
     display: -webkit-box;
     display: -webkit-flex;
     display: flex;
-    height: 150rpx;
-    -webkit-box-align: center;
     align-items: center;
+    height: 150rpx;
     border-bottom: 1rpx solid #DADADA;
-    box-sizing: border-box;
+    -webkit-box-align: center;
 }
 
 .auth .modal .wrap image {
@@ -273,45 +273,45 @@ page {
 }
 
 .auth .modal .wrap .des {
+    flex: 1;
+    margin-left: 25rpx;
     font-size: 28rpx;
     color: #353535;
     letter-spacing: 1.4rpx;
-    margin-left: 25rpx;
     -webkit-box-flex: 1;
-    flex: 1;
 }
 
 .auth .modal .con {
-    font-size: 28rpx;
-    color: #888888;
-    text-align: center;
     display: -webkit-box;
     display: -webkit-flex;
     display: flex;
-    margin-top: 40rpx;
-    -webkit-box-flex: 1;
     flex: 1;
+    margin-top: 40rpx;
+    font-size: 28rpx;
+    color: #888888;
+    text-align: center;
+    -webkit-box-flex: 1;
 }
 
 .auth .modal .con::before {
-    content: '';
     display: block;
     width: 10rpx;
     height: 10rpx;
+    margin: 14rpx 19rpx 0 0;
+    content: '';
     background: #888;
     border-radius: 50%;
-    margin: 14rpx 19rpx 0 0;
 }
 
 .auth .modal .operator {
-    font-size: 28rpx;
-    color: #000;
     box-sizing: border-box;
     display: -webkit-box;
     display: -webkit-flex;
     display: flex;
-    -webkit-box-pack: end;
     justify-content: flex-end;
+    font-size: 28rpx;
+    color: #000;
+    -webkit-box-pack: end;
 }
 
 .auth .modal .operator .refuse {
@@ -319,24 +319,24 @@ page {
 }
 
 .auth .modal .operator .agree {
-    color: #2FB922;
     margin-right: 20rpx;
+    color: #2FB922;
 }
 
 .player .voice {
     position: relative;
-    height: 90rpx;
+    box-sizing: border-box;
     display: -webkit-box;
     display: flex;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
     display: -webkit-flex;
+    align-items: center;
+    justify-content: center;
     width: 140rpx;
+    height: 90rpx;
     margin: 0 auto;
     text-align: center;
-    box-sizing: border-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
 }
 
 .player .voice image {
@@ -345,99 +345,99 @@ page {
 }
 
 .horizon-progress .progress {
-    margin: 36rpx auto;
-    width: 630rpx;
-    height: 16rpx;
-    background: #F6F6F6;
-    border-radius: 100rpx;
     position: relative;
     box-sizing: border-box;
+    width: 630rpx;
+    height: 16rpx;
+    margin: 36rpx auto;
+    background: #F6F6F6;
+    border-radius: 100rpx;
 }
 
 .horizon-progress .progress .curr_progress {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
     left: 0;
     height: 8rpx;
     background-image: linear-gradient(135deg,#FFD600 0,#FF702B 100%);
     border-radius: 100rpx;
+    transform: translateY(-50%);
 }
 
 .warn-modal {
     position: fixed;
-    width: 100%;
-    height: 100%;
     top: 0;
     left: 0;
-    background: rgba(0,0,0,0.16);
     z-index: 11;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.16);
 }
 
 .warn-modal .modal {
-    width: 560rpx;
-    height: 380rpx;
     position: fixed;
-    z-index: 3;
-    background: #fff;
-    border-radius: 8rpx;
     top: 330rpx;
     left: 50%;
+    z-index: 3;
+    width: 560rpx;
+    height: 380rpx;
+    background: #fff;
+    border-radius: 8rpx;
     transform: translateX(-50%);
 }
 
 .warn-modal .modal .topnav {
-    text-align: right;
     overflow: hidden;
+    text-align: right;
 }
 
 .warn-modal .modal .topnav .close_container {
+    box-sizing: border-box;
+    float: right;
     width: 82rpx;
     height: 72rpx;
     padding-right: 31rpx;
-    box-sizing: border-box;
-    float: right;
 }
 
 .warn-modal .modal .topnav .close_container .close {
     display: none;
-    margin-top: 30rpx;
     width: 30rpx;
     height: 30rpx;
+    margin-top: 30rpx;
 }
 
 .warn-modal .modal .rest {
-    padding: 30rpx 47rpx;
     box-sizing: border-box;
+    padding: 30rpx 47rpx;
 }
 
 .warn-modal .modal .rest .winner {
+    display: block;
     width: 82rpx;
     height: 82rpx;
-    display: block;
     margin: 0 auto;
 }
 
 .warn-modal .modal .rest .nickname {
+    margin-top: 34rpx;
     font-size: 36rpx;
     color: #322A22;
-    margin-top: 34rpx;
     text-align: center;
 }
 
 .warn-modal .modal .rest .desc {
+    margin-top: 30rpx;
     font-size: 30rpx;
     color: #B1A79D;
     text-align: center;
-    margin-top: 30rpx;
 }
 
 .warn-modal .modal .rest .introduce-item {
-    padding: 0 40rpx;
     box-sizing: border-box;
     display: -webkit-box;
     display: flex;
     display: -webkit-flex;
+    padding: 0 40rpx;
     margin-bottom: 50rpx;
 }
 
@@ -455,8 +455,8 @@ page {
 }
 
 .warn-modal .modal .rest .introduce-item .introduce-container .title {
-    color: #322A20;
     font-size: 30rpx;
+    color: #322A20;
 }
 
 .warn-modal .modal .rest .introduce-item .introduce-container .introduce-desc {
@@ -468,13 +468,13 @@ page {
 .warn-modal .modal .rest button {
     width: 240rpx;
     height: 90rpx;
-    background: #FFD600;
-    box-shadow: 0 1rpx 15rpx 0 rgba(236,205,46,0.5);
-    border-radius: 100rpx;
     margin: 35rpx auto;
     font-size: 30rpx;
     line-height: 90rpx;
     color: #322A22;
+    background: #FFD600;
+    border-radius: 100rpx;
+    box-shadow: 0 1rpx 15rpx 0 rgba(236,205,46,0.5);
 }
 
 .warn-modal .modal .rest button::after {
@@ -490,15 +490,15 @@ page {
 }
 
 .book_container .bookinfo {
+    box-sizing: border-box;
     display: -webkit-box;
     display: flex;
-    -webkit-box-pack: start;
-    justify-content: flex-start;
-    -webkit-box-align: center;
-    align-items: center;
     display: -webkit-flex;
-    box-sizing: border-box;
+    align-items: center;
+    justify-content: flex-start;
     padding: 35rpx 53rpx;
+    -webkit-box-pack: start;
+    -webkit-box-align: center;
 }
 
 .book_container .bookinfo .image {
@@ -523,32 +523,32 @@ page {
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 10;
     width: 100%;
     height: 100%;
-    background: rgba(255,255,255,0);
-    z-index: 10;
     text-align: center;
+    background: rgba(255,255,255,0);
 }
 
 .transparentmodal image {
-    margin-top: 442rpx;
     width: 180rpx;
     height: 180rpx;
+    margin-top: 442rpx;
 }
 
 .answer .word {
-    font-weight: bold;
     font-size: 80rpx;
+    font-weight: bold;
     color: #322A22;
     text-align: center;
 }
 
 .answer .wordb {
+    margin-bottom: 25rpx;
     font-size: 30rpx;
     font-weight: bold;
     color: #554C44;
     text-align: center;
-    margin-bottom: 25rpx;
 }
 
 .answer .btn_group {
@@ -561,18 +561,18 @@ page {
 }
 
 .answer .btn_group .btn_container button {
+    box-sizing: border-box;
     width: 100%;
     height: 100rpx;
+    margin-bottom: 40rpx;
+    font-size: 30rpx;
+    line-height: 100rpx;
+    color: #554C44;
+    text-align: left;
+    text-indent: 126rpx;
+    background: #fff;
     border-radius: 100rpx;
     box-shadow: 0 2rpx 16rpx 0 rgba(210,210,210,0.6);
-    background: #fff;
-    font-size: 30rpx;
-    color: #554C44;
-    text-indent: 126rpx;
-    text-align: left;
-    line-height: 100rpx;
-    box-sizing: border-box;
-    margin-bottom: 40rpx;
 }
 
 .answer .btn_group .btn_container button::after {
@@ -597,8 +597,8 @@ page {
     position: absolute;
     top: 50%;
     left: 70rpx;
-    transform: translateY(-50%);
     font-size: 30rpx;
+    transform: translateY(-50%);
 }
 
 .answer .btn_group .btn_container #options.check {
@@ -607,35 +607,35 @@ page {
 
 .answer .desc-group {
     position: relative;
+    height: 520rpx;
     padding: 40rpx 0;
     margin: 0 auto;
-    height: 520rpx;
 }
 
 .answer .desc-group .tobottom {
     position: absolute;
     bottom: 10rpx;
     left: 50%;
-    transform: translateX(-50%);
     width: 76rpx;
     height: 76rpx;
+    transform: translateX(-50%);
 }
 
 .answer .desc-group .about_item {
-    padding-right: 60rpx;
     display: -webkit-box;
     display: flex;
     display: -webkit-flex;
-    margin-top: 50rpx;
     justify-content: space-around;
+    padding-right: 60rpx;
+    margin-top: 50rpx;
     font-size: 34rpx;
     color: #554C44;
 }
 
 .answer .desc-group .about_item .icon {
-    margin: 16rpx 40rpx 0;
     width: 14rpx;
     height: 14rpx;
+    margin: 16rpx 40rpx 0;
     background: #5FBFFB;
     border-radius: 50%;
 }
@@ -658,9 +658,9 @@ page {
 }
 
 .answer .desc-group .about_item .paragraph .title {
-    color: #554C44;
-    font-size: 28rpx;
     margin-bottom: 15rpx;
+    font-size: 28rpx;
+    color: #554C44;
 }
 
 .answer .desc-group .about_item .paragraph .b {
@@ -669,25 +669,25 @@ page {
 }
 
 .answer .desc-group .about_item .paragraph .desc {
-    opacity: .6;
+    margin-top: 10rpx;
     font-size: 28rpx;
     color: #554C44;
-    margin-top: 10rpx;
+    opacity: .6;
 }
 
 .nosure {
     position: relative;
+    box-sizing: border-box;
     width: 630rpx;
     height: 100rpx;
+    font-size: 30rpx;
+    line-height: 100rpx;
+    color: #554C44;
+    text-align: left;
+    text-indent: 160rpx;
+    background: #fff;
     border-radius: 100rpx;
     box-shadow: 0 2rpx 16rpx 0 rgba(210,210,210,0.6);
-    background: #fff;
-    font-size: 30rpx;
-    color: #554C44;
-    text-indent: 160rpx;
-    text-align: left;
-    line-height: 100rpx;
-    box-sizing: border-box;
 }
 
 .nosure::after {
@@ -706,34 +706,34 @@ page {
 
 .nosure .time {
     position: absolute;
-    font-size: 30rpx;
-    right: 45rpx;
     top: 50%;
-    transform: translateY(-50%);
-    color: #44D878;
+    right: 45rpx;
+    font-size: 30rpx;
     font-weight: bold;
+    color: #44D878;
+    transform: translateY(-50%);
 }
 
 .circle-container {
-    width: 36rpx;
-    height: 36rpx;
-    border-radius: 50%;
-    border: 8rpx solid #44D878;
-    box-sizing: border-box;
     position: absolute;
     top: 31rpx;
     left: 83rpx;
+    box-sizing: border-box;
+    width: 36rpx;
+    height: 36rpx;
+    border: 8rpx solid #44D878;
+    border-radius: 50%;
 }
 
 #cir {
+    position: absolute;
     top: 31rpx;
     left: 83rpx;
     box-sizing: border-box;
-    position: absolute;
     width: 36rpx;
     height: 36rpx;
-    border-radius: 50%;
     border: 8rpx solid #F0F0F0;
+    border-radius: 50%;
 }
 
 .left {
@@ -745,15 +745,15 @@ page {
 }
 
 .stable-right {
-    width: 36rpx;
-    height: 36rpx;
-    border-radius: 50%;
-    border: 8rpx solid #44D878;
     position: absolute;
     top: 31rpx;
     left: 83rpx;
     box-sizing: border-box;
+    width: 36rpx;
+    height: 36rpx;
     clip: rect(0,36rpx,36rpx,18rpx);
+    border: 8rpx solid #44D878;
+    border-radius: 50%;
 }
 
 .warn-style {

@@ -144,10 +144,12 @@ export default {
 </script>
 <style>
 @import "./common.css";
+
 .preview-div {
   display: flex;
   width: 300px;
 }
+
 .pic {
   width: 33%;
 }

@@ -163,22 +163,22 @@ swiper-item {
 }
 
 .slide-image {
+    display: block;
     width: 665rpx;
     height: 920rpx;
-    display: block;
 }
 
 swiper-item label {
     position: absolute;
-    box-sizing: border-box;
-    border-radius: 3px;
     /* border: 2px solid #5187e8; */
     z-index: 999;
+    box-sizing: border-box;
+    border-radius: 3px;
 }
 
 swiper-item label.active {
-    border: 2px solid #5187e8;
     z-index: 999;
+    border: 2px solid #5187e8;
 }
 
 .item {
@@ -194,9 +194,9 @@ font-size: 28rpx;
 }
 
 .banner {
+  display: block;
   width: 100%;
   height: auto;
-  display: block;
 }
 
 .slide-image {
@@ -211,15 +211,15 @@ font-size: 28rpx;
 }
 
 .weui-grid__label {
+  display: block;
   padding-top: 50rpx;
   margin-top: 5px;
-  display: block;
-  text-align: center;
-  color: #000;
-  font-size: 14px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   overflow: hidden;
+  font-size: 14px;
+  color: #000;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .foot_item {
@@ -239,9 +239,9 @@ font-size: 28rpx;
 }
 
 .main .box {
+    position: relative;
     width: 100%;
     height: 100%;
-    position: relative;
 }
 
 .main .box .locked {
@@ -263,9 +263,9 @@ swiper-item {
 }
 
 .slide-image {
+    display: block;
     width: 100%;
     height: 100%;
-    display: block;
 }
 
 swiper-item label {
@@ -279,16 +279,16 @@ swiper-item label.active {
 }
 
 .footer {
-    box-sizing: border-box;
     position: fixed;
     bottom: 0;
+    box-sizing: border-box;
     width: 100%;
-    padding: 0 104rpx;
     height: 82px;
-    background: url('https://ddbcdn.kingsunedu.com/wx/v2/book_bg.png') center top no-repeat;
-    background-size: cover;
+    padding: 0 104rpx;
     font-size: 24rpx;
     color: #888;
+    background: url('https://ddbcdn.kingsunedu.com/wx/v2/book_bg.png') center top no-repeat;
+    background-size: cover;
 }
 
 .footer .item {
@@ -330,11 +330,11 @@ swiper-item label.active {
 
 .mask {
     position: fixed;
-    z-index: 100;
     top: 0;
     right: 0;
-    left: 0;
     bottom: 0;
+    left: 0;
+    z-index: 100;
     background: rgba(0,0,0,0.6);
 }
 
@@ -342,15 +342,15 @@ swiper-item label.active {
     position: fixed;
     right: 0;
     bottom: 0;
+    z-index: 101;
     width: 80%;
     height: 100%;
     overflow: auto;
     background-color: #fff;
-    transform: translate(100%,0);
-    backface-visibility: hidden;
-    z-index: 101;
     transition: transform 0.3s;
     transition: transform 0.3s,-webkit-transform 0.3s;
+    transform: translate(100%,0);
+    backface-visibility: hidden;
 }
 
 .rightSlide .toggle {
@@ -358,8 +358,8 @@ swiper-item label.active {
 }
 
 .rightSlide .wrapper .bd {
-    padding: 50rpx 27rpx 0 40rpx;
     position: relative;
+    padding: 50rpx 27rpx 0 40rpx;
 }
 
 .rightSlide .wrapper .bd .item {
@@ -368,8 +368,8 @@ swiper-item label.active {
 
 .rightSlide .wrapper .bd .sub {
     padding: 0 0 0 20rpx;
-    line-height: 86rpx;
     font-size: 28rpx;
+    line-height: 86rpx;
 }
 
 .rightSlide .locked .h3 {
@@ -379,14 +379,14 @@ swiper-item label.active {
 }
 
 .rightSlide .locked:first-child .h3,.rightSlide .item:first-child .h3 {
-    background: none;
     padding-right: 145rpx;
+    background: none;
 }
 
 .rightSlide .translate {
     position: absolute;
-    right: 27rpx;
     top: 40rpx;
+    right: 27rpx;
     width: 139rpx;
     height: 49rpx;
 }
@@ -397,15 +397,15 @@ swiper-item label.active {
 }
 
 .translate-warp {
-    box-sizing: border-box;
     position: absolute;
     top: 0;
-    left: 0;
     right: 0;
+    left: 0;
+    box-sizing: border-box;
+    padding: 10rpx 30rpx;
+    font-size: 28rpx;
+    color: #fff;
     text-align: center;
     background: rgba(0,0,0,0.5);
-    color: #fff;
-    font-size: 28rpx;
-    padding: 10rpx 30rpx;
 }
 </style>

@@ -46,10 +46,11 @@ export default {
 </script>
 
 <style>
-.update-table-intro{
+.update-table-intro {
   margin-top: 10px;
 }
-.code-high-line{
+
+.code-high-line {
   color: #2d8cf0;
 }
 </style>

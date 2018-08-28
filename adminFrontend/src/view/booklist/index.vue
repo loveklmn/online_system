@@ -185,12 +185,14 @@ export default {
 .bookshelf {
   margin: 3%;
 }
+
 .new-book-btn {
+  width: 20%;
   margin-top: 2%;
   margin-bottom: 2%;
   margin-left: 40%;
-  width: 20%;
 }
+
 .page-bar {
   margin-top: 3%;
 }

@@ -188,26 +188,31 @@ export default {
 </script>
 <style scoped>
 .layout-con {
-    height: 100%;
-    width: 100%;
+  width: 100%;
+  height: 100%;
 }
+
 .menu {
   height: 560px;
 }
+
 .menu-item {
   padding: auto;
   margin: 0;
 }
+
 .add-page-button {
-  margin-top: 5px;
-  width: 100px;
-  margin-left: 25px;
-  margin-right: 25px;
   display: block;
+  width: 100px;
+  margin-top: 5px;
+  margin-right: 25px;
+  margin-left: 25px;
 }
+
 .page-num {
   font-size: 30px;
 }
+
 .preview {
   display: block;
   width: 100px;
@@ -216,6 +221,7 @@ export default {
   margin: auto;
   border: 2px solid grey;
 }
+
 .preview-selected {
   display: block;
   width: 100px;
@@ -224,6 +230,7 @@ export default {
   margin: auto;
   border: 2px solid red;
 }
+
 .pageimport {
   height: 560px;
 }

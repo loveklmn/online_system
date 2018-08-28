@@ -87,25 +87,30 @@ export default {
 <style lang="less" scoped>
 .main-layout {
   height: 100%;
+
   .top-title {
     margin-bottom: 3%;
+
     .top-title-card {
       font-size: 20px;
       font-style: italic;
       background-color: #dcd7d7;
     }
   }
+
   .center-body {
     display: flex;
     flex-direction: row;
-    width: 100%;
     align-items: stretch;
+    width: 100%;
     height: 100%;
+
     .left-menu-card {
+      flex-grow: 1;
       padding-top: 2%;
       border: solid 1px;
       border-color: lightgrey;
-      flex-grow: 1;
+
       .left-menu-btn {
         display: block;
         width: 100%;
@@ -113,21 +118,26 @@ export default {
         background-color: #4693db;
       }
     }
+
     .right-content {
       flex-grow: 7;
       border: solid 1px;
       border-color: lightgrey;
+
       .right-content-card {
         height: 100%;
       }
+
       .operation-btns {
         margin-top: 2%;
         text-align: center;
+
         .op-btn {
-          margin-left: 3%;
           margin-right: 3%;
+          margin-left: 3%;
         }
       }
+
       .editor-wrapper {
         .w-e-text-container {
           height: 500px;
@@ -138,10 +148,10 @@ export default {
 }
 
 .cover-picture {
-  margin-left: 70px;
-  margin-top: 40px;
   width: 200px;
   height: 250px;
+  margin-top: 40px;
+  margin-left: 70px;
 }
 
 </style>

@@ -96,43 +96,43 @@ export default {
 .swiper-content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
 }
 
 .tab {
     position: fixed;
+    position: relative;
+    top: 0;
+    left: 0;
     display: flex;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     width: 660rpx;
     height: 100rpx;
     border-radius: 50rpx;
-    left: 0;
-    top: 0;
-    position: relative;
 }
 
 .tab>image {
+    position: absolute;
+    top: -1rpx;
+    left: -1rpx;
     width: 414rpx;
     height: 54rpx;
-    position: absolute;
-    left: -1rpx;
-    top: -1rpx;
 }
 
 .tab-item {
-    font-size: 30rpx;
+    position: absolute;
+    top: 10rpx;
+    left: -10rpx;
     width: 340rpx;
     height: 80rpx;
+    font-size: 30rpx;
     line-height: 80rpx;
     text-align: center;
-    position: absolute;
-    left: -10rpx;
-    top: 10rpx;
 }
 
 .tab-item2 {
@@ -140,10 +140,10 @@ export default {
 }
 
 .tab-item-current {
-    background-color: #00a7fe;
-    border-radius: 40rpx;
     font-weight: bold;
     color: #fff;
+    background-color: #00a7fe;
+    border-radius: 40rpx;
 }
 
 .swiper-content>swiper {
@@ -160,12 +160,12 @@ export default {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    border: solid #00a7fe 1rpx;
-    border-radius: 10rpx;
+    width: 660rpx;
     height: 140rpx;
     margin-top: 25rpx;
     margin-left: 45rpx;
-    width: 660rpx;
+    border: solid #00a7fe 1rpx;
+    border-radius: 10rpx;
 }
 
 .rank-list-item:first-child {
@@ -180,27 +180,27 @@ export default {
 .rank-num>view {
     width: 50rpx;
     height: 50rpx;
-    border-radius: 50%;
-    background-color: #dcaa63;
     font-size: 18rpx;
+    font-weight: bold;
+    line-height: 50rpx;
     color: #382198;
     text-align: center;
-    line-height: 50rpx;
-    font-weight: bold;
+    background-color: #dcaa63;
+    border-radius: 50%;
 }
 
 .user-head {
     width: 100rpx;
     height: 100rpx;
-    border-radius: 50%;
-    border: solid 3rpx #d0e2ef;
     margin-left: 30rpx;
+    border: solid 3rpx #d0e2ef;
+    border-radius: 50%;
 }
 
 .user-name {
     width: 250rpx;
-    font-size: 32rpx;
     margin-left: 28rpx;
+    font-size: 32rpx;
 }
 
 .user-challenge-success-times {
@@ -220,27 +220,27 @@ export default {
 
 page {
     width: 100%;
-    background-color: #91ccf0;
-    color: white;
     height: 100%;
+    color: white;
+    background-color: #91ccf0;
 }
 
 .container {
     display: flex;
-    justify-content: center;
     align-items: flex-start;
-    margin-top: 20rpx;
+    justify-content: center;
     width: 100%;
     height: 100%;
+    margin-top: 20rpx;
 }
 
 .main-bg {
     position: fixed;
     bottom: 0;
     left: 0;
+    z-index: -1;
     width: 750rpx;
     height: 1214rpx;
-    z-index: -1;
 }
 
 .main-content {
@@ -256,9 +256,9 @@ button,button::after {
     position: fixed;
     top: 80rpx;
     left: 0;
+    z-index: -1;
     width: 584rpx;
     height: 958rpx;
-    z-index: -1;
     margin-left: 83rpx;
 }
 </style>

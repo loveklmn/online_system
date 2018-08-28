@@ -71,29 +71,29 @@ export default {
 }
 
 .weui-grid__label {
-  margin-top: 5px;
   display: block;
-  text-align: center;
-  color: #000;
-  font-size: 14px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  margin-top: 5px;
   overflow: hidden;
+  font-size: 14px;
+  color: #000;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .punch {
   position: fixed;
-  left: 690rpx;
-  padding-left: 20rpx;
   top: 110rpx;
-  padding-top: 10rpx;
+  left: 690rpx;
+  z-index: 9999;
   width: 80rpx;
   height: 100rpx;
-  color: #6db0eb;
+  padding-top: 10rpx;
+  padding-left: 20rpx;
   font-size: 30rpx;
+  color: #6db0eb;
   background-color: #ebf9fe;
   border: none;
-  z-index: 9999;
   border-radius: 20%;
 }
 </style>

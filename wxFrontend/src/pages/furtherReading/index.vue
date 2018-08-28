@@ -163,9 +163,9 @@ export default {
 <style scoped>
 @import url("~mpvue-wxparse/src/wxParse.css");
 page {
-    background-color: #F8F8F8;
-    font-size: 16px;
     font-family: -apple-system-font, Helvetica Neue, Helvetica, sans-serif;
+    font-size: 16px;
+    background-color: #F8F8F8;
 }
 
 .homework_text {
@@ -173,8 +173,8 @@ page {
 }
 
 .submit-button{
-  clear:both;
   padding : 20rpx 10rpx;
+  clear:both;
 }
 
 .page__hd {
@@ -186,8 +186,8 @@ page {
 }
 
 .page__bd_spacing {
-    padding-left: 15px;
     padding-right: 15px;
+    padding-left: 15px;
 }
 
 .page__ft {
@@ -196,16 +196,16 @@ page {
 }
 
 .page__title {
-    text-align: left;
     font-size: 20px;
     font-weight: 400;
+    text-align: left;
 }
 
 .page__desc {
     margin-top: 5px;
+    font-size: 14px;
     color: #888888;
     text-align: left;
-    font-size: 14px;
 }
 
 .weui-article {
@@ -218,15 +218,15 @@ page {
 }
 
 .weui-article__h1 {
+  margin-bottom: 0.9em;
   font-size: 18px;
   font-weight: 400;
-  margin-bottom: 0.9em;
 }
 
 .weui-article__h2 {
+  margin-bottom: 0.34em;
   font-size: 16px;
   font-weight: 400;
-  margin-bottom: 0.34em;
 }
 
 .submitted_homework {
@@ -234,9 +234,9 @@ page {
 }
 
 .weui-article__h3 {
-  font-weight: 400;
-  font-size: 15px;
   margin-bottom: 0.34em;
+  font-size: 15px;
+  font-weight: 400;
 }
 
 .weui-article__p {
@@ -247,10 +247,10 @@ page {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  padding-bottom: 10px;
-  -webkit-box-align: center;
   -webkit-align-items: center;
   align-items: center;
+  padding-bottom: 10px;
+  -webkit-box-align: center;
 }
 
 .weui-uploader__title {
@@ -264,8 +264,8 @@ page {
 }
 
 .weui-uploader__bd {
-  margin-bottom: -4px;
   margin-right: -9px;
+  margin-bottom: -4px;
   overflow: hidden;
 }
 
@@ -286,12 +286,12 @@ page {
 }
 
 .weui-uploader__file_status:before {
-  content: " ";
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
+  content: " ";
   background-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -299,30 +299,30 @@ page {
   position: absolute;
   top: 50%;
   left: 50%;
+  color: #fff;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  color: #fff;
 }
 
 .weui-uploader__input-box {
-  float: left;
   position: relative;
-  margin-right: 9px;
-  margin-bottom: 9px;
+  float: left;
   width: 77px;
   height: 77px;
+  margin-right: 9px;
+  margin-bottom: 9px;
   border: 1px solid #d9d9d9;
 }
 
 .weui-uploader__input-box:after,
 .weui-uploader__input-box:before {
-  content: " ";
   position: absolute;
   top: 50%;
   left: 50%;
+  content: " ";
+  background-color: #d9d9d9;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  background-color: #d9d9d9;
 }
 
 .weui-uploader__input-box:before {
@@ -346,9 +346,9 @@ page {
 
 .weui-uploader__input {
   position: absolute;
-  z-index: 1;
   top: 0;
   left: 0;
+  z-index: 1;
   width: 100%;
   height: 100%;
   opacity: 0;
@@ -363,27 +363,27 @@ page {
 }
 
 .delete-icon {
-  display: block;
   position: absolute;
+  top: -20rpx;
+  right: 0;
+  z-index: 5;
+  display: block;
   width: 40rpx;
   height: 40rpx;
   background: #f43530;
-  right: 0;
-  top: -20rpx;
   border-radius: 40rpx;
-  z-index: 5;
 }
 
 .delete-icon::before {
-  display: block;
-  content: '';
-  width: 26rpx;
-  height: 4rpx;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  display: block;
+  width: 26rpx;
+  height: 4rpx;
+  content: '';
   background: #fff;
+  transform: translate(-50%, -50%);
 }
 
 </style>

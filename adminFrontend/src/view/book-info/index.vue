@@ -189,67 +189,81 @@ export default {
 .book-info {
   display: flex;
   flex-direction: column;
-  width:90%;
+  width: 90%;
   height: 80%;
+
   .top-part {
     flex-grow: 2;
     margin-top: 2%;
-    margin-bottom:2%;
+    margin-bottom: 2%;
+
     .basic-info {
       .query-book {
         display: flex;
         flex-direction: row;
+
         .cover {
           min-width: 130px;
         }
+
         .book-cover {
           display: block;
-          max-width: 130px;
-          max-height: 200px;
           width: auto;
+          max-width: 130px;
           height: auto;
+          max-height: 200px;
         }
+
         .book-detail {
           flex-grow: 3;
+
           .book-title {
-            font-size: 20px;
             margin-left: 7%;
+            font-size: 20px;
           }
+
           .book-else-title {
-            font-size: 16px;
             margin-top: 2%;
             margin-left: 7%;
+            font-size: 16px;
           }
+
           .modify-btn {
             margin-top: 2%;
             margin-left: 7%;
           }
         }
       }
+
       .new-book {
         display: flex;
         flex-direction: row;
+
         .book-cover {
           display: block;
+          width: auto;
           min-width: 130px;
           max-width: 130px;
-          max-height: 200px;
-          width: auto;
           height: auto;
+          max-height: 200px;
         }
+
         .new-detail {
-          width: 50px;
           flex-grow: 3;
+          width: 50px;
         }
       }
     }
   }
+
   .bottom-part {
     flex-grow: 2;
     margin-bottom: 2%;
+
     .function-entrance {
       display: flex;
       flex-direction: row;
+
       .level-icon {
         flex-grow: 1;
         margin: 3%;
@@ -257,6 +271,7 @@ export default {
     }
   }
 }
+
 .upload-picture {
   width: 50%;
   height: 50%;
