@@ -57,7 +57,7 @@
           <Button :to="`/book/${currentBook.id}/assignment`" shape="circle" class="level-icon" type="primary">
             阅读拓展导入
           </Button>
-          <Button :to="`/book/${currentBook.id}/ebook`" shape="circle" class="level-icon" type="primary">
+          <Button :to="`/book/${currentBook.id}/game`" shape="circle" class="level-icon" type="primary">
             游戏素材导入
           </Button>
           <Button :to="`/book/${currentBook.id}/ebook`" shape="circle" class="level-icon" type="primary">

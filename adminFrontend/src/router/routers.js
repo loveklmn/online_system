@@ -115,6 +115,14 @@ export default [
           hideInMenu: true
         },
         component: () => import('@/view/assignment')
+      },
+      {
+        path: ':id/game',
+        name: 'game',
+        meta: {
+          hideInMenu: true
+        },
+        component: () => import('@/view/import-game')
       }
     ]
   },

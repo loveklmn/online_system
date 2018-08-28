@@ -174,7 +174,7 @@ swiper-item label {
     position: absolute;
     box-sizing: border-box;
     border-radius: 3px;
-    border: 2px solid #5187e8;
+    /* border: 2px solid #5187e8; */
     z-index: 999;
 }
 
