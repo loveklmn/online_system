@@ -86,13 +86,13 @@ export default {
 <style scoped>
 
 .container {
-  height: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  height: 100%;
   padding: 200rpx 0;
-  box-sizing: border-box;
 }
 
 .userinfo {

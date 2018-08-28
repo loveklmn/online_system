@@ -27,22 +27,24 @@ export default {
 }
 </script>
 <style scoped>
-    .layout{
-        border: 1px solid #d7dde4;
-        background: #f5f7f9;
-        position: relative;
-        border-radius: 4px;
-        overflow: hidden;
+    .layout {
+      position: relative;
+      overflow: hidden;
+      background: #f5f7f9;
+      border: 1px solid #d7dde4;
+      border-radius: 4px;
     }
-    .layout-header-bar{
-        background: #fff;
-        box-shadow: 0 1px 1px rgba(0,0,0,.1);
-        font-size: 32px;
-        font-weight: bold;
+
+    .layout-header-bar {
+      background: #fff;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+      font-size: 32px;
+      font-weight: bold;
     }
+
     .content-model {
+      min-height: '220px';
       margin: '20px';
       background-color: '#fff';
-      min-height: '220px';
     }
 </style>

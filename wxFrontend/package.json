@@ -11,7 +11,8 @@
     "lint": "eslint --ext .js,.vue src",
     "precommit": "lint-staged && cd ../adminFrontend && npm run lint && cd ../backend && pylint --disable=R,C --load-plugins pylint_django backend vron",
     "commitmsg": "sh ../commit-msg.sh ${GIT_PARAMS}",
-    "test": "jest"
+    "test": "jest",
+    "stylelint": "stylelint ./node_modules/.bin/stylelint src/pages/**/*.vue"
   },
   "lint-staged": {
     "*.{js,vue}": [
@@ -73,6 +74,11 @@
     "rimraf": "^2.6.0",
     "semver": "^5.3.0",
     "shelljs": "^0.8.1",
+    "stylelint": "^9.5.0",
+    "stylelint-config-recess-order": "^2.0.0",
+    "stylelint-config-recommended": "^2.1.0",
+    "stylelint-config-standard": "^18.2.0",
+    "stylelint-order": "^1.0.0",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "url-loader": "^1.0.1",
     "vue-jest": "^2.6.0",

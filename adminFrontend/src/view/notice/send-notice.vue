@@ -78,59 +78,71 @@ export default {
 <style scoped>
 .avatar-btn {
   flex-grow: 1;
-  margin-left: 5%;
-  margin-right: 2%;
-  max-width: 60px;
-  max-height: 60px;
   width: auto;
+  max-width: 60px;
   height: auto;
+  max-height: 60px;
+  margin-right: 2%;
+  margin-left: 5%;
 }
+
 .message-card {
   flex-grow: 13;
   margin-right: 10%;
 }
+
 .single-message {
   margin-top: 3%;
   margin-left: 4.5%;
 }
+
 .notice-content {
   display: inline-block;
 }
+
 .detail-icon {
   margin-right: 5px;
 }
+
 .ivu-card-head {
-  background-color: #f0f1f3
+  background-color: #f0f1f3;
 }
+
 .new-message {
-  margin-left: 5%;
   width: 65%;
   margin-bottom: 20px;
+  margin-left: 5%;
 }
+
 .new-input {
   width: 75%;
   margin-left: 5%;
-  margin-left: 5%;
 }
+
 .new-card {
   width: 75%;
   margin-left: 5%;
   text-align: right;
 }
+
 .send-btn {
   width: 10%;
 }
+
 .first-divider {
   margin-bottom: 2%;
 }
+
 .second-divider {
   margin-top: 5%;
 }
+
 .send-tip {
   display: inline-block;
   margin-right: 1%;
 }
+
 Button:focus {
-  background-color:olive;
+  background-color: olive;
 }
 </style>

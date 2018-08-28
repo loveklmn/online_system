@@ -50,18 +50,18 @@ export default {
   display: block;
   width: 170rpx;
   height: 240rpx;
-  margin: auto;
   padding-top: 100rpx;
+  margin: auto;
 }
 
 .weui-grid__label {
-  margin-top: 5px;
   display: block;
-  text-align: center;
-  color: #000;
-  font-size: 14px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  margin-top: 5px;
   overflow: hidden;
+  font-size: 14px;
+  color: #000;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

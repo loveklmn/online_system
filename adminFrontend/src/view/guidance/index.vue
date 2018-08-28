@@ -156,84 +156,94 @@ export default {
 </script>
 
 <style scoped>
-.layout{
-    border: 1px solid #d7dde4;
-    background: #f5f7f9;
-    position: relative;
-    border-radius: 4px;
-    overflow: hidden;
+.layout {
+  position: relative;
+  overflow: hidden;
+  background: #f5f7f9;
+  border: 1px solid #d7dde4;
+  border-radius: 4px;
 }
-.layout-header-bar{
-    background: #fff;
-    box-shadow: 0 1px 1px rgba(0,0,0,.1);
+
+.layout-header-bar {
+  background: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
+
 .middle-avatar {
-  margin-left: 40%;
   margin-top: 2%;
   margin-bottom: 2%;
+  margin-left: 40%;
 }
+
 .main-content {
+  margin-right: 4%;
   margin-left: 3%;
   font-size: 20px;
+  background: '#fff';
 }
+
 .vocabulary {
   margin-top: 2%;
+  margin-right: 5%;
   margin-left: 3%;
   font-size: 20px;
 }
+
 .vocabulary-list {
   display: flex;
   flex-direction: row;
 }
+
 .new-word {
   flex-grow: 1;
   margin-left: 2%;
 }
+
 .word-list {
-  width: 2000px;
   flex-grow: 3;
+  width: 2000px;
   margin-right: 5%;
 }
+
 .input-word {
   margin-top: 3%;
   margin-bottom: 3%;
 }
+
 .add-btn {
-  margin-top: 5%;
   width: 50%;
+  margin-top: 5%;
   margin-left: 25%;
 }
+
 .tip-title {
   display: inline-block;
   margin-top: 1%;
   margin-bottom: 2%;
   font-size: 30px;
 }
+
 .operation-btns {
   margin-top: 2%;
-  margin-left: 35%;
   margin-bottom: 3%;
+  margin-left: 35%;
 }
+
 .op-btn {
-  margin: 5px;
   width: 200px;
+  margin: 5px;
   margin-bottom: 5px;
 }
-.main-content {
-  margin: '20px';
-  background: '#fff';
-  margin-right: 4%;
-}
+
 .add-word {
-  margin: 2%;
   width: 15%;
+  margin: 2%;
 }
-.vocabulary {
-  margin-right: 5%;
-}
+
 .ivu-divider.ivu-divider-horizontal {
   background-color: #bcbec1;
 }
+
 .alert-tip {
   margin-top: 2%;
 }

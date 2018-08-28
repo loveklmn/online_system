@@ -72,24 +72,24 @@ export default {
 }
 
 .weui-grid__label {
-  margin-top: 5px;
   display: block;
-  text-align: center;
-  color: #000;
-  font-size: 14px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  margin-top: 5px;
   overflow: hidden;
+  font-size: 14px;
+  color: #000;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .placeholder {
-  margin: 5px;
-  padding: 0 10px;
-  text-align: center;
-  background-color: #ebebeb;
   height: 2.3em;
+  padding: 0 10px;
+  margin: 5px;
   line-height: 2.3em;
   color: #cfcfcf;
+  text-align: center;
+  background-color: #ebebeb;
 }
 
 .weui-flex__item {
@@ -106,9 +106,9 @@ export default {
 }
 
 .flex_item{
-  vertical-align: middle;
   padding: 40rpx 80rpx;
   font-size: 30rpx;
+  vertical-align: middle;
 }
 
 .flex_button{

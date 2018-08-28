@@ -22,7 +22,7 @@
   }
 
 .intro{
-  font-family: -apple-system-font,Helvetica Neue,Helvetica,sans-serif;
-  padding:0 30rpx
+  padding:0 30rpx;
+  font-family: -apple-system-font,Helvetica Neue,Helvetica,sans-serif
 }
 </style>

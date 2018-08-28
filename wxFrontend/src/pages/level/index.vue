@@ -195,9 +195,9 @@ img {
 }
 
 .home_step{
-  clear:both;
-  margin-top:40rpx;
   padding-bottom: 100rpx;
+  margin-top:40rpx;
+  clear:both;
 }
 
 .fsize24{
@@ -205,15 +205,15 @@ img {
 }
 
 .step_k{
-  margin-left: 20px;
   margin-right: 20px;
+  margin-left: 20px;
 }
 
 .step_info{
-  border-radius: 6px;
-  height: 250rpx;
   position: relative;
   width: 670rpx;
+  height: 250rpx;
+  border-radius: 6px;
 }
 
 .step_k .step_info,.step_k .step_more span{
@@ -239,20 +239,20 @@ img {
 }
 
 .step_info .step_title{
-  color:#fff;
   position:absolute;
-  width:100%;
   top:46%;
-  text-align:center;
+  width:100%;
   font-size:17px;
   line-height:31px;
+  color:#fff;
+  text-align:center;
 }
 
 .step_mess{
-  font-size:14px;
-  color:#222;
-  line-height:27px;
   height: 240rpx;
+  font-size:14px;
+  line-height:27px;
+  color:#222;
 }
 
 .step_more{
@@ -262,8 +262,8 @@ img {
 }
 
 .step_more span{
-  border-radius:6px;
-  color:#fff;
   font-size:14px;
+  color:#fff;
+  border-radius:6px;
 }
 </style>
