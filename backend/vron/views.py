@@ -1,4 +1,8 @@
-from vron.models import Notice, IsNoticeReaded, Student, Book, Progress, Word, Page, Sentence, Moment, Like, Comment, Homework, ActiveKey, MatchingGame, JigsawGame, RecognitionGame, ClozeGame
+from vron.models import Notice, IsNoticeReaded, Student, Book, Progress
+from vron.models import Word, Page, Sentence, Moment, Like, Comment
+from vron.models import Homework, ActiveKey, MatchingGame
+from vron.models import JigsawGame, RecognitionGame, ClozeGame
+
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
@@ -114,17 +118,14 @@ class BookList(APIView):
         else:
             student = Student.objects.get(user_id=request.user.id)
             books = get_book(level=student.level)
-
         bookinfos = []
         for book in books:
-
             bookinfo = {}
             bookinfo['id'] = book.id
             bookinfo['cover'] = book.cover
             bookinfo['title'] = book.title
             bookinfo['pages_num'] = book.pages_num
             bookinfo['type'] = book.read_type
-
             if not isManager:
                 progress = {}
                 if not Progress.objects.filter(user=student, book=book):
@@ -139,11 +140,12 @@ class BookList(APIView):
                 }
             else:
                 bookinfo['level'] = book.level
-
             bookinfos.append(bookinfo)
         if not isManager:
             bookinfos = sorted(
-                bookinfos, key=lambda x: x['progress']['latest_read_time'], reverse=True)
+                bookinfos,
+                key=lambda x: x['progress']['latest_read_time'], reverse=True
+            )
         return Response(bookinfos)
 
     @manager_required
@@ -252,12 +254,15 @@ class BookHomework(APIView):
             homework_info['homework'] = {}
 
             try:
-                homework = Homework.objects.get(book_id=book_id, author=student)
+                homework = Homework.objects.get(
+                    book_id=book_id,
+                    author=student)
                 homework_info['homework']['content'] = homework.content
-                homework_info['homework']['attachments'] = {}
-                homework_info['homework']['attachments']['image'] = homework.images.split()
-                homework_info['homework']['attachments']['video'] = homework.videos.split()
-                homework_info['homework']['attachments']['audio'] = homework.audios.split()
+                attachments = {}
+                attachments['image'] = homework.images.split()
+                attachments['video'] = homework.videos.split()
+                attachments['audio'] = homework.audios.split()
+                homework_info['homework']['attachments'] = attachments
             except ObjectDoesNotExist:
                 pass
         else:
@@ -274,13 +279,18 @@ class BookHomework(APIView):
         postdata = json.loads(request.body)
         if not is_admin(request.user):
             student = Student.objects.get(user=request.user)
-            progress = Progress.objects.get_or_create(user=student, book=book)[0]
+            progress = Progress.objects.get_or_create(
+                user=student,
+                book=book)[0]
             progress.punched = True
             progress.save()
             try:
                 homework = Homework.objects.get(book=book, author=student)
             except ObjectDoesNotExist:
-                homework = Homework.objects.create(book=book, author=student, content=' ')
+                homework = Homework.objects.create(
+                    book=book,
+                    author=student,
+                    content=' ')
             homework.content = postdata.get('content', ' ')
             attachments = postdata.get('attachments',r'{}')
             homework.images = ' '.join(attachments.get('image', ''))
@@ -305,11 +315,16 @@ class BookProgress(APIView):
         student = Student.objects.get(user=request.user)
         try:
             progress = Progress.objects.get(user=student, book=book)
-            progress.current_page = postdata.get('current_page', progress.current_page)
+            progress.current_page = postdata.get(
+                'current_page',
+                progress.current_page)
             progress.latest_read_time = timezone.now()
             progress.save()
         except ObjectDoesNotExist:
-            Progress.objects.create(user=student, book=book, current_page=postdata.get('current_page',0))
+            Progress.objects.create(
+                user=student,
+                book=book,
+                current_page=postdata.get('current_page',0))
         update_student_score(student)
         return Response(status=201)
 
@@ -435,30 +450,30 @@ class CommunityGroup(APIView):
         student = Student.objects.get(user=request.user)
         level = student.level
         moments = Moment.objects.filter(level=level)
-        if moments:
-            for moment in moments:
-                community_message = {}
-                homework = moment.homework
-                community_message['id'] = moment.id
-                community_message['author'] = {}
-                community_message['author']['username'] = homework.author.nickname
-                community_message['author']['avatar'] = homework.author.avatar
-                community_message['action'] = {}
-                community_message['action']['liked'] = False
-                like = Like.objects.filter(actor=student, target=moment)
-                if like and like[0].liked==True:
-                    community_message['action']['liked'] = True
-                community_message['book'] = {}
-                community_message['book']['title'] = homework.book.title
-                community_message['book']['cover'] = homework.book.cover
-                community_message['created_time'] = moment.created_time
-                community_message['content'] = homework.content
-                community_message['attactments'] = {}
-                community_message['attactments']['image'] = homework.images.split()
-                community_message['attactments']['video'] = homework.videos.split()
-                community_message['vote_count'] = moment.vote_count
-                community_message['comment_count'] = len(Comment.objects.filter(target=moment))
-                community_info.append(community_message)
+        for moment in moments:
+            community_message = {}
+            homework = moment.homework
+            community_message['id'] = moment.id
+            community_message['author'] = {}
+            community_message['author']['username'] = homework.author.nickname
+            community_message['author']['avatar'] = homework.author.avatar
+            community_message['action'] = {}
+            community_message['action']['liked'] = False
+            like = Like.objects.filter(actor=student, target=moment)
+            if like and like[0].liked==True:
+                community_message['action']['liked'] = True
+            community_message['book'] = {}
+            community_message['book']['title'] = homework.book.title
+            community_message['book']['cover'] = homework.book.cover
+            community_message['created_time'] = moment.created_time
+            community_message['content'] = homework.content
+            community_message['attactments'] = {}
+            community_message['attactments']['image'] = homework.images.split()
+            community_message['attactments']['video'] = homework.videos.split()
+            community_message['vote_count'] = moment.vote_count
+            comment_num = len(Comment.objects.filter(target=moment))
+            community_message['comment_count'] = comment_num
+            community_info.append(community_message)
         return Response(community_info)
 
     @stu_required
@@ -469,12 +484,16 @@ class CommunityGroup(APIView):
         student = Student.objects.get(user=request.user)
         homework_query = Homework.objects.filter(author=student, book=book)
         if not homework_query.exists():
-            raise NotFound('Homework for book(id={}) not found.'.format(book_id))
+            raise NotFound(
+                'Homework for book(id={}) not found.'.format(book_id)
+                )
         homework = homework_query[0]
         level = student.level
         moment_query = Moment.objects.filter(homework=homework, level=level)
         if moment_query.exists():
-            return Response({'msg': 'Cannot punch more than once.'}, status=403)
+            return Response({
+                'msg': 'Cannot punch more than once.'
+                }, status=403)
         Moment.objects.create(homework=homework, level=level)
         return Response(status=201)
 
@@ -522,9 +541,10 @@ class UserInfo(APIView):
 
     @stu_required
     def get(self, request):
-
         student = Student.objects.get(user=request.user)
-        nickname = student.nickname if student.nickname else request.user.username
+        nickname = student.nickname
+        if not nickname:
+            nickname = request.user.username
         avatar = student.avatar
         level = student.level
 
@@ -575,7 +595,8 @@ class NoticeInfo(APIView):
                 notice_info['id'] = notice.id
                 notice_info['content'] = notice.content
                 if not is_admin(request.user):
-                    notice_info['have_read'] = IsNoticeReaded.objects.filter(notice=notice, student=student).exists()
+                    notice_info['have_read'] = IsNoticeReaded.objects.filter(
+                        notice=notice, student=student).exists()
                 notice_info['created_time'] = notice.created_time
                 notice_infos.append(notice_info)
 
@@ -715,9 +736,15 @@ class UserData(APIView):
         last_day = now - timedelta(days=1)
         last_week = now - timedelta(days=7)
         last_month = now - timedelta(days=30)
-        result['day'] = len(list(filter(lambda time: time > last_day, data)))
-        result['week'] = len(list(filter(lambda time: time > last_week, data)))
-        result['month'] = len(list(filter(lambda time: time > last_month, data)))
+        result['day'] = len(list(filter(
+            lambda time: time > last_day, data
+            )))
+        result['week'] = len(list(filter(
+            lambda time: time > last_week, data
+            )))
+        result['month'] = len(list(filter(
+            lambda time: time > last_month, data
+            )))
         return result
 
     def level(self):
@@ -895,7 +922,11 @@ def register_view(request):
     level = key_query[0].level
     key_query.delete()
     user = User.objects.create_user(username=username, password=password)
-    Student.objects.create(user=user, level=level, accept_level=bit_to_num(level), avatar='')
+    Student.objects.create(
+        user=user,
+        level=level,
+        accept_level=bit_to_num(level),
+        avatar='')
     return JsonResponse({'msg': '注册成功'}, status=201)
 
 @csrf_exempt
@@ -916,4 +947,6 @@ def manager_token(request):
                 'msg': 'You are not a manager.'
             }, status=403)
     else:
-        return JsonResponse({'msg': 'Username or password incorrect.'}, status=403)
+        return JsonResponse({
+            'msg': 'Username or password incorrect.'
+            }, status=403)

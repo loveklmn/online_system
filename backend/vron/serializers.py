@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from vron.models import Book, Progress, Page, Sentence, Word, Homework, Moment, Like, Comment, Notice
-
+from vron.models import Book, Progress, Page, Notice
+from vron.models import Sentence, Word, Homework
+from vron.models import Moment, Like, Comment
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
@@ -10,7 +11,12 @@ class BookSerializer(serializers.ModelSerializer):
 class ProgressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Progress
-        fields = ('user', 'book', 'punched', 'current_page', 'latest_read_time')
+        fields = (
+            'user',
+            'book',
+            'punched',
+            'current_page',
+            'latest_read_time')
 
 class PageSerializer(serializers.ModelSerializer):
     class Meta:

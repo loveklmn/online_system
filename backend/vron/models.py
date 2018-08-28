@@ -17,7 +17,9 @@ class Student(models.Model):
     nickname = models.CharField(max_length=24, default='')
     level = models.IntegerField()
     accept_level = models.IntegerField()
-    avatar = models.CharField(max_length=255, default='static/upload/default_avatar.jpg')
+    avatar = models.CharField(
+        max_length=255,
+        default='static/upload/default_avatar.jpg')
     score = models.FloatField(default=0)
 
 class Book(models.Model):
@@ -131,4 +133,3 @@ class ClozeGame(models.Model):
     wrong_word_1 = models.CharField(max_length=64)
     wrong_word_2 = models.CharField(max_length=64)
     wrong_word_3 = models.CharField(max_length=64)
-
