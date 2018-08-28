@@ -8,7 +8,9 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 
 from .views import BookList
-from .models import Book, Student, Word, Homework, Moment, Notice, ActiveKey, Page, Sentence
+from .models import Book, Student
+from .models import Word, Homework, Moment, Notice
+from .models import ActiveKey, Page, Sentence
 import json
 
 
