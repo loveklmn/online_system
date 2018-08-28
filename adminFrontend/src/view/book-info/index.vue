@@ -108,11 +108,8 @@ export default {
     let id = to.params
     if (id !== -1) {
       axios.request({
-        url: 'books/',
-        method: 'post',
-        data: {
-          id: id
-        }
+        url: `books/${id}/`,
+        method: 'post'
       }).then(data => {
         next(vm => {
           vm.currentBook = data
