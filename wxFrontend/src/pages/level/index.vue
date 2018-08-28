@@ -148,7 +148,6 @@ export default {
         request
           .post(url, {code: this.code})
           .then(res => {
-            console.log(res)
             if (res.data.level) {
               vm.msg = '你解锁了L' + res.data.level + '!'
               vm.setVisible()
@@ -168,7 +167,6 @@ export default {
       request
         .get(url)
         .then(res => {
-          console.log(res.data)
           if (res.data.length > 0) {
             this.level = res.data
           }
