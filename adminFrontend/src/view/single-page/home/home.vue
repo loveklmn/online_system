@@ -65,7 +65,7 @@ export default {
         vm.initData(data)
       })
     }).catch(error => {
-      console.log(error)
+      vm.$Message.error(error)
     })
   },
   methods: {
