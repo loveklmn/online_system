@@ -21,14 +21,10 @@ const timeList = {
   },
   1: {
     value: '1',
-    name: '今天'
+    name: '三天内'
   },
   2: {
     value: '2',
-    name: '三天内'
-  },
-  3: {
-    value: '3',
     name: '一周内'
   }
 }
@@ -109,15 +105,23 @@ export default {
     handleDelete (params) {
       axios.request({
         url: `notices/${params.row.id}/`,
-        method: 'get'
-      }).then(() => {
-        this.$Message.suceed('删除成功！')
-      }).catch(msg => {
-        this.$Message.error('msg')
+        method: 'delete'
+      }).then(msg => {
+        this.$Message.success('删除成功')
+        let index = -1
+        for (let item in this.noticeList) {
+          if (this.noticeList[item].id === params.row.id) {
+            index = item
+            break
+          }
+        }
+        if (index !== -1) {
+          this.noticeList.splice(index, 1)
+        }
       })
     },
     loadData () {
-      this.selectedNotice = this.allNotice.filter(this.isSelected)
+      this.selectedNotice = this.noticeList.filter(this.isSelected)
     },
     isSelected (currentStudent) {
       if (this.condition.id && currentStudent.id !== parseInt(this.condition.id)) {

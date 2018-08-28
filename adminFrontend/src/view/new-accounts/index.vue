@@ -23,7 +23,7 @@
 </content-layout>
 </template>
 <script>
-import contentLayout from './content-layout.vue'
+import contentLayout from '_c/content-layout'
 import firstStep from './new-accounts.vue'
 import secondStep from './generate-accounts.vue'
 import thirdStep from './generate-result.vue'

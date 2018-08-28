@@ -2,16 +2,6 @@
 <content-layout
 title="信息详情">
 <div class="main-content" slot="content">
-  <div class="first-part">
-    <h1>学生基本信息</h1>
-    <Divider />
-    <Card>
-      <h3 class="name-title">姓名:&nbsp;&nbsp;{{ student.username }}</h3>
-      <h3 class="name-title">昵称：&nbsp;&nbsp;{{ student.nickname }}</h3>
-      <h3 class="name-title">级别：&nbsp;&nbsp; {{ student.level }}</h3>
-      <h3 class="name-title">分数：&nbsp;&nbsp;{{ student.score }}</h3>
-    </Card>
-  </div>
   <div class="second-part">
     <h1>学生作业批阅</h1>
     <Divider />
@@ -120,12 +110,6 @@ export default {
     contentLayout
   },
   beforeRouteEnter (to, from, next) {
-    // let studentInfo = {
-    //   id: to.params.id,
-    //   username: to.params.username,
-    //   nickname: to.params.nickname,
-    //   level: to.params.level
-    // }
     axios.request({
       url: `progress/${to.params.id}/`,
       method: 'get',
