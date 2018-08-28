@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
-    'vron'
+    'vron',
 ]
 
 REST_FRAMEWORK = {
@@ -51,6 +51,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
+
     ),
     'EXCEPTION_HANDLER': 'vron.views.vron_exception_handler'
 }

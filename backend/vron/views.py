@@ -24,9 +24,11 @@ STUDENTNOTEXIST = {'msg': 'This user have not related to a student.'}
 BOOKNOTFOUND = {'msg': 'Book not found'}
 
 def bit_to_num(bit):
+    '''将处于bit二进制位上的数转为十进制'''
     return 1 << (bit-1)
 
 def num_to_bit(num):
+    '''输出将十进制num转二进制后为1的位数'''
     bit_array = []
     for i in range(32):
         if num%2:
@@ -74,6 +76,7 @@ def get_book(**kwargs):
     return book_query
 
 def get_or_raise(data, attr):
+    '''获取字典data的attr属性，否则抛出异常'''
     if data.get(attr):
         return data[attr]
     else:
@@ -213,6 +216,9 @@ class BookGuidance(APIView):
 
     @manager_required
     def post(self, request, book_id):
+        '''
+        Updata guidance of one book.
+        '''
         book_query = get_book(id=book_id)
         postdata = json.loads(request.body)
         response_info = {}
@@ -310,6 +316,7 @@ class BookProgress(APIView):
 
     @stu_required
     def post(self, request, book_id):
+        '''上传学生书籍阅读进度信息'''
         postdata = json.loads(request.body)
         book = get_book(id=book_id)[0]
         student = Student.objects.get(user=request.user)
@@ -332,6 +339,7 @@ class BookProgress(APIView):
 class UserProgress(APIView):
     @manager_required
     def get(self, request, user_id):
+        '''获取某用户的阅读进度信息'''
         stu_query = Student.objects.filter(id=user_id)
         if not stu_query.exists():
             return Response({
@@ -366,6 +374,7 @@ class UserProgress(APIView):
 class UserHomework(APIView):
     @manager_required
     def get(self, request, homework_id):
+        '''获取用户作业信息'''
         homework_query = Homework.objects.filter(id=homework_id)
         if not homework_query.exists():
             return Response({
@@ -385,6 +394,7 @@ class UserHomework(APIView):
 class BookEbook(APIView):
 
     def get(self, request, book_id):
+        '''获取书本的ebook信息'''
         get_book(id=book_id)
         pages = Page.objects.filter(book_id=book_id).order_by('number')
         ebook_infos = []
@@ -411,6 +421,7 @@ class BookEbook(APIView):
 
     @manager_required
     def post(self, request, book_id):
+        '''更新书本的ebook信息'''
         book = get_book(id=book_id)[0]
         postdata = json.loads(request.body)
         book.pages_num = len(postdata)
@@ -446,6 +457,7 @@ class CommunityGroup(APIView):
 
     @stu_required
     def get(self, request):
+        '''获取当前等级的社区信息'''
         community_info = []
         student = Student.objects.get(user=request.user)
         level = student.level
@@ -478,6 +490,7 @@ class CommunityGroup(APIView):
 
     @stu_required
     def post(self, request):
+        '''用户发送社区消息'''
         postdata = json.loads(request.body)
         book_id = get_or_raise(postdata, 'book')
         book = get_book(id=book_id)[0]
@@ -499,6 +512,7 @@ class CommunityGroup(APIView):
 
 class UploadFile(APIView):
     def post(self, request):
+        '''用户或管理员上传文件'''
         file = request.FILES.get('file', None)
         if not file:
             return Response({'msg': 'No file upload'}, status=400)
@@ -518,6 +532,7 @@ class UploadFile(APIView):
 class LikeAction(APIView):
     @stu_required
     def post(self, request, moment_id):
+        '''点赞函数，若未点赞则点赞，否则取消点赞'''
         stu = Student.objects.get(user=request.user)
         moment_query = Moment.objects.filter(id=moment_id)
         if not moment_query.exists():
@@ -541,6 +556,7 @@ class UserInfo(APIView):
 
     @stu_required
     def get(self, request):
+        '''用户获取个人信息'''
         student = Student.objects.get(user=request.user)
         nickname = student.nickname
         if not nickname:
@@ -558,6 +574,7 @@ class UserInfo(APIView):
 
     @stu_required
     def post(self, request):
+        '''用户更新个人信息'''
         postdata = json.loads(request.body)
         student = Student.objects.get(user=request.user)
         student.nickname = postdata.get('nickname', student.nickname)
@@ -568,6 +585,7 @@ class UserInfo(APIView):
 class ChangePassword(APIView):
 
     def post(self, request):
+        '''用户更换密码函数'''
         user = request.user
         password = json.loads(request.body).get('password')
         self.verify_password(password)
@@ -585,6 +603,7 @@ class ChangePassword(APIView):
 class NoticeInfo(APIView):
 
     def get(self, request):
+        '''获取所有系统通知'''
         if not is_admin(request.user):
             student = Student.objects.get(user=request.user)
         notice_infos = []
@@ -604,6 +623,7 @@ class NoticeInfo(APIView):
 
     @manager_required
     def post(self, request):
+        '''管理员发布系统通知'''
         postdata = json.loads(request.body)
         content = get_or_raise(postdata, 'content')
         notice = Notice.objects.create(content=content)
@@ -614,6 +634,7 @@ class NoticeInfo(APIView):
 class NoticeAction(APIView):
     @manager_required
     def delete(self, request, notice_id):
+        '''管理员删除系统通知'''
         notice_query = Notice.objects.filter(id=notice_id)
         if notice_query.exists():
             notice_query.delete()
@@ -628,6 +649,7 @@ class MarkNotice(APIView):
 
     @stu_required
     def post(self, request):
+        '''用户标记通知为已读'''
         postdata = json.loads(request.body)
         notice_id = get_or_raise(postdata, 'id')
         notice_query = Notice.objects.filter(id=notice_id)
@@ -643,7 +665,7 @@ class StudentList(APIView):
 
     @manager_required
     def get(self, request):
-
+        '''管理员获取所有学生用户'''
         student_list = []
         students_query = Student.objects.all()
         if students_query.exists():
@@ -662,6 +684,7 @@ class KeyGenerator(APIView):
 
     @manager_required
     def post(self, request):
+        '''管理员生成激活码'''
         postdata = json.loads(request.body)
         level = int(postdata.get('level'))
         count = int(postdata.get('count'))
@@ -684,6 +707,7 @@ class RankList(APIView):
 
     @stu_required
     def get(self, request):
+        '''用户获取当前等级排名'''
         level = Student.objects.get(user=request.user).level
         students = Student.objects.filter(level=level).order_by('-score')
         rank_list = []
@@ -702,11 +726,13 @@ class UserLevel(APIView):
 
     @stu_required
     def get(self, request):
+        '''用户获取自己可用的等级'''
         stu = Student.objects.get(user=request.user)
         return Response(num_to_bit(stu.accept_level))
 
     @stu_required
     def post(self, request):
+        '''用户修改自己等级'''
         stu = Student.objects.get(user=request.user)
         postdata = json.loads(request.body)
         level = get_or_raise(postdata, 'level')
@@ -772,6 +798,7 @@ class UserLevelUpdate(APIView):
 
     @stu_required
     def post(self, request):
+        '''用户使用激活码激活等级'''
         stu = Student.objects.get(user=request.user)
         postdata = json.loads(request.body)
         key = get_or_raise(postdata, 'code')
@@ -787,6 +814,7 @@ class UserLevelUpdate(APIView):
 
 class MatchingGameView(APIView):
     def get(self, request, book_id):
+        '''获取当前书本MatchingGame游戏数据'''
         book = get_book(id=book_id)[0]
         games = MatchingGame.objects.filter(book=book)
         if len(games) == 0:
@@ -803,6 +831,7 @@ class MatchingGameView(APIView):
 
     @manager_required
     def post(self, request, book_id):
+        '''更新当前书本MatchingGame游戏数据'''
         book = get_book(id=book_id)[0]
         post_data = json.loads(request.body)
         MatchingGame.objects.filter(book=book).delete()
@@ -817,6 +846,7 @@ class MatchingGameView(APIView):
 
 class JigsawGameView(APIView):
     def get(self, request, book_id):
+        '''获取当前书本JigsawGame游戏数据'''
         book = get_book(id=book_id)[0]
         games = JigsawGame.objects.filter(book=book)
         if len(games) == 1:
@@ -828,6 +858,7 @@ class JigsawGameView(APIView):
         return Response(response_data)
 
     def post(self, request, book_id):
+        '''更新当前书本JigsawGame游戏数据'''
         book = get_book(id=book_id)[0]
         post_data = json.loads(request.body)
         JigsawGame.objects.filter(book=book).delete()
@@ -842,6 +873,7 @@ class JigsawGameView(APIView):
 
 class RecognitionGameView(APIView):
     def get(self, request, book_id):
+        '''获取当前书本RecognitionGame游戏数据'''
         book = get_book(id=book_id)[0]
         games = RecognitionGame.objects.filter(book=book)
         if len(games) == 1:
@@ -857,6 +889,7 @@ class RecognitionGameView(APIView):
 
     @manager_required
     def post(self, request, book_id):
+        '''更新当前书本RecognitionGame游戏数据'''
         book = get_book(id=book_id)[0]
         data = json.loads(request.body)
         RecognitionGame.objects.filter(book=book).delete()
@@ -872,6 +905,7 @@ class RecognitionGameView(APIView):
 
 class ClozeGameView(APIView):
     def get(self, request, book_id):
+        '''获取当前书本ClozeGame游戏数据'''
         book = get_book(id=book_id)[0]
         games = ClozeGame.objects.filter(book=book)
         if len(games) == 1:
@@ -889,6 +923,7 @@ class ClozeGameView(APIView):
 
     @manager_required
     def post(self, request, book_id):
+        '''更新当前书本ClozeGame游戏数据'''
         book = get_book(id=book_id)[0]
         data = json.loads(request.body)
         ClozeGame.objects.filter(book=book).delete()
@@ -904,6 +939,7 @@ class ClozeGameView(APIView):
 
 @csrf_exempt
 def register_view(request):
+    '''使用激活码注册用户'''
     if request.method == 'GET':
         return JsonResponse({'msg': 'Method "GET" not allowed.'}, status=405)
     postdata = json.loads(request.body)
@@ -927,6 +963,7 @@ def register_view(request):
 
 @csrf_exempt
 def manager_token(request):
+    '''管理员登录获取token'''
     if request.method=='GET':
         return JsonResponse({'msg': 'Method "GET" not allowed.'}, status=405)
     postdata = json.loads(request.body)
