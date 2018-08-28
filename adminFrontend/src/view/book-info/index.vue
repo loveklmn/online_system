@@ -101,7 +101,7 @@ export default {
     }
   },
   beforeRouteEnter (to, from, next) {
-    let id = to.params.id
+    let id = parseInt(to.params.id)
     if (id !== -1) {
       axios.request({
         url: 'books/',
@@ -111,12 +111,16 @@ export default {
         }
       }).then(data => {
         next(vm => {
+          vm.id = id
           vm.currentBook = data
           vm.newBook = Object.assign({}, vm.currentBook)
         })
       })
     } else {
-      this.modifyMode = true
+      next(vm => {
+        vm.id = id
+        vm.modifyMode = true
+      })
     }
   },
   computed: {
@@ -126,8 +130,12 @@ export default {
       this.modifyMode = true
     },
     decline () {
-      this.newBook = Object.assign({}, this.currentBook)
-      this.modifyMode = false
+      if (this.id === -1) {
+        this.$router.go(-1)
+      } else {
+        this.newBook = Object.assign({}, this.currentBook)
+        this.modifyMode = false
+      }
     },
     save () {
       if (this.id === -1) {
