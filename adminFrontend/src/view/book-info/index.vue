@@ -1,5 +1,6 @@
 <template>
-<div class="book-info">
+<content-layout title="图书详情">
+<div class="book-info" slot="content">
   <div class="top-part">
     <div class="basic-info">
       <div v-if="!modifyMode" class="query-book">
@@ -18,7 +19,7 @@
         <Card title="基本信息" class="new-detail">
           <Form :model="newBook" :label-width="120">
             <FormItem label="标题:" prop="title">
-              <Input v-model="newBook.title" placeholder="书目标题" />
+              <Input v-model="newBook.title" placeholder="书目标题" class="input-title"/>
             </FormItem>
             <FormItem label="所在级别">
               <InputNumber :max="10" :min="1" v-model="newBook.level"></InputNumber>
@@ -67,12 +68,13 @@
     </Card>
   </div>
 </div>
+</content-layout>
 </template>
 <script>
 import axios from '@/libs/api.request'
 import upload from '@/api/upload'
 import baseURL from '_conf/url'
-
+import contentLayout from '_c/content-layout'
 export default {
   data () {
     return {
@@ -99,6 +101,9 @@ export default {
         pages_num: 0
       }
     }
+  },
+  components: {
+    contentLayout
   },
   beforeRouteEnter (to, from, next) {
     let id = parseInt(to.params.id)
@@ -189,9 +194,10 @@ export default {
 .book-info {
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 95%;
   height: 80%;
-
+  margin-left: 2.5%;
+  margin-right: 2.5%;
   .top-part {
     flex-grow: 2;
     margin-top: 2%;
@@ -204,6 +210,7 @@ export default {
 
         .cover {
           min-width: 130px;
+          flex: 3;
         }
 
         .book-cover {
@@ -212,10 +219,11 @@ export default {
           max-width: 130px;
           height: auto;
           max-height: 200px;
+          margin: auto;
         }
 
         .book-detail {
-          flex-grow: 3;
+          flex-grow: 8;
 
           .book-title {
             margin-left: 7%;
@@ -251,6 +259,9 @@ export default {
         .new-detail {
           flex-grow: 3;
           width: 50px;
+          .input-title {
+            width: 40%;
+          }
         }
       }
     }

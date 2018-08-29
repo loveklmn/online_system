@@ -24,4 +24,7 @@ html,body{
 #app {
   .size;
 }
+body {
+  background-image: url("./assets/images/back2.jpg");
+}
 </style>

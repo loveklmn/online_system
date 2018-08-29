@@ -38,8 +38,9 @@ export default {
     .layout-header-bar {
       background: #fff;
       box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-      font-size: 32px;
+      font-size: 16px;
       font-weight: bold;
+      height: 50px;
     }
 
     .content-model {

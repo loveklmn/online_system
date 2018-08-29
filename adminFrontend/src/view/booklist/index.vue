@@ -1,7 +1,7 @@
 <template>
 <content-layout
   title="图书列表">
-  <div slot="content">
+  <div slot="content" class="main-content">
     <filter-table
       @load="loadData"
       :data="selectedBooks"
@@ -195,5 +195,11 @@ export default {
 
 .page-bar {
   margin-top: 3%;
+}
+
+.main-content {
+  margin-left: 4.6%;
+  margin-top: 1%;
+  margin-right: 4.6%;
 }
 </style>
