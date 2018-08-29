@@ -1,6 +1,12 @@
 <template>
-  <div class="gameboard">
-    <image class="main-bg" src="../../static/images/main-bg.png"/>
+<div class="gameboard">
+  <image class="main-bg" src="../../static/images/main-bg.png"/>
+  <div v-if="loading" class="loading-outer-wrapper">
+    <div class="loading-inner-wrapper">
+      <BallPulse />
+    </div>
+  </div>
+  <div v-else class="gameboard">
     <div class="vertical-list">
       <matchingGamePic
         v-for="pic in leftpics"
@@ -30,11 +36,13 @@
     <!-- inline style cannot be avoided. No criticism will be accepted.-->
     <canvas class="canvas" :style="{display:hide?'none':'block'}" canvas-id="1"/>
   </div>
+</div>
 </template>
 
 <script>
 import matchingGamePic from '@/components/matchingGamePic'
 import request from '@/utils/request'
+import BallPulse from 'mpvue-loading/src/loaders/ball-pulse'
 export default {
   data () {
     return {
@@ -56,11 +64,13 @@ export default {
       correct1src: '/static/audios/correct1.mp3',
       correctallsrc: '/static/audios/correctall.mp3',
       wrongsrc: '/static/audios/wrong.mp3',
-      waittime: 600
+      waittime: 600,
+      loading: true
     }
   },
   components: {
-    matchingGamePic
+    matchingGamePic,
+    BallPulse
   },
   methods: {
     select: function (id) {
@@ -244,6 +254,7 @@ export default {
           this.rightpics[rightPos].word = res.data[i - 1].word
           this.rightpics[rightPos].value = i
         }
+        this.loading = false
       })
   }
 }
@@ -261,6 +272,23 @@ page {
   flex-grow: 1 1;
   width: 100%;
   height: 100%;
+}
+
+.loading-outer-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.loading-inner-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  display: inline;
+  margin: auto auto;
+  padding: 0;
 }
 
 .vertical-list {
