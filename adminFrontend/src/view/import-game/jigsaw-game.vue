@@ -1,18 +1,25 @@
 <template>
   <div id="test">
     <p>上传的图片不需要裁切</p>
-    <imgComp :img.sync="img"></imgComp>
-    <Button
-      class="upload-button"
-      type="primary"
-      @click="slice">裁切</Button>
-    <div class="preview-div">
+    <div v-if="urlsReady" class="preview-div">
       <img
         v-for="item in urls"
         :key="item"
         :src="baseURL + item"
         class="pic"/>
     </div>
+    <div v-else>
+      <imgComp :img.sync="img"></imgComp>
+      <Button
+        v-if="img !== null"
+        class="upload-button"
+        type="primary"
+        @click="slice">裁切</Button>
+    </div>
+    <Button
+      class="upload-button"
+      type="warning"
+      @click="uploadAgain">重新上传</Button>
     <Button
       class="upload-button"
       type="primary"
@@ -31,6 +38,9 @@ export default {
       img: null,
       parts: [],
       files: [],
+      urlsReady: false,
+      imgReady: false,
+      loader: null,
       urls: {
         1: null,
         2: null,
@@ -55,23 +65,27 @@ export default {
         .then((res) => {
           let savepath = res.savepath
           that.urls[index] = savepath
-        })
-        .catch((err) => {
-          console.log(err)
+          if (!this.haveNull()) {
+            this.loader.hide()
+            this.urlsReady = true
+          }
         })
       return false
     },
     haveNull: function () {
       for (let i = 1; i <= 9; i++) {
         if (this.urls[i] === null) {
-          this.$Message.info('还有图片没有加载好哦')
           return true
         }
       }
       return false
     },
+    uploadAgain: function () {
+      this.urlsReady = false
+    },
     uploadGame: function () {
       if (this.haveNull()) {
+        this.$Message.info('还有图片没有加载好哦')
         return
       }
       axios.request({
@@ -83,6 +97,10 @@ export default {
       })
     },
     slice: function () {
+      this.loader = this.$loading.show()
+      for (let i = 1; i <= 9; i++) {
+        this.urls[i] = null
+      }
       this.getBase64Image(this.img, (url) => {
         let img = new Image()
         img.onload = this.split
@@ -139,6 +157,23 @@ export default {
     }
   },
   created () {
+    let loader = this.$loading.show()
+    this.bookid = this.$route.params.id
+    axios.request({
+      url: `books/${this.bookid}/JigsawGame/`,
+      method: 'get'
+    }).then(data => {
+      for (let i = 1; i <= 9; i++) {
+        this.urls[i] = data[i]
+      }
+      this.urlsReady = true
+      loader.hide()
+    }).catch((err) => {
+      if (err.response.status !== 404) {
+        this.$Message.info('出现了网络问题，请稍后尝试')
+      }
+      loader.hide()
+    })
   }
 }
 </script>
@@ -147,10 +182,13 @@ export default {
 
 .preview-div {
   display: flex;
-  width: 300px;
+  flex-wrap: wrap;
+  max-width: 400px;
 }
 
 .pic {
-  width: 33%;
+  width: 30%;
+  padding: 0;
+  margin: 1%;
 }
 </style>

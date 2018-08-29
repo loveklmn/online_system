@@ -59,11 +59,13 @@ export default {
   },
   created () {
     this.bookid = this.$route.params.id
+    let loader = this.$loading.show()
     axios.request({
       url: `books/${this.bookid}/ebook/`,
       method: 'get'
     }).then(data => {
       this.initBook(data)
+      loader.hide()
     })
   },
   computed: {
