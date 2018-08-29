@@ -3,10 +3,10 @@
     <image class="weui-grid__icon" :src="cover" />
     <div class="weui-grid__label"> {{title}} </div>
     <image class="main-bg" src="../../static/images/main-bg.png"/>
-    <i-button @click="navToGame1(id)" shape="circle" type="info">连线游戏</i-button>
-    <i-button @click="navToGame2(id)" shape="circle" type="success">识别单词游戏</i-button>
-    <i-button @click="navToGame3(id)" shape="circle" type="info">拼图游戏</i-button>
-    <i-button @click="navToGame4(id)" shape="circle" type="error">选词填空</i-button>
+    <i-button @click="navToGame1(id)" shape="circle" type="primary">连线游戏</i-button>
+    <i-button @click="navToGame2(id)" shape="circle" type="primary">识别单词游戏</i-button>
+    <i-button @click="navToGame3(id)" shape="circle" type="primary">拼图游戏</i-button>
+    <i-button @click="navToGame4(id)" shape="circle" type="primary">选词填空</i-button>
   </div>
 </template>
 

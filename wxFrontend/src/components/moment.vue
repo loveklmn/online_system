@@ -4,36 +4,38 @@
     <div class="list-header">
       <img class="avatar" v-if="x.author" :src="serverLink + x.author.avatar">
       <div class="user-info">
-        <p class="user-name" v-if="x.author">{{x.author.username}}<br><p style="font-size:14px;">Ta读了:《{{x.book.title}}》</p></p>
+        <div>
+          <p class="user-name" v-if="x.author">{{x.author.username}}</p>
+        </div>
+        <br>
+        <p class="title">Ta读了:《{{x.book.title}}》</p>
         <div class="list-content">
-      <span class="content-text">{{x.content}}</span>
-      <div  class="content-img">
-        <ul  class="content-img-ul clear-fix">
-          <li
-            v-for="y in x.attactments.image"
-            :key="index"
-            class="img-li-default"
-            :class= "imgClass">
-            <img
-              class="img-div"
-              :src="serverLink + y"
-              @click="predivImage"
-              ></img>
-          </li>
-        </ul>
+          <span class="content-text">{{x.content}}</span>
+          <div  class="content-img">
+            <ul  class="content-img-ul clear-fix">
+              <li
+                v-for="y in x.attactments.image"
+                :key="index"
+                class="img-li-default"
+                :class= "imgClass">
+                <img
+                  class="img-div"
+                  :src="serverLink + y"
+                  @click="predivImage"
+                  ></img>
+              </li>
+            </ul>
+          </div>
+          <div class="user-time">
+            <span>{{getTime}}</span>
+            <p>{{x.vote_count}}</p>
+            <img class="footer-icon" :src="getIconSrc" @click="praise"></img>
+          </div>
+
+        </div>
       </div>
-    </div>
-      </div>
-      <span class="user-time">{{getTime}}</span>
     </div>
 
-
-    <div class="list-footer">
-      <div class="footer-tag">
-        <img class="footer-icon" :src="getIconSrc" @click="praise"></img>
-        <span class="tag-style">{{x.vote_count}}</span>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -142,10 +144,13 @@ a {
     margin-left: 10rpx;
 }
 
+.tag-style {
+  float: right;
+}
+
 .content .list-footer .footer-tag .tag-style {
-    margin-left: 15rpx;
     margin-top: 5rpx;
-    font-size: 35rpx;
+    font-size: 30rpx;
     color: black;
 }
 
@@ -167,11 +172,25 @@ a {
 .content .user-time {
     font-size: 30rpx;
     color: #A4A8AC;
-    height: 100%;
-    display: table-cell
+    margin: auto;
+    padding: 0;
+}
+
+.user-time>p {
+  float: right;
+}
+
+.time-wrapper {
+  display: inline-flex;
+  justify-content: space-around;
+  height: 100%;
+  margin: 0;
+  padding: auto;
+  float: right;
 }
 
 .content .user-info .user-name {
+    display: inline;
     margin: 0;
     flex: 1;
     font-size: 40rpx;
@@ -185,15 +204,12 @@ a {
     float: right;
 }
 
-.content .list-content {
-    margin-top: 35rpx;
-}
-
 .content .list-content .content-text {
     font-size: 15px;
     line-height: 50rpx;
     padding-right: 120rpx;
 }
+
 
 .content .list-content .content-at {
     color: #007AFF;
@@ -220,19 +236,16 @@ a {
 
 .content-img .content-img-ul .img-li-one {
     width: 52%;
-    padding-bottom: 35%;
+    padding-bottom: 29%;
 }
 
 .content-img .content-img-ul .img-li-two {
-    /* width: 43%;
-    padding-bottom: 43%; */
     width: 160rpx;
     height: 160rpx;
     margin: 5rpx;
 }
 
 .content-img .content-img-ul .img-li-other {
-    /* width: 28%; */
     width: 160rpx;
     height: 160rpx;
     margin: 5rpx;
@@ -260,9 +273,11 @@ a {
 }
 
 .footer-icon {
-    margin-top: 10rpx;
-    height: 40rpx;
-    width: 40rpx;
+    margin-top: 5rpx;
+    margin-right: 20rpx;
+    height: 30rpx;
+    width: 30rpx;
+    float: right;
 }
 .line {
   margin: 0 auto;
@@ -270,5 +285,8 @@ a {
   width: 95%;
   height: 2rpx;
   background-color: #888888;
+}
+.title {
+  font-size:14px;
 }
 </style>
