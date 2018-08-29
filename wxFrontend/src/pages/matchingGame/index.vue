@@ -1,6 +1,12 @@
 <template>
-  <div class="gameboard">
-    <image class="main-bg" src="../../static/images/main-bg.png"/>
+<div class="gameboard">
+  <image class="main-bg" src="../../static/images/main-bg.png"/>
+  <div v-if="loading" class="loading-outer-wrapper">
+    <div class="loading-inner-wrapper">
+      <BallPulse />
+    </div>
+  </div>
+  <div v-else class="gameboard">
     <div class="vertical-list">
       <matchingGamePic
         v-for="pic in leftpics"
@@ -10,6 +16,7 @@
         v-bind:selected="pic.selected"
         v-bind:id="pic.id"
         v-bind:value="pic.value"
+        v-bind:word="pic.word"
         v-on:isselect="select"
       ></matchingGamePic>
     </div>
@@ -22,28 +29,32 @@
         v-bind:selected="pic.selected"
         v-bind:id="pic.id"
         v-bind:value="pic.value"
+        v-bind:word="pic.word"
         v-on:isselect="select"
       ></matchingGamePic>
     </div>
     <!-- inline style cannot be avoided. No criticism will be accepted.-->
     <canvas class="canvas" :style="{display:hide?'none':'block'}" canvas-id="1"/>
   </div>
+</div>
 </template>
 
 <script>
 import matchingGamePic from '@/components/matchingGamePic'
+import request from '@/utils/request'
+import BallPulse from 'mpvue-loading/src/loaders/ball-pulse'
 export default {
   data () {
     return {
       leftpics: {
-        1: {id: -1, value: -1, src: null, inmatch: false, selected: false},
-        2: {id: -2, value: -2, src: null, inmatch: false, selected: false},
-        3: {id: -3, value: -3, src: null, inmatch: false, selected: false}
+        1: {id: -1, value: -1, src: null, word: null, inmatch: false, selected: false},
+        2: {id: -2, value: -2, src: null, word: null, inmatch: false, selected: false},
+        3: {id: -3, value: -3, src: null, word: null, inmatch: false, selected: false}
       },
       rightpics: {
-        1: {id: 1, value: 1, src: null, inmatch: false, selected: false},
-        2: {id: 2, value: 3, src: null, inmatch: false, selected: false},
-        3: {id: 3, value: 2, src: null, inmatch: false, selected: false}
+        1: {id: 1, value: 1, src: null, word: null, inmatch: false, selected: false},
+        2: {id: 2, value: 3, src: null, word: null, inmatch: false, selected: false},
+        3: {id: 3, value: 2, src: null, word: null, inmatch: false, selected: false}
       },
       previd: 0,
       hide: true,
@@ -53,11 +64,13 @@ export default {
       correct1src: '/static/audios/correct1.mp3',
       correctallsrc: '/static/audios/correctall.mp3',
       wrongsrc: '/static/audios/wrong.mp3',
-      waittime: 600
+      waittime: 600,
+      loading: true
     }
   },
   components: {
-    matchingGamePic
+    matchingGamePic,
+    BallPulse
   },
   methods: {
     select: function (id) {
@@ -213,14 +226,36 @@ export default {
     },
     slowlyHideCanvas: function () {
       setTimeout(this.hideCanvas, 700)
+    },
+    getRandomInt: function (max) {
+      return Math.floor(Math.random() * Math.floor(max))
     }
   },
-  mounted () {
+  onLoad (options) {
     this.innerAudioContext = wx.createInnerAudioContext()
-    for (let i = 1; i <= 3; i++) {
-      this.leftpics[i].src = 'https://i.loli.net/2018/08/12/5b6f09c2b5b34.png'
-      this.rightpics[i].src = 'https://i.loli.net/2018/08/12/5b6f09c2b5b34.png'
-    }
+    let url = `books/${options.id}/MatchingGame`
+    let map = [
+      [1, 2, 3],
+      [1, 3, 2],
+      [2, 1, 3],
+      [2, 3, 1],
+      [3, 1, 2],
+      [3, 2, 1]
+    ]
+    request.get(url)
+      .then((res) => {
+        let leftArrangement = this.getRandomInt(6)
+        let rightArrangement = this.getRandomInt(6)
+        for (let i = 1; i <= 3; i++) {
+          let leftPos = map[leftArrangement][i - 1]
+          this.leftpics[leftPos].src = request.baseURL + res.data[i - 1].img
+          this.leftpics[leftPos].value = -i
+          let rightPos = map[rightArrangement][i - 1]
+          this.rightpics[rightPos].word = res.data[i - 1].word
+          this.rightpics[rightPos].value = i
+        }
+        this.loading = false
+      })
   }
 }
 </script>
@@ -237,6 +272,23 @@ page {
   flex-grow: 1 1;
   width: 100%;
   height: 100%;
+}
+
+.loading-outer-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.loading-inner-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  display: inline;
+  margin: auto auto;
+  padding: 0;
 }
 
 .vertical-list {

@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "mpvue": "^1.0.11",
+    "mpvue-loading": "^1.0.0",
     "mpvue-wxparse": "^0.6.5",
     "vue": "^2.4.4",
     "vuex": "^3.0.1"

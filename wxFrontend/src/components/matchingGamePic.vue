@@ -1,11 +1,18 @@
 <template>
-  <div class="pic_block" >
+<div>
+  <div v-if="src !== null" class="pic_block">
     <img
-      :class="getclass"
+      :class="getimgclass"
       :src="src"
       v-on:click="select"
       />
   </div>
+  <div v-else class="pic_block">
+    <p
+      :class="getpclass"
+      v-on:click="select">{{word}}</p>
+  </div>
+</div>
 </template>
 
 <script>
@@ -15,11 +22,14 @@ export default {
     }
   },
   computed: {
-    getclass: function () {
-      return this.selected ? 'pic_selected' : 'pic'
+    getimgclass: function () {
+      return this.selected ? 'pic-selected' : 'pic'
+    },
+    getpclass: function () {
+      return this.selected ? 'word-selected' : 'word'
     }
   },
-  props: ['id', 'src', 'value', 'inmatch', 'selected'],
+  props: ['id', 'src', 'word', 'value', 'inmatch', 'selected'],
   methods: {
     select: function (event) {
       if (!this.inmatch) {
@@ -38,11 +48,25 @@ export default {
   margin: auto;
   padding: auto;
 }
-.pic_selected {
+.pic-selected {
   width: 180rpx;
   height: 180rpx;
   margin: 10rpx;
   padding: 0;
+  float: center;
+  border: 2rpx solid #dddddd;
+  border-radius: 15rpx;
+  box-shadow: 8rpx 2rpx 2rpx #cccccc;
+}
+.word {
+  height: 33%;
+  display: block;
+  margin: auto;
+  padding: 10rpx;
+}
+.word-selected {
+  height: 33%;
+  padding: 10rpx;
   float: center;
   border: 2rpx solid #dddddd;
   border-radius: 15rpx;
