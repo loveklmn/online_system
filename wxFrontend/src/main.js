@@ -39,7 +39,8 @@ export default {
           selectedIconPath: '/static/images/about-me-active.png',
           text: '关于我'
         }
-      ]
+      ],
+      'selectedColor': '#999'
     }
   }
 }
