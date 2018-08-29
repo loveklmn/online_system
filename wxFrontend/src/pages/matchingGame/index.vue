@@ -87,7 +87,6 @@ export default {
           this.setInmatch(this.previd)
           this.previd = 0
           this.makeCorrectSound()
-          // this.unselectBoth(id, this.previd)
           if (this.matchedNum === this.num) {
             this.drawAllCorrectLine()
             this.makeAllCorrectSound()
