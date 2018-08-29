@@ -62,7 +62,23 @@ export default {
     }
   },
   created () {
+    let loader = this.$loading.show()
     this.bookid = this.$route.params.id
+    axios.request({
+      url: `books/${this.bookid}/RecognitionGame/`,
+      method: 'get'
+    }).then(data => {
+      this.img = data.img
+      this.correct_word = data.correct_word
+      this.wrong_word_1 = data.wrong_word_1
+      this.wrong_word_2 = data.wrong_word_2
+      loader.hide()
+    }).catch((err) => {
+      if (err.response.status !== 404) {
+        this.$Message.info('出现了网络问题，请稍后尝试')
+      }
+      loader.hide()
+    })
   }
 }
 </script>

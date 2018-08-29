@@ -162,14 +162,17 @@ export default {
     },
     handleUpload (file) {
       let that = this
+      let loader = this.$loading.show()
       upload(file)
         .then((res) => {
           let savepath = res.savepath
           that.page.picture = baseURL + savepath
           that.$emit('picChange')
+          loader.hide()
         })
         .catch((err) => {
           console.log(err)
+          loader.hide()
         })
     },
     // 以下均为和鼠标点选有关的方法
