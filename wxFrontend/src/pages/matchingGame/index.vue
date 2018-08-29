@@ -36,14 +36,14 @@ export default {
   data () {
     return {
       leftpics: {
-        1: {id: -1, value: -1, src: 'https://i.loli.net/2018/08/12/5b6f09c2b5b34.png', inmatch: false, selected: false},
-        2: {id: -2, value: -2, src: 'https://i.loli.net/2018/08/12/5b6f09c2b5b34.png', inmatch: false, selected: false},
-        3: {id: -3, value: -3, src: 'https://i.loli.net/2018/08/12/5b6f09c2b5b34.png', inmatch: false, selected: false}
+        1: {id: -1, value: -1, src: null, inmatch: false, selected: false},
+        2: {id: -2, value: -2, src: null, inmatch: false, selected: false},
+        3: {id: -3, value: -3, src: null, inmatch: false, selected: false}
       },
       rightpics: {
-        1: {id: 1, value: 1, src: 'https://i.loli.net/2018/08/12/5b6f09c2b5b34.png', inmatch: false, selected: false},
-        2: {id: 2, value: 3, src: 'https://i.loli.net/2018/08/12/5b6f09c2b5b34.png', inmatch: false, selected: false},
-        3: {id: 3, value: 2, src: 'https://i.loli.net/2018/08/12/5b6f09c2b5b34.png', inmatch: false, selected: false}
+        1: {id: 1, value: 1, src: null, inmatch: false, selected: false},
+        2: {id: 2, value: 3, src: null, inmatch: false, selected: false},
+        3: {id: 3, value: 2, src: null, inmatch: false, selected: false}
       },
       previd: 0,
       hide: true,
@@ -61,6 +61,11 @@ export default {
   },
   methods: {
     select: function (id) {
+      if (this.previd === id) {
+        this.unselect(id)
+        this.previd = 0
+        return
+      }
       if (!this.getPic(id).inmatch) {
         this.getPic(id).selected = true
       }
@@ -213,6 +218,10 @@ export default {
   },
   mounted () {
     this.innerAudioContext = wx.createInnerAudioContext()
+    for (let i = 1; i <= 3; i++) {
+      this.leftpics[i].src = 'https://i.loli.net/2018/08/12/5b6f09c2b5b34.png'
+      this.rightpics[i].src = 'https://i.loli.net/2018/08/12/5b6f09c2b5b34.png'
+    }
   }
 }
 </script>
