@@ -91,9 +91,6 @@ export default {
           that.sentence.audio = baseURL + savepath
           this.$Message.info('音频上传成功')
         })
-        .catch((err) => {
-          console.log(err)
-        })
       return false
     }
   }

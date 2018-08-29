@@ -170,10 +170,6 @@ export default {
           that.$emit('picChange')
           loader.hide()
         })
-        .catch((err) => {
-          console.log(err)
-          loader.hide()
-        })
     },
     // 以下均为和鼠标点选有关的方法
     // 首先调用selectArea
