@@ -47,6 +47,8 @@ export default {
       wrong_word_3: '',
       msg: '',
       visible: false,
+      correct1src: '/static/audios/correct1.mp3',
+      wrongsrc: '/static/audios/wrong.mp3',
       choice: [
         ['B', 'C', 'D'],
         ['A', 'C', 'D'],

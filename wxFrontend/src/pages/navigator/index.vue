@@ -2,10 +2,10 @@
   <div class="container">
     <image class="weui-grid__icon" :src="cover" />
     <div class="weui-grid__label"> {{title}} </div>
-    <i-button @click="navToReadGuide" shape="circle" type="primary">亲子阅读指导</i-button>
-    <i-button @click="navToEBook" shape="circle" type="primary">E-book</i-button>
-    <i-button @click="navToPractice" shape="circle" type="primary">课后练习</i-button>
-    <i-button @click="navToFurtherRead" shape="circle" type="primary">阅读拓展</i-button>
+    <i-button @click="navToReadGuide" shape="circle" type="info">亲子阅读指导</i-button>
+    <i-button @click="navToEBook" shape="circle" type="info">E-book</i-button>
+    <i-button @click="navToPractice" shape="circle" type="info">课后练习</i-button>
+    <i-button @click="navToFurtherRead" shape="circle" type="info">阅读拓展</i-button>
   </div>
 </template>
 
