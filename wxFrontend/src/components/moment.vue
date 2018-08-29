@@ -4,7 +4,7 @@
     <div class="list-header">
       <img class="avatar" v-if="x.author" :src="serverLink + x.author.avatar">
       <div class="user-info">
-        <p class="user-name" v-if="x.author">{{x.author.username}}<br><p style="font-size:14px;">Ta读了:《{{x.book.title}}》</p></p>
+        <p class="user-name" v-if="x.author">{{x.author.username}}<br><p class="title">Ta读了:《{{x.book.title}}》</p></p>
         <div class="list-content">
       <span class="content-text">{{x.content}}</span>
       <div  class="content-img">
@@ -271,5 +271,8 @@ a {
   width: 95%;
   height: 2rpx;
   background-color: #888888;
+}
+.title {
+  font-size:14px;
 }
 </style>
