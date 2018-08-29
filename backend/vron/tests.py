@@ -57,9 +57,13 @@ class BookTestCase(TestCase):
         )
         Book.objects.all().delete()
         for ID in range(10):
-            book = Book.objects.create(id=ID+1, cover='cover', level=1, title='title1',
-                                       pages_num=30, assignment='assign',
-                                       guidance='guide', read_type='IR')
+            book = Book.objects.create(
+                id=ID+1,
+                cover='cover',
+                level=1,
+                title='title1',
+                pages_num=30, assignment='assign',
+                guidance='guide', read_type='IR')
             Word.objects.create(guidance=book, word='www', meaning='MMM')
             homework = Homework.objects.create(author=stu, book=book,
                                                content='ssd')
@@ -259,10 +263,13 @@ class BookTestCase(TestCase):
         data = {
             'assignment': 'assign'
         }
-        response = client.post('/vron/books/3/homework/',
-                               json.dumps(data), content_type="application/json")
+        response = client.post(
+            '/vron/books/3/homework/',
+            json.dumps(data),
+            content_type="application/json")
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.data.get('assignment'), 'assign')
+        self.assertEqual(
+            response.data.get('assignment'), 'assign')
         self.assertIn('id', response.data)
 
     def test_progress1(self):
@@ -272,14 +279,16 @@ class BookTestCase(TestCase):
         }
         client.force_authenticate(user=self.user)
         response = client.post('/vron/books/4/progress/',
-                               json.dumps(data), content_type="application/json")
+                               json.dumps(data),
+                               content_type="application/json")
         self.assertEqual(201, response.status_code)
 
     def test_progress2(self):
         client = APIClient()
         client.force_authenticate(user=self.admin)
         response = client.post('/vron/books/4/progress/',
-                               json.dumps({}), content_type="application/json")
+                               json.dumps({}),
+                               content_type="application/json")
         self.assertEqual(403, response.status_code)
 
     def test_book_ebook1(self):
@@ -324,7 +333,8 @@ class BookTestCase(TestCase):
             ]
         }]
         response = client.post('/vron/books/4/ebook/',
-                               json.dumps(data), content_type="application/json")
+                               json.dumps(data),
+                               content_type="application/json")
         self.assertEqual(response.status_code, 201)
 
     def test_user_info1(self):
@@ -347,7 +357,8 @@ class BookTestCase(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.user)
         response = client.post(
-            '/vron/userinfo/', json.dumps({}), content_type="application/json")
+            '/vron/userinfo/', json.dumps({}),
+            content_type="application/json")
         self.assertEqual(201, response.status_code)
 
     def test_user_info4(self):
@@ -358,14 +369,16 @@ class BookTestCase(TestCase):
             'avatar': 'Im Chinese'
         }
         response = client.post(
-            '/vron/userinfo/', json.dumps(data), content_type="application/json")
+            '/vron/userinfo/', json.dumps(data),
+            content_type="application/json")
         self.assertEqual(201, response.status_code)
 
     def test_user_info5(self):
         client = APIClient()
         client.force_authenticate(user=self.admin)
         response = client.post(
-            '/vron/userinfo/', json.dumps({}), content_type="application/json")
+            '/vron/userinfo/', json.dumps({}),
+            content_type="application/json")
         self.assertEqual(403, response.status_code)
         self.assertIn('msg', response.data)
 
@@ -393,7 +406,8 @@ class BookTestCase(TestCase):
             'content': 'notice content'
         }
         response = client.post('/vron/notices/',
-                               json.dumps(data), content_type="application/json")
+                               json.dumps(data),
+                               content_type="application/json")
 
         self.assertIn('id', response.data)
         self.assertEqual(201, response.status_code)
@@ -402,14 +416,16 @@ class BookTestCase(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.user)
         response = client.post('/vron/notices/readed/',
-                               json.dumps({'id': 1}), content_type="application/json")
+                               json.dumps({'id': 1}),
+                               content_type="application/json")
         self.assertEqual(201, response.status_code)
 
     def test_notice_mark2(self):
         client = APIClient()
         client.force_authenticate(user=self.admin)
         response = client.post('/vron/notices/readed/',
-                               json.dumps({}), content_type="application/json")
+                               json.dumps({}),
+                               content_type="application/json")
         self.assertEqual(403, response.status_code)
 
     def test_student_list1(self):
