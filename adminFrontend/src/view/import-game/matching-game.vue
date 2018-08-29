@@ -60,13 +60,18 @@ export default {
     }
   },
   mounted () {
-    console.log('mounted!')
+    let loader = this.$loading.show()
     axios.request({
       url: `books/${this.bookid}/MatchingGame/`,
       method: 'get'
     }).then(data => {
-      console.log(data)
       this.pairs = data
+      loader.hide()
+    }).catch((err) => {
+      if (err.response.status !== 400) {
+        this.$Message.info('出现了网络问题，请稍后尝试')
+      }
+      loader.hide()
     })
   }
 }

@@ -27,16 +27,21 @@ export default {
   },
   methods: {
     handleUpload (file) {
+      let loader = this.$loading.show()
       upload(file)
         .then((res) => {
           let savepath = res.savepath
           this.$emit('update:img', savepath)
-        })
-        .catch((err) => {
-          console.log(err)
+          loader.hide()
         })
       return false
     }
   }
 }
 </script>
+<style>
+.img-preview {
+  width: 200px;
+  height: 200px;
+}
+</style>

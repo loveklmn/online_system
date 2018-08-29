@@ -8,14 +8,17 @@ import iView from 'iview'
 import i18n from '@/locale'
 import config from '@/config'
 import importDirective from '@/directive'
+import loading from 'vue-loading-overlay'
 import 'iview/dist/styles/iview.css'
 import './index.less'
 import '@/assets/icons/iconfont.css'
+import 'vue-loading-overlay/dist/vue-loading.min.css'
 // import '@/mock'
 
 Vue.use(iView, {
   i18n: (key, value) => i18n.t(key, value)
 })
+Vue.use(loading)
 Vue.config.productionTip = false
 /**
  * @description 全局注册应用配置

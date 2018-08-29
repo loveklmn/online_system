@@ -29,7 +29,7 @@ import clozeGame from './cloze-game'
 export default {
   data () {
     return {
-      tabChoice: 'tab1',
+      tabChoice: 'tab2',
       tab1: 'matchingGame',
       tab2: 'jigsawGame',
       tab3: 'recognitionGame',

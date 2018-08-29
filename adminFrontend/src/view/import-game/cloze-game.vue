@@ -72,6 +72,26 @@ export default {
       }
       this.sentence += '______'
     }
+  },
+  created () {
+    let loader = this.$loading.show()
+    this.bookid = this.$route.params.id
+    axios.request({
+      url: `books/${this.bookid}/ClozeGame/`,
+      method: 'get'
+    }).then(data => {
+      this.sentence = data.sentence
+      this.correct_word = data.correct_word
+      this.wrong_word_1 = data.wrong_word_1
+      this.wrong_word_2 = data.wrong_word_2
+      this.wrong_word_3 = data.wrong_word_3
+      loader.hide()
+    }).catch((err) => {
+      if (err.response.status !== 404) {
+        this.$Message.info('出现了网络问题，请稍后尝试')
+      }
+      loader.hide()
+    })
   }
 }
 </script>
