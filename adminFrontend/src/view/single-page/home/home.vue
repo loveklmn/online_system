@@ -1,30 +1,26 @@
 <template>
 <div class='main-content'>
   <div class='first-part'>
-    <h1>活跃用户</h1>
-    <Divider />
-    <Card class='navCard'>
-      <Row :gutter='20' class='first-row'>
-        <i-col span='6' v-for='(infor, i) in inforCardData' :key='`infor-${i}`' class='quick-tip-card'>
-          <infor-card shadow :color='infor.color' :icon='infor.icon' :icon-size='36' class="count-card">
-            <count-to :end='infor.count' count-class='count-style'/>
-            <p>{{ infor.title }}</p>
-          </infor-card>
-        </i-col>
-      </Row>
-    </Card>
+    <Row :gutter='20' class='first-row'>
+      <i-col span='6' v-for='(infor, i) in inforCardData' :key='`infor-${i}`' class='quick-tip-card'>
+        <infor-card shadow :color='infor.color' :icon='infor.icon' :icon-size='36' class="count-card">
+          <count-to :end='infor.count' count-class='count-style'/>
+          <p>{{ infor.title }}</p>
+        </infor-card>
+      </i-col>
+    </Row>
   </div>
   <div class='third-part'>
     <Row :gutter='20' class="dataStatistic">
         <i-col span='8'>
-          <h1>各级用户占比分析</h1>
+          <p class="title-font">各级用户占比分析</p>
           <Divider />
           <Card shadow>
             <chart-pie class='pie' :value='userPieData' text='各级用户数量'></chart-pie>
           </Card>
         </i-col>
         <i-col span='16'>
-          <h1>各级书目数量统计</h1>
+          <p class="title-font">各级书目数量统计</p>
           <Divider />
           <Card shadow>
             <chart-bar class='bar' :value='level_book' text='各级书目数量'/>
@@ -74,10 +70,12 @@ export default {
       this.activity_user = data.activity_user
       for (let key in data.level_user) {
         this.level_user[key] = data.level_user[key]
-        this.userPieData.push({
-          name: 'k' + key,
-          value: data.level_user[key]
-        })
+        if (this.level_user[key] !== 0) {
+          this.userPieData.push({
+            name: 'k' + key,
+            value: data.level_user[key]
+          })
+        }
       }
       for (let key in data.level_book) {
         this.level_book[key] = data.level_book[key]
@@ -115,15 +113,19 @@ export default {
   width: 100%;
 }
 .quick-tip-card {
-  height: 120px;
+  height: 80px;
 }
 .third-part {
   margin-top: 5%;
 }
 .dataStatistic {
-  margin-top: 20px;
+  margin-top: 13px;
 }
 .count-card {
-  font-size: 24px;
+  font-size: 14px;
+}
+.title-font {
+  font-size: 16px;
+  font-weight: bold;
 }
 </style>
