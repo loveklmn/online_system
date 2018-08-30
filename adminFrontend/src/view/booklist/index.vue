@@ -58,6 +58,26 @@ const levelList = {
   4: {
     value: 4,
     name: 'k4'
+  },
+  5: {
+    value: 5,
+    name: 'k5'
+  },
+  6: {
+    value: 6,
+    name: 'k6'
+  },
+  7: {
+    value: 7,
+    name: 'k7'
+  },
+  8: {
+    value: 8,
+    name: 'k8'
+  },
+  9: {
+    value: 9,
+    name: 'k9'
   }
 }
 
