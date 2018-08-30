@@ -90,7 +90,9 @@ export default {
         level: null,
         read_type: '',
         cover: '',
-        pages_num: 0
+        pages_num: 0,
+        assignment: '',
+        guidance: '<div></div>'
       },
       newBook: {
         id: -1,
@@ -98,7 +100,9 @@ export default {
         level: null,
         read_type: '',
         cover: '',
-        pages_num: 0
+        pages_num: 0,
+        assignment: '',
+        guidance: '<div></div>'
       }
     }
   },
@@ -154,8 +158,8 @@ export default {
             data: this.newBook
           }).then((data) => {
             this.loading = false
-            this.$router.push({
-              path: 'book/' + data.id
+            this.$router.replace({
+              path: '/book/' + data.id
             })
           })
         }

@@ -69,7 +69,7 @@ export default {
           let currentTime = new Date()
           this.noticeList.unshift({
             content: this.newNotice,
-            created_time: `${currentTime.getFullYear()}年${currentTime.getMonth()+1}月${currentTime.getDate()}日`,
+            created_time: `${currentTime.getFullYear()}年${currentTime.getMonth() + 1}月${currentTime.getDate()}日`,
             id: data.id
           })
           this.$Message.success('上传成功')
