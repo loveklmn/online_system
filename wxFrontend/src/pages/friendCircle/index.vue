@@ -2,17 +2,20 @@
   <div class="container">
     <div class="swiper-content">
       <div class="tab">
-        <div @click="tabPage" :class="'tab-item '+(currentNumber==0?'tab-item-current':'') " data-index="0">朋友圈</div>
-        <div @click="tabPage" :class="'tab-item tab-item2 ' + (currentNumber==1 ? 'tab-item-current' : '')" data-index="1">排行榜</div>
+        <div @click="tabPage" :class="'tab-item '+(currentNumber==0?'tab-item-current':'') " data-index="0">精读</div>
+        <div @click="tabPage" :class="'tab-item tab-item2 ' + (currentNumber==1 ? 'tab-item-current' : '')" data-index="1">泛读</div>
       </div>
       <swiper @change="switchPage" :current="currentIndex">
         <swiper-item>
-          <scroll-view class="scroll-views" scrollX="false" scrollY="true">
-            <moment v-for="(y,index) in theData" :key="index" :x="y"></moment>
-          </scroll-view>
+          <div class="weui-tab__content" :hidden="activeIndex !== 0">
+            <scroll-view class="book-list" scrollX="false" scrollY="true">
+                <moment v-for="(y,index) in theData" :key="index" :x="y"></moment>
+            </scroll-view>
+          </div>
         </swiper-item>
         <swiper-item>
-          <scroll-view class="scroll-views" scrollX="false" scrollY="true">
+          <div class="weui-tab__content">
+          <scroll-view class="book-list" scrollX="false" scrollY="true">
             <div class="rank-list">
               <div class="rank-list-item" v-for="(item,index) in aList" :key="index">
                 <div class="rank-num">
@@ -24,19 +27,19 @@
                 <div class="user-challenge-success-times">
                   <div>获得</div>
                   <rich-text>
-                    <i style="font-size: 36rpx;color: red;font-style:italic;">{{item.score}}</i>
+                    {{item.score}}
                     分</rich-text>
                 </div>
               </div>
             </div>
             <div class="rank-footer"></div>
           </scroll-view>
+          </div>
         </swiper-item>
       </swiper>
     </div>
   </div>
 </template>
-
 <script>
 import moment from '@/components/moment'
 import request from '@/utils/request'
@@ -46,6 +49,7 @@ export default {
       theData: null,
       currentNumber: 0,
       currentIndex: 0,
+      activeIndex: 0,
       aList: []
     }
   },
@@ -93,6 +97,25 @@ export default {
 </script>
 
 <style scoped>
+page {
+  height:91.6%
+}
+
+.book-list {
+  height: 100%;
+  display: fixed;
+  padding-bottom: 100rpx;
+}
+
+.swiper-item {
+  display: fixed;
+}
+
+.weui-tab__content {
+  height: 88%;
+  position: flex;
+}
+
 .swiper-content {
     display: flex;
     flex-direction: column;
@@ -102,18 +125,116 @@ export default {
     height: 100%;
 }
 
+swiper {
+  z-index: 500;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  width: 100%;
+  height: 1167rpx;
+}
+
+.weui-grids {
+  overflow: hidden;
+}
+
+.weui-grid {
+  position: relative;
+  box-sizing: border-box;
+  float: left;
+  width: 33.33333333%;
+  padding: 10px;
+}
+
+.weui-grid__icon {
+  display: block;
+  width: 220rpx;
+  height: 220rpx;
+  margin: 0 auto;
+}
+
+.weui-grid__label {
+  display: block;
+  margin-top: 5px;
+  margin-right:10px;
+  margin-left: 10px;
+  overflow: hidden;
+  font-size: 14px;
+  color: #000;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.weui-loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin: 0 5px;
+  vertical-align: middle;
+  background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGgxMDB2MTAwSDB6Ii8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjRTlFOUU5IiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTMwKSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iIzk4OTY5NyIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgzMCAxMDUuOTggNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjOUI5OTlBIiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKDYwIDc1Ljk4IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0EzQTFBMiIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSg5MCA2NSA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNBQkE5QUEiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoMTIwIDU4LjY2IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0IyQjJCMiIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgxNTAgNTQuMDIgNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjQkFCOEI5IiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKDE4MCA1MCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNDMkMwQzEiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTE1MCA0NS45OCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNDQkNCQ0IiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTEyMCA0MS4zNCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNEMkQyRDIiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTkwIDM1IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0RBREFEQSIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgtNjAgMjQuMDIgNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjRTJFMkUyIiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKC0zMCAtNS45OCA2NSkiLz48L3N2Zz4=);
+  background-size: 100%;
+  -webkit-animation: a 1s steps(12) infinite;
+  animation: a 1s steps(12) infinite;
+}
+
+.swiper-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+swiper {
+  z-index: 500;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  width: 100%;
+  padding-top: 100rpx;
+  height: 1167rpx;
+}
+
+.swiper-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.book-list {
+  height:100%;
+}
+
+.content {
+  height: 88%;
+  padding-top: 100rpx;
+}
+
+.weui-tab__content {
+  height: 88%;
+  position: flex;
+}
+
 .tab {
     position: fixed;
-    position: relative;
-    top: 0;
-    left: 0;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 660rpx;
+    top: 0rpx;
+    width: 750rpx;
+    margin-left: 45rpx;
     height: 100rpx;
+    background-color: white;
+    border: 2rpx;
+    border-color:#00a7fe;
     border-radius: 50rpx;
+    z-index: 999;
 }
 
 .tab>image {
@@ -210,7 +331,7 @@ export default {
 }
 
 .scroll-views {
-    height: 100%;
+    height: 88%;
 }
 
 .rank-footer {

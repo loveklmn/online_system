@@ -9,8 +9,7 @@
       <swiper @change="switchPage" :current="currentIndex">
         <swiper-item>
           <div class="weui-tab__content" :hidden="activeIndex != 0">
-            <div class="page">
-              <div class="page__bd">
+            <scroll-view class="book-list" scrollX="false" scrollY="true">
                 <div class="weui-grids">
                   <block v-for="book in intensiveReading" :key="book.id">
                     <div @click="navToNavigator(book)" class="weui-grid">
@@ -23,27 +22,26 @@
                     </div>
                   </block>
                 </div>
-              </div>
-            </div>
+            </scroll-view>
           </div>
         </swiper-item>
         <swiper-item>
-          <scroll-view bindscrolltolower="lower" class="scroll-views" scrollX="false" scrollY="true">
-            <div class="page__bd">
-              <div class="weui-grids">
-                <block v-for="book in extensiveReading" :key="book.id">
-                  <div @click="navToNavigator(book)" class="weui-grid">
-                    <image class="weui-grid__icon" :src="book.rcover" />
-                    <div class="weui-grid__label">
-                      {{book.title}}<br>
-                      <i-progress v-if="book.percent === 100" :percent="book.percent" status="success" hide-info></i-progress>
-                      <i-progress v-else :percent="book.percent" hide-info></i-progress>
+           <div class="weui-tab__content" :hidden="activeIndex != 0">
+          <scroll-view class="book-list" scrollX="false" scrollY="true">
+                <div class="weui-grids">
+                  <block v-for="book in extensiveReading" :key="book.id">
+                    <div @click="navToNavigator(book)" class="weui-grid">
+                      <image class="weui-grid__icon" :src="book.rcover" />
+                      <div class="weui-grid__label">
+                        {{book.title}}<br>
+                        <i-progress v-if="book.percent === 100" :percent="book.percent" status="success" hide-info></i-progress>
+                        <i-progress v-else :percent="book.percent" hide-info></i-progress>
+                      </div>
                     </div>
-                  </div>
-                </block>
-              </div>
-            </div>
-          </scroll-view>
+                  </block>
+                </div>
+            </scroll-view>
+           </div>
         </swiper-item>
       </swiper>
     </div>
@@ -79,9 +77,6 @@ export default {
       })
   },
   methods: {
-    tabClick (e) {
-      this.activeIndex = e.currentTarget.id
-    },
     switchPage: function (a) {
       this.currentNumber = a.target.current
       this.currentIndex = a.target.current
@@ -109,6 +104,16 @@ export default {
 <style scoped>
 page {
   height:91.6%
+}
+
+.book-list {
+  height:100%;
+}
+
+.weui-tab__content {
+  height: 88%;
+  position: flex;
+  padding-top: 100rpx;
 }
 
 .swiper-content {
@@ -143,8 +148,8 @@ swiper {
 
 .weui-grid__icon {
   display: block;
-  width: 170rpx;
-  height: 240rpx;
+  width: 220rpx;
+  height: 220rpx;
   margin: 0 auto;
 }
 
@@ -156,17 +161,6 @@ swiper {
   overflow: hidden;
   font-size: 14px;
   color: #000;
-  text-align: center;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.weui-grid__label_punched {
-  display: block;
-  margin-top: 5px;
-  overflow: hidden;
-  font-size: 14px;
-  color: green;
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -185,17 +179,20 @@ swiper {
 }
 
 .tab {
-    position: relative;
+    position: fixed;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 660rpx;
+    top: 0rpx;
+    width: 750rpx;
+    margin-left: 45rpx;
     height: 100rpx;
     background-color: white;
     border: 2rpx;
     border-color:#00a7fe;
     border-radius: 50rpx;
+    z-index: 999;
 }
 
 .change_level {

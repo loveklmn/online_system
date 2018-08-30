@@ -65,7 +65,7 @@ export default {
 
 .weui-grid__icon {
   display: block;
-  width: 170rpx;
+  width: 240rpx;
   height: 240rpx;
   margin: 0 auto;
 }
