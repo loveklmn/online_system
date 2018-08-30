@@ -152,7 +152,7 @@ export default {
         this.submitted = true
         wx.showModal({
           title: '您要打卡吗?',
-          content: '您的作业将会出现在小伙伴中,您的书名将变为绿色',
+          content: '您的作业将会出现在小伙伴中',
           confirmText: '确定',
           cancelText: '取消',
           success: function (res) {
@@ -160,7 +160,7 @@ export default {
               let url = 'community/'
               request.post(url, {book: vm.id}).then((res) => {
                 if (res.statusCode === 201) {
-                  wx.switchTab({ url: '/pages/friendCircle/main' })
+                  wx.switchTab({ url: '/pages/index/main' })
                 }
               })
             }
