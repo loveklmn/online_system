@@ -1,7 +1,12 @@
 <template>
   <div>
-    <image class="main-bg" src="../../static/images/main-bg.png" />
-    <div class="container">
+    <image class="main-bg" src="../../static/images/main-bg.png"/>
+    <div v-if="loading" class="loading-outer-wrapper">
+      <div class="loading-inner-wrapper">
+        <BallPulse />
+      </div>
+  </div>
+  <div v-else class="container">
       <div class="pintu-wrap">
         <div class="pintu-line">
           <div class="pintu-item-wrap">
@@ -46,10 +51,11 @@
 
 <script>
 import request from '@/utils/request'
+import BallPulse from 'mpvue-loading/src/loaders/ball-pulse'
 export default {
   data () {
     return {
-      word: 'It is a lucky cat.',
+      word: 'You win.~',
       cards: {
         card1: {num: 3, hidden: false, src: ''},
         card2: {num: 7, hidden: false, src: ''},
@@ -60,8 +66,12 @@ export default {
         card7: {num: 2, hidden: false, src: ''},
         card8: {num: 8, hidden: false, src: ''},
         card9: {num: 1, hidden: false, src: ''}
-      }
+      },
+      loading: true
     }
+  },
+  components: {
+    BallPulse
   },
   methods: {
     card1 () {
@@ -139,6 +149,7 @@ export default {
           vm.card9.src = request.baseURL + vt['1']
           vm.card9.num = 1
           vm.card9.hidden = false
+          vm.loading = false
         })
     },
     moveCard (n1, n2) {
@@ -184,6 +195,7 @@ export default {
   },
   onLoad (options) {
     let vm = this.cards
+    let _this = this
     this.id = options.id
     let url = 'books/' + options.id + '/JigsawGame/'
     request.get(url)
@@ -193,11 +205,13 @@ export default {
         vm.card2.src = request.baseURL + vt['7']
         vm.card3.src = request.baseURL + vt['5']
         vm.card4.src = request.baseURL + vt['9']
+        vm.card4.hidden = true
         vm.card5.src = request.baseURL + vt['4']
         vm.card6.src = request.baseURL + vt['6']
         vm.card7.src = request.baseURL + vt['2']
         vm.card8.src = request.baseURL + vt['8']
         vm.card9.src = request.baseURL + vt['1']
+        _this.loading = false
       })
   }
 }
@@ -207,6 +221,7 @@ export default {
 input{
   padding: 20rpx
 }
+
 .container {
   box-sizing: border-box;
   display: flex;
@@ -216,6 +231,14 @@ input{
   height: 100%;
   padding-top: 200rpx;
   color: #4e4b4b;
+}
+
+.loading-board {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1 1;
+  width: 100%;
+  height: 100%;
 }
 
 .btn-wrap {
@@ -240,9 +263,44 @@ input{
   height: 100px;
 }
 
+.loading-outer-wrapper {
+  padding-top: 584rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.loading-inner-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  display: inline;
+  margin: auto auto;
+  padding: 0;
+}
+
 .pintu-item {
   width: 100%;
   height: 100%;
   line-height: 100px;
+}
+
+.loading-outer-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.loading-inner-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  display: inline;
+  margin: auto auto;
+  padding: 0;
 }
 </style>

@@ -1,12 +1,18 @@
 <template>
   <div>
-    <view class="answer">
+    <div v-if="loading" class="loading-outer-wrapper">
+      <image class="main-bg" src="../../static/images/main-bg.png"/>
+      <div class="loading-inner-wrapper">
+        <BallPulse />
+      </div>
+    </div>
+    <div v-else class="answer">
       <toast :message="msg" :visible.sync="visible"></toast>
-      <view class="word">
+      <div class="word">
         {{sentence}}
-      </view>
-      <view class="btn_group">
-        <view class="btn_container">
+      </div>
+      <div class="btn_group">
+        <div class="btn_container">
           <button @click="right" class="answer word" v-if="rand === 0">
             A.　　{{correct_word}}
           </button>
@@ -28,15 +34,16 @@
           <button @click="right" class="answer word" v-if="rand === 3">
             D.　　{{correct_word}}
           </button>
-        </view>
-      </view>
-    </view>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import toast from 'mpvue-toast'
 import request from '@/utils/request'
+import BallPulse from 'mpvue-loading/src/loaders/ball-pulse'
 export default {
   data () {
     return {
@@ -54,11 +61,14 @@ export default {
         ['A', 'C', 'D'],
         ['A', 'B', 'D'],
         ['A', 'B', 'C']
-      ]
+      ],
+      waittime: 600,
+      loading: true
     }
   },
   components: {
-    toast
+    toast,
+    BallPulse
   },
   methods: {
     setVisible () {
@@ -101,6 +111,7 @@ export default {
         vm.wrong_word_1 = res.data.wrong_word_1
         vm.wrong_word_2 = res.data.wrong_word_2
         vm.wrong_word_3 = res.data.wrong_word_3
+        vm.loading = false
       })
   },
   mounted () {
@@ -122,6 +133,24 @@ page {
     left: 0;
     z-index: 20;
     background: rgba(0,0,0,0.2);
+}
+
+.loading-outer-wrapper {
+  padding-top: 384rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.loading-inner-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  display: inline;
+  margin: auto auto;
+  padding: 0;
 }
 
 .auth .modal_IOS {

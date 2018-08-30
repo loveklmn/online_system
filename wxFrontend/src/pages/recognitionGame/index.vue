@@ -1,6 +1,11 @@
 <template>
   <div>
-    <div class="answer">
+    <div v-if="loading" class="loading-outer-wrapper">
+      <div class="loading-inner-wrapper">
+        <BallPulse />
+      </div>
+    </div>
+    <div v-else class="answer">
       <toast :message="msg" :visible.sync="visible"></toast>
       <div class="word">
         <img :src="rimg" />
@@ -47,7 +52,8 @@ export default {
         ['A', 'B']
       ],
       correct1src: '/static/audios/correct1.mp3',
-      wrongsrc: '/static/audios/wrong.mp3'
+      wrongsrc: '/static/audios/wrong.mp3',
+      loading: true
     }
   },
   components: {
@@ -96,6 +102,7 @@ export default {
         vm.correct_word = res.data.correct_word
         vm.wrong_word_1 = res.data.wrong_word_1
         vm.wrong_word_2 = res.data.wrong_word_2
+        vm.loading = false
       })
   },
   mounted () {
@@ -117,6 +124,23 @@ page {
     left: 0;
     z-index: 20;
     background: rgba(0,0,0,0.2);
+}
+
+.loading-outer-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.loading-inner-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  display: inline;
+  margin: auto auto;
+  padding: 0;
 }
 
 .auth .modal_IOS {

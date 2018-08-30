@@ -1,7 +1,7 @@
 <template>
 <div class="gameboard">
-  <image class="main-bg" src="../../static/images/main-bg.png"/>
   <div v-if="loading" class="loading-outer-wrapper">
+  <image class="main-bg" src="../../static/images/main-bg.png"/>
     <div class="loading-inner-wrapper">
       <BallPulse />
     </div>
@@ -233,7 +233,7 @@ export default {
   },
   onLoad (options) {
     this.innerAudioContext = wx.createInnerAudioContext()
-    let url = `books/${options.id}/MatchingGame`
+    let url = 'books/' + options.id + '/MatchingGame/'
     let map = [
       [1, 2, 3],
       [1, 3, 2],
@@ -242,6 +242,7 @@ export default {
       [3, 1, 2],
       [3, 2, 1]
     ]
+    let vm = this
     request.get(url)
       .then((res) => {
         let leftArrangement = this.getRandomInt(6)
@@ -250,11 +251,13 @@ export default {
           let leftPos = map[leftArrangement][i - 1]
           this.leftpics[leftPos].src = request.baseURL + res.data[i - 1].img
           this.leftpics[leftPos].value = -i
+          this.leftpics[i].selected = false
           let rightPos = map[rightArrangement][i - 1]
           this.rightpics[rightPos].word = res.data[i - 1].word
           this.rightpics[rightPos].value = i
+          this.rightpics[i].selected = false
         }
-        this.loading = false
+        vm.loading = false
       })
   }
 }
