@@ -26,6 +26,7 @@
                       type="primary"
                       class="add-page-button"
                       @click="importBook">上传这本书</Button>
+                    <Button class="add-page-button" type="warning" @click="handleReset">返回</Button>
                 </Menu>
             </Sider>
             <Layout>
@@ -173,6 +174,9 @@ export default {
         }
       }
       return true
+    },
+    handleReset () {
+      this.$router.go(-1)
     }
   },
   watch: {

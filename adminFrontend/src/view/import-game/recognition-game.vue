@@ -10,6 +10,7 @@
     class="upload-button"
     type="primary"
     @click="uploadGame">确认上传</Button>
+  <Button class="upload-button" type="warning" @click="handleReset">返回</Button>
 </div>
 </template>
 <script>
@@ -59,6 +60,9 @@ export default {
       }).then(data => {
         this.$Message.info(`上传成功！`)
       })
+    },
+    handleReset () {
+      this.$router.go(-1)
     }
   },
   created () {

@@ -1,6 +1,5 @@
 <template>
   <div id="test">
-    <p>上传的图片不需要裁切</p>
     <div v-if="urlsReady" class="preview-div">
       <img
         v-for="item in urls"
@@ -9,6 +8,7 @@
         class="pic"/>
     </div>
     <div v-else>
+      <p>上传的图片不需要裁切</p>
       <imgComp :img.sync="img"></imgComp>
       <Button
         v-if="img !== null"
@@ -24,6 +24,7 @@
       class="upload-button"
       type="primary"
       @click="uploadGame">确认上传</Button>
+    <Button class="upload-button" type="warning" @click="handleReset">返回</Button>
   </div>
 </template>
 <script>
@@ -71,6 +72,9 @@ export default {
           }
         })
       return false
+    },
+    handleReset () {
+      this.$router.go(-1)
     },
     haveNull: function () {
       for (let i = 1; i <= 9; i++) {
