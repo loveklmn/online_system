@@ -96,8 +96,8 @@ export default {
             }
           }
           this.submitted = false
-          this.loading = false
         }
+        this.loading = false
       }
     })
   },

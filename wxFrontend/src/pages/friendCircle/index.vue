@@ -2,8 +2,8 @@
   <div class="container">
     <div class="swiper-content">
       <div class="tab">
-        <div @click="tabPage" :class="'tab-item '+(currentNumber==0?'tab-item-current':'') " data-index="0">精读</div>
-        <div @click="tabPage" :class="'tab-item tab-item2 ' + (currentNumber==1 ? 'tab-item-current' : '')" data-index="1">泛读</div>
+        <div @click="tabPage" :class="'tab-item '+(currentNumber==0?'tab-item-current':'') " data-index="0">朋友圈</div>
+        <div @click="tabPage" :class="'tab-item tab-item2 ' + (currentNumber==1 ? 'tab-item-current' : '')" data-index="1">排行榜</div>
       </div>
       <swiper @change="switchPage" :current="currentIndex">
         <swiper-item>
