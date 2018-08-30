@@ -132,8 +132,6 @@ export default {
       })
     }
   },
-  computed: {
-  },
   methods: {
     modify () {
       this.modifyMode = true
@@ -147,7 +145,8 @@ export default {
       }
     },
     save () {
-      if (this.id === -1) {
+      let id = parseInt(this.$route.params.id)
+      if (id === -1) {
         if (!this.newBook.title || !this.newBook.level || !this.newBook.cover || !this.newBook.read_type) {
           this.$Message.error('请填写完整的信息')
         } else {
@@ -158,9 +157,13 @@ export default {
             data: this.newBook
           }).then((data) => {
             this.loading = false
+            this.$Message.success('修改已保存')
             this.$router.replace({
               path: '/book/' + data.id
             })
+            this.newBook.id = data.id
+            this.currentBook = Object.assign({}, this.newBook)
+            this.modifyMode = false
           })
         }
       } else {
