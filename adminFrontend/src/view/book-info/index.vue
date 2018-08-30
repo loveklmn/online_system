@@ -67,6 +67,7 @@
       </div>
     </Card>
   </div>
+  <backhome-btn></backhome-btn>
 </div>
 </content-layout>
 </template>
@@ -75,6 +76,7 @@ import axios from '@/libs/api.request'
 import upload from '@/api/upload'
 import baseURL from '_conf/url'
 import contentLayout from '_c/content-layout'
+import backhomeBtn from '_c/backhome-btn'
 export default {
   data () {
     return {
@@ -107,7 +109,8 @@ export default {
     }
   },
   components: {
-    contentLayout
+    contentLayout,
+    backhomeBtn
   },
   beforeRouteEnter (to, from, next) {
     let id = parseInt(to.params.id)

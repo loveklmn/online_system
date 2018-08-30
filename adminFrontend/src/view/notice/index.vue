@@ -12,6 +12,7 @@
         </TabPane>
       </Tabs>
     </Row>
+    <backhome-btn></backhome-btn>
   </div>
 </content-layout>
 </template>
@@ -19,6 +20,7 @@
 import sendNotice from './send-notice.vue'
 import noticeTable from './notice-table.vue'
 import contentLayout from '_c/content-layout'
+import backhomeBtn from '_c/backhome-btn'
 export default {
   data () {
     return {
@@ -29,7 +31,8 @@ export default {
   components: {
     sendNotice,
     noticeTable,
-    contentLayout
+    contentLayout,
+    backhomeBtn
   },
   methods: {
     handleClick (name) {
