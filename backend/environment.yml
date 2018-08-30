@@ -29,3 +29,4 @@ dependencies:
   - pip:
     - django-cors-headers
     - pylint-django
+    - sphinx
