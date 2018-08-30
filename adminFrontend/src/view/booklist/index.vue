@@ -199,7 +199,7 @@ export default {
 
 .main-content {
   margin-left: 4.6%;
-  margin-top: 1%;
+  margin-top: 2%;
   margin-right: 4.6%;
 }
 </style>

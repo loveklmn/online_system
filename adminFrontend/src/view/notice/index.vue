@@ -1,16 +1,18 @@
 <template>
 <content-layout
   title="消息管理">
-  <Card slot="content">
-    <div class="top-menu">
-      <Button class="top-menu-btn" @click="sendNewMessage">发布新消息</Button>
-      <Button class="top-menu-btn" @click="queryHistory">历史消息管理</Button>
-      <Divider class="top-menu-divider"/>
-      <Divider />
-      <send-notice v-if="pageOne" />
-      <notice-table v-if="pageTwo" />
-    </div>
-  </Card>
+  <div slot="content">
+    <Row :gutter="22" class="demo-tabs-style1 main-content" style="background: #e3e8ee;padding:16px;">
+      <Tabs type="card" @on-click="handleClick">
+        <TabPane label="发布新消息" >
+          <send-notice v-if="pageOne"/>
+        </TabPane>
+        <TabPane label="历史消息管理">
+          <notice-table v-if="pageTwo"/>
+        </TabPane>
+      </Tabs>
+    </Row>
+  </div>
 </content-layout>
 </template>
 <script>
@@ -21,7 +23,7 @@ export default {
   data () {
     return {
       pageOne: true,
-      pageTwo: false
+      pageTwo: true
     }
   },
   components: {
@@ -30,13 +32,14 @@ export default {
     contentLayout
   },
   methods: {
-    queryHistory () {
-      this.pageOne = false
-      this.pageTwo = true
-    },
-    sendNewMessage () {
-      this.pageOne = true
-      this.pageTwo = false
+    handleClick (name) {
+      if (name === 0) {
+        this.pageOne = true
+        this.pageTwo = false
+      } else {
+        this.pageOne = false
+        this.pageTwo = true
+      }
     }
   }
 }
@@ -59,4 +62,25 @@ export default {
   margin: 0;
   background-color: #b4babf;
 }
+.main-content {
+  margin-left: 1%;
+}
+
+.demo-tabs-style1 > .ivu-tabs-card > .ivu-tabs-content {
+        height: 120px;
+        margin-top: -16px;
+    }
+
+    .demo-tabs-style1 > .ivu-tabs-card > .ivu-tabs-content > .ivu-tabs-tabpane {
+        background: #fff;
+        padding: 16px;
+    }
+
+    .demo-tabs-style1 > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
+        border-color: transparent;
+    }
+
+    .demo-tabs-style1 > .ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active {
+        border-color: #fff;
+    }
 </style>

@@ -1,33 +1,16 @@
 <template>
-<div class="main-content">
-  <Divider class="first-divider" orientation="left"><h1>历史消息统计</h1></Divider>
-  <Card>
-    <filter-table
-      @load="loadData"
-      :data="noticeList"
-      :columns="columns"
-      :search="condition">
-    </filter-table>
-  </Card>
+<div>
+  <Divider class="first-divider" orientation="left"><p class="title-font">历史消息统计</p></Divider>
+  <Table
+    :data="noticeList"
+    :columns="columns">
+  </Table>
 </div>
 </template>
 <script>
 import FilterTable from '_c/filter-table'
+import Tables from '_c/tables'
 import axios from '@/libs/api.request'
-const timeList = {
-  0: {
-    value: '0',
-    name: '全部'
-  },
-  1: {
-    value: '1',
-    name: '三天内'
-  },
-  2: {
-    value: '2',
-    name: '一周内'
-  }
-}
 export default {
   name: 'noticeName',
   data () {
@@ -36,10 +19,7 @@ export default {
       columns: [
         {
           title: '序号',
-          key: 'id',
-          filter: {
-            type: 'Input'
-          }
+          key: 'id'
         },
         {
           title: '消息内容',
@@ -50,11 +30,7 @@ export default {
         },
         {
           title: '发布时间',
-          key: 'created_time',
-          filter: {
-            type: 'Select',
-            option: timeList
-          }
+          key: 'created_time'
         },
         {
           title: '删除',
@@ -81,13 +57,19 @@ export default {
     }
   },
   components: {
-    FilterTable
+    FilterTable,
+    Tables
   },
   created () {
     axios.request({
       url: 'notices',
       method: 'get'
     }).then(data => {
+      data.sort(function (a, b) {
+        let d1 = new Date(a.created_time)
+        let d2 = new Date(b.created_time)
+        return d1 < d2 ? 1 : -1
+      })
       this.noticeList.push.apply(this.noticeList, data)
       this.noticeList = this.noticeList.map(notice => {
         let time = new Date(notice.created_time)
@@ -119,21 +101,6 @@ export default {
           this.noticeList.splice(index, 1)
         }
       })
-    },
-    loadData () {
-      this.selectedNotice = this.noticeList.filter(this.isSelected)
-    },
-    isSelected (currentStudent) {
-      if (this.condition.id && currentStudent.id !== parseInt(this.condition.id)) {
-        return false
-      }
-      if (this.condition.title && currentStudent.title.indexOf(this.condition.title) === -1) {
-        return false
-      }
-      if (this.condition.type && currentStudent.type !== this.condition.type) {
-        return false
-      }
-      return true
     }
   }
 }
@@ -141,5 +108,9 @@ export default {
 <style scoped>
 .first-divider {
   margin-bottom: 2%;
+}
+.title-font {
+  font-size: 16px;
+  font-weight: bold;
 }
 </style>

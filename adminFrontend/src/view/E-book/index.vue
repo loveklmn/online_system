@@ -1,65 +1,82 @@
 <template>
-    <div class="layout">
+<content-layout
+  title="E-book导入">
+    <div class="main-content" slot="content">
+      <Layout>
+        <Sider width="auto" >
+            <Menu
+              theme="dark"
+              width="auto"
+              class="menu"
+              @on-select="select">
+                <MenuItem
+                  v-for="(img, index) in preview"
+                  :key="index"
+                  :name="index"
+                  class="menu-item"
+                  >
+                  <img
+                    :src="img"
+                    :class="[ index === curid ? 'preview-selected' : 'preview']"/>
+                </MenuItem>
+                <Button
+                  type="dashed"
+                  ghost
+                  class="add-page-button"
+                  @click="addNewPage">添加新页面</Button>
+                <Button
+                  type="primary"
+                  class="add-page-button"
+                  @click="importBook">上传这本书</Button>
+            </Menu>
+        </Sider>
         <Layout>
-            <Sider width="auto" >
-                <Menu
-                  theme="dark"
-                  width="auto"
-                  class="menu"
-                  @on-select="select">
-                    <MenuItem
-                      v-for="(img, index) in preview"
-                      :key="index"
-                      :name="index"
-                      class="menu-item"
-                      >
-                      <img
-                        :src="img"
-                        :class="[ index === curid ? 'preview-selected' : 'preview']"/>
-                    </MenuItem>
-                    <Button
-                      type="dashed"
-                      ghost
-                      class="add-page-button"
-                      @click="addNewPage">添加新页面</Button>
-                    <Button
-                      type="primary"
-                      class="add-page-button"
-                      @click="importBook">上传这本书</Button>
-                    <Button class="add-page-button" type="warning" @click="handleReset">返回</Button>
-                </Menu>
-            </Sider>
-            <Layout>
-                <Header v-if="curpage !==  null" :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}">
-                  <h1 class="page-num">P{{curPageNum}}</h1>
-                </Header>
-                <Content :style="{padding: '0 16px 16px'}">
-                    <Card>
-                        <pageimport
-                          class="pageimport"
-                          :page.sync="curpage"
-                          v-on:deletePage="deletePage"
-                          v-on:picChange="countPreview"></pageimport>
-                    </Card>
-                </Content>
-            </Layout>
+            <Header v-if="curpage !==  null" :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}">
+              <h1 class="page-num">P{{curPageNum}}</h1>
+            </Header>
+            <Content :style="{padding: '0 16px 16px'}">
+                <Card>
+                    <pageimport
+                      class="pageimport"
+                      :page.sync="curpage"
+                      v-on:deletePage="deletePage"
+                      v-on:picChange="countPreview"></pageimport>
+                </Card>
+            </Content>
         </Layout>
+      </Layout>
+      <float-btn
+        :back="backRoute"
+        :assignment="assignmentRoute"
+        :guidance="guidanceRoute"
+        :game="gameRoute"/>
     </div>
+</content-layout>
 </template>
 <script>
 import pageimport from './page-import.vue'
 import axios from '@/libs/api.request'
+import contentLayout from '_c/content-layout'
+import floatBtn from './float-btn.vue'
 export default {
   data () {
     return {
       bookid: -1, // 在created () 中修改
       preview: [],
       curpage: null,
-      book: []
+      book: [],
+      backRoute: ``,
+      assignmentRoute: ``,
+      guidanceRoute: ``,
+      gameRoute: ``
     }
   },
   created () {
     this.bookid = this.$route.params.id
+    this.backRoute = `/book/${this.bookid}`
+    this.assignmentRoute = `/book/${this.bookid}/assignment`
+    this.guidanceRoute = `/book/${this.bookid}/guidance`
+    this.gameRoute = `/book/${this.bookid}/game`
     let loader = this.$loading.show()
     axios.request({
       url: `books/${this.bookid}/ebook/`,
@@ -186,13 +203,18 @@ export default {
     }
   },
   components: {
-    pageimport
+    pageimport,
+    contentLayout,
+    floatBtn
   },
   mounted () {
   }
 }
 </script>
 <style scoped>
+.main-content {
+  margin: 1%;
+}
 .layout-con {
   width: 100%;
   height: 100%;
@@ -200,6 +222,7 @@ export default {
 
 .menu {
   height: 560px;
+  margin-top: 55px;
 }
 
 .menu-item {
@@ -240,4 +263,5 @@ export default {
 .pageimport {
   height: 560px;
 }
+
 </style>

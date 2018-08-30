@@ -1,7 +1,7 @@
 <template>
   <div class="user-avator-dropdown">
     <Dropdown @on-click="handleClick">
-      <Avatar class="userAvatar" icon="md-aperture" />
+      <Avatar class="userAvatar" icon="md-person" />
       <Icon :size="18" type="md-arrow-dropdown"></Icon>
       <DropdownMenu slot="list">
         <DropdownItem name="logout">退出登录</DropdownItem>
@@ -41,6 +41,6 @@ export default {
 </script>
 <style scoped>
 .userAvatar {
-  background-color: #87d068;
+  background-color: #eba82c;
 }
 </style>

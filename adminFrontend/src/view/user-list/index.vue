@@ -1,7 +1,7 @@
 <template>
 <content-layout
   title="学生列表">
-  <div slot="content">
+  <div slot="content" class="main-content">
     <filter-table
       @load= "loadData"
       :data= "selectedStudents"
@@ -151,3 +151,10 @@ export default {
   }
 }
 </script>
+<style scoped>
+.main-content {
+  margin-left: 4.6%;
+  margin-top: 2%;
+  margin-right: 4.6%;
+}
+</style>
