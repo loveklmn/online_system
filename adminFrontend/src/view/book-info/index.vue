@@ -196,8 +196,8 @@ export default {
   flex-direction: column;
   width: 95%;
   height: 80%;
-  margin-left: 2.5%;
-  margin-right: 2.5%;
+  margin-left: 3%;
+  margin-right: 3%;
   .top-part {
     flex-grow: 2;
     margin-top: 2%;

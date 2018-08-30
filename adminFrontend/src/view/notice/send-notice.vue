@@ -1,17 +1,17 @@
 <template>
 <div>
-  <Divider class="first-divider" orientation="left"><h1>发布新消息</h1></Divider>
+  <Divider class="first-divider" orientation="left"><p class="title-font">发布新消息</p></Divider>
   <div class="new-messsage">
     <Input class="new-input"
     v-model="newNotice"
     type="textarea"
     :rows="4"
     placeholder="输入你的消息..." />
-    <Card class="new-card">
+    <div class="send-div">
       <Button type="primary" class="send-btn" @click="handleSubmit">发布</Button>
-    </Card>
+    </div>
   </div>
-  <Divider class="second-divider" orientation="left"><h1>最近一周发布消息</h1></Divider>
+  <Divider class="second-divider" orientation="left"><p class="title-font">最近一周发布消息</p></Divider>
   <div
     class="single-message"
     v-for="notice in noticeList"
@@ -66,6 +66,12 @@ export default {
           url: 'notices/',
           method: 'post'
         }).then((data) => {
+          let currentTime = new Date()
+          this.noticeList.unshift({
+            content: this.newNotice,
+            created_time: `${currentTime.getFullYear()}年${currentTime.getMonth()+1}月${currentTime.getDate()}日`,
+            id: data.id
+          })
           this.$Message.success('上传成功')
         })
       } else {
@@ -125,8 +131,14 @@ export default {
   text-align: right;
 }
 
+.send-div {
+  margin-top: 2%;
+  margin-left: 67%;
+}
+
 .send-btn {
-  width: 10%;
+  width: 40%;
+  margin-right: 5%;
 }
 
 .first-divider {
@@ -143,6 +155,11 @@ export default {
 }
 
 Button:focus {
-  background-color: olive;
+  background-color: rgb(10, 14, 241);
+}
+
+.title-font {
+  font-size: 16px;
+  font-weight: bold;
 }
 </style>

@@ -31,7 +31,7 @@
         accept="image/*"
         action=""
        >
-          <Button icon="ios-cloud-upload-outline">上传本页对应的图片</Button>
+          <Button class="upload-page" icon="ios-cloud-upload-outline">上传本页对应的图片</Button>
       </Upload>
       <Button
         type="error"
@@ -253,6 +253,7 @@ export default {
 .sentence-content {
   flex: 1;
   max-height: 560px;
+  margin-right: 10%;
 }
 
 .pagepic {
@@ -277,5 +278,12 @@ export default {
 .delete-button {
   position: absolute;
   top: 460px;
+  margin-top: 2%;
+  width: 18.3%;
 }
+
+.upload-page {
+  margin-top: 6%;
+}
+
 </style>
