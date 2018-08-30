@@ -19,6 +19,9 @@
     v-if="thirdStage"
     @generateAgain="handleGenerateAgain"
     @backHome="handleBackHome"/>
+    <backhome-btn
+      back="/home"
+      name="回首页"/>
   </div>
 </content-layout>
 </template>
@@ -27,6 +30,7 @@ import contentLayout from '_c/content-layout'
 import firstStep from './new-accounts.vue'
 import secondStep from './generate-accounts.vue'
 import thirdStep from './generate-result.vue'
+import backhomeBtn from '_c/backhome-btn'
 export default {
   data () {
     return {
@@ -41,7 +45,8 @@ export default {
     contentLayout,
     firstStep,
     secondStep,
-    thirdStep
+    thirdStep,
+    backhomeBtn
   },
   methods: {
     handleFirstDone (data) {

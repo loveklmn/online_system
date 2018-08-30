@@ -8,7 +8,9 @@
       :columns= "columns"
       :search= "condition">
     </filter-table>
-    <backhome-btn></backhome-btn>
+    <backhome-btn
+      back="/home"
+      name="回首页"></backhome-btn>
   </div>
 </content-layout>
 </template>

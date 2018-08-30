@@ -67,7 +67,9 @@
       </div>
     </Card>
   </div>
-  <backhome-btn></backhome-btn>
+  <backhome-btn
+    back="/book/list"
+    name="书目列表"></backhome-btn>
 </div>
 </content-layout>
 </template>

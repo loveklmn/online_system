@@ -1,15 +1,35 @@
 <template>
 <div>
   <a class="float">
-    <router-link to="/home">
-      <i class="fa fa-envelope my-float">回首页</i>
+    <router-link :to="backRoute">
+      <i class="fa fa-envelope my-float">{{ backName }}</i>
     </router-link>
   </a>
 </div>
 </template>
 <script>
 export default {
-  name: 'backhomeBtn'
+  name: 'backhomeBtn',
+  props: {
+    back: {
+      type: String,
+      default: ''
+    },
+    name: {
+      type: String,
+      default: ''
+    }
+  },
+  data () {
+    return {
+      backRoute: '',
+      backName: ''
+    }
+  },
+  created () {
+    this.backRoute = this.back
+    this.backName = this.name
+  }
 }
 </script>
 <style scoped>

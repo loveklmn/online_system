@@ -11,7 +11,9 @@
     </filter-table>
     <Divider />
     <Button type="primary" :loading="loading" @click="newBook" class="new-book-btn">导入新书</Button>
-    <backhome-btn/>
+    <backhome-btn
+      back="/home"
+      name="回首页"/>
   </div>
 </content-layout>
 </template>
@@ -191,8 +193,8 @@ export default {
 
 .new-book-btn {
   width: 20%;
-  margin-top: 2%;
-  margin-bottom: 2%;
+  /* margin-top: 1%; */
+  margin-bottom: 5%;
   margin-left: 40%;
 }
 
