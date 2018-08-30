@@ -1,23 +1,25 @@
 <template>
   <div>
-    <a :href="backRoute" class="float" id="menu-share">
-      <i class="fa fa-share my-float">返回</i>
+    <a id="menu-share">
+      <router-link class="float" :to="backRoute" id="menu-share">
+        <i class="fa fa-share my-float">返回</i>
+      </router-link>
     </a>
     <ul>
       <li>
-        <a :href="assignmentRoute">
+        <router-link :to="assignmentRoute">
           <i class="fa fa-facebook my-float">阅读拓展</i>
-        </a>
+        </router-link>
       </li>
       <li>
-        <a :href="guidanceRoute">
+        <router-link :to="guidanceRoute">
           <i class="fa fa-google-plus my-float">亲子指导</i>
-        </a>
+        </router-link>
       </li>
       <li>
-        <a :href="ebookRoute">
+        <router-link :to="ebookRoute">
           <i class="fa fa-twitter my-float">E-book</i>
-        </a>
+        </router-link>
       </li>
     </ul>
   </div>

@@ -22,7 +22,7 @@
               <Input v-model="newBook.title" placeholder="书目标题" class="input-title"/>
             </FormItem>
             <FormItem label="所在级别">
-              <InputNumber :max="10" :min="1" v-model="newBook.level"></InputNumber>
+              <InputNumber :max="9" :min="1" v-model="newBook.level"></InputNumber>
             </FormItem>
             <FormItem label="所属类别" prop="type">
               <RadioGroup v-model="newBook.read_type">
@@ -31,7 +31,7 @@
               </RadioGroup>
             </FormItem>
             <Button type="primary" class="new-book-btn" @click="save" :loading="loading">保存修改</Button>
-            <Button type="warning" class="modify-btn" @click="decline">取消修改</Button>
+            <Button type="warning" class="cancel-new-book-btn" @click="decline">取消修改</Button>
           </Form>
         </Card>
         <Card title="封面">
@@ -67,6 +67,9 @@
       </div>
     </Card>
   </div>
+  <backhome-btn
+    back="/book/list"
+    name="书目列表"></backhome-btn>
 </div>
 </content-layout>
 </template>
@@ -75,6 +78,7 @@ import axios from '@/libs/api.request'
 import upload from '@/api/upload'
 import baseURL from '_conf/url'
 import contentLayout from '_c/content-layout'
+import backhomeBtn from '_c/backhome-btn'
 export default {
   data () {
     return {
@@ -107,7 +111,8 @@ export default {
     }
   },
   components: {
-    contentLayout
+    contentLayout,
+    backhomeBtn
   },
   beforeRouteEnter (to, from, next) {
     let id = parseInt(to.params.id)
@@ -269,6 +274,14 @@ export default {
           .input-title {
             width: 40%;
           }
+        }
+
+        .new-book-btn {
+          margin: auto;
+        }
+
+        .cancel-new-book-btn {
+          margin: auto;
         }
       }
     }

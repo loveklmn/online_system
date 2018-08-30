@@ -20,7 +20,6 @@
       </div>
       <div>
         <Button type="primary" class="next-step-btn" @click="nextStep">下一步</Button>
-        <Button type="warning" class="next-step-btn" @click="reset">返回首页</Button>
       </div>
     </Card>
   </div>

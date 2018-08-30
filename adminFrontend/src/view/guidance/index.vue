@@ -36,24 +36,26 @@ title="亲子阅读指导">
       <Button :loading="loading" @click="handleCommit" type="primary" class="op-btn">确认上传</Button>
     </div>
     <div>
-      <a :href="backRoute" class="float" id="menu-share">
-        <i class="fa fa-share my-float">返回</i>
+      <a id="menu-share">
+        <router-link class="float" :to="backRoute">
+          <i class="fa fa-share my-float">返回</i>
+        </router-link>
       </a>
       <ul>
         <li>
-          <a :href="ebookRoute">
+          <router-link :to="ebookRoute">
             <i class="fa fa-facebook my-float">E-book</i>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a :href="assignmentRoute">
+          <router-link :to="assignmentRoute">
             <i class="fa fa-google-plus my-float">阅读拓展</i>
-          </a>
+          </router-link>
         </li>
         <li>
-          <a :href="gameRoute">
+          <router-link :to="gameRoute">
             <i class="fa fa-twitter my-float">游戏导入</i>
-          </a>
+          </router-link>
         </li>
       </ul>
     </div>

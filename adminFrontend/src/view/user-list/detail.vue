@@ -38,6 +38,9 @@ title="信息详情">
         </i-col>
     </Row>
   </div>
+  <backhome-btn
+    back="/student/userlist"
+    name="学生列表"/>
 </div>
 </content-layout>
 </template>
@@ -47,6 +50,7 @@ import FilterTable from '_c/filter-table'
 import axios from '@/libs/api.request'
 import contentLayout from '_c/content-layout'
 import Tables from '_c/tables'
+import backhomeBtn from '_c/backhome-btn'
 const selectList = {
   0: {
     value: '',
@@ -111,7 +115,8 @@ export default {
     ChartBar,
     FilterTable,
     contentLayout,
-    Tables
+    Tables,
+    backhomeBtn
   },
   beforeRouteEnter (to, from, next) {
     axios.request({

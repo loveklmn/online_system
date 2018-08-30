@@ -11,6 +11,9 @@
     </filter-table>
     <Divider />
     <Button type="primary" :loading="loading" @click="newBook" class="new-book-btn">导入新书</Button>
+    <backhome-btn
+      back="/home"
+      name="回首页"/>
   </div>
 </content-layout>
 </template>
@@ -19,6 +22,7 @@
 import FilterTable from '_c/filter-table'
 import axios from '@/libs/api.request'
 import contentLayout from '_c/content-layout'
+import backhomeBtn from '_c/backhome-btn'
 const typeStatus = {
   0: {
     value: '',
@@ -54,13 +58,34 @@ const levelList = {
   4: {
     value: 4,
     name: 'k4'
+  },
+  5: {
+    value: 5,
+    name: 'k5'
+  },
+  6: {
+    value: 6,
+    name: 'k6'
+  },
+  7: {
+    value: 7,
+    name: 'k7'
+  },
+  8: {
+    value: 8,
+    name: 'k8'
+  },
+  9: {
+    value: 9,
+    name: 'k9'
   }
 }
 
 export default {
   components: {
     FilterTable,
-    contentLayout
+    contentLayout,
+    backhomeBtn
   },
   data () {
     return {
@@ -188,8 +213,8 @@ export default {
 
 .new-book-btn {
   width: 20%;
-  margin-top: 2%;
-  margin-bottom: 2%;
+  /* margin-top: 1%; */
+  margin-bottom: 5%;
   margin-left: 40%;
 }
 
@@ -200,6 +225,6 @@ export default {
 .main-content {
   margin-left: 4.6%;
   margin-top: 2%;
-  margin-right: 4.6%;
+  margin-right: 6%;
 }
 </style>

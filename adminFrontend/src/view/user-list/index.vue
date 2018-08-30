@@ -8,6 +8,9 @@
       :columns= "columns"
       :search= "condition">
     </filter-table>
+    <backhome-btn
+      back="/home"
+      name="回首页"></backhome-btn>
   </div>
 </content-layout>
 </template>
@@ -15,6 +18,7 @@
 import FilterTable from '_c/filter-table'
 import axios from '@/libs/api.request'
 import contentLayout from '_c/content-layout'
+import backhomeBtn from '_c/backhome-btn'
 const levelList = {
   0: {
     value: '',
@@ -42,7 +46,8 @@ export default {
   name: 'userlist',
   components: {
     FilterTable,
-    contentLayout
+    contentLayout,
+    backhomeBtn
   },
   data () {
     return {
@@ -155,6 +160,6 @@ export default {
 .main-content {
   margin-left: 4.6%;
   margin-top: 2%;
-  margin-right: 4.6%;
+  margin-right: 6%;
 }
 </style>
